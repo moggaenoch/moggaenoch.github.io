@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NYAKURON Listings - JUBA HOMEZ" />
+  <meta name="author" content="MOGGA ENOCH" />
+  <title>NYAKURON Listings - JUBA HOMEZ</title>
+
+  <link rel="icon" type="image/x-icon" href="assets/pictures/gemini_generated_image_yvrl7oyvrl7oyvrl.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <style>
+    :root{--font-body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--font-heading:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;}
+    body{font-family:var(--font-body);}
+    h1,h2,h3,h4,h5,h6,.navbar-brand{font-family:var(--font-heading);}
+    .brand-badge{border-radius:10px;}
+    .hero-img{width:100%;max-height:360px;object-fit:cover;}
+    .card-img-fixed{height:200px;object-fit:cover;}
+    @media (min-width: 992px){.navbar .dropdown:hover > .dropdown-menu{display:block;margin-top:0;}}
+    .hottest-wrap{position:relative;}
+    .hottest-scroll{display:flex;gap:1rem;overflow-x:auto;padding:0.25rem 0 0.75rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+    .hottest-item{flex:0 0 auto;width:360px;scroll-snap-align:start;}
+    @media (max-width:576px){.hottest-item{width:85vw;}}
+    .hottest-scroll::-webkit-scrollbar{height:8px;}
+    .hottest-nav-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:2;border-radius:999px;width:42px;height:42px;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.18);}
+    .hottest-nav-left{left:-10px;}
+    .hottest-nav-right{right:-10px;}
+    @media (max-width:992px){.hottest-nav-btn{display:none;}}
+    .gallery-main-img{width:100%;height:540px;object-fit:cover;}
+    @media (max-width:768px){.gallery-main-img{height:320px;}}
+    .thumbs-wrap{display:flex;gap:.5rem;flex-wrap:nowrap;overflow-x:auto;padding-bottom:.25rem;}
+    .thumbs-wrap::-webkit-scrollbar{height:8px;}
+    .thumb-btn{border:2px solid transparent;padding:0;border-radius:10px;background:transparent;cursor:pointer;flex:0 0 auto;}
+    .thumb-btn.active{border-color:#198754;}
+    .thumb-img{width:92px;height:70px;object-fit:cover;border-radius:8px;display:block;}
+     /* Remove the dropdown caret/arrow */
+    .dropdown-toggle::after {
+    display: none !important;}
+
+    /* Navbar: remove black background */
+  .navbar {
+    background-color: #ffffff !important;
+  }
+  .navbar .nav-link, .navbar .navbar-brand {
+    color: #212529 !important;
+  }
+  .navbar .nav-link:hover {
+    color: #0d6efd !important;
+  }
+
+  /* Footer: remove black background */
+  footer {
+    background-color: #f8f9fa !important;
+    color: #212529 !important;
+  }
+  footer a {
+    color: #0d6efd !important;
+  }
+
+  body, button, input, select, textarea {
+      font-family: Candara, "Calibri", "Segoe UI", Arial, sans-serif !important;
+    }
+  </style>
+
+  
+</head>
+
+<body class="bg-light">
+  <input type="hidden" id="searchLocation" value="nyakuron">
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="./index.html">JUBA HOMEZ</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNav"
+          aria-controls="mainNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+            <!-- Dropdown 1: Areas we cover -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="manageDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                AREAS WE COVER
+              </a>
+
+              <ul class="dropdown-menu" aria-labelledby="manageDropdown">
+                
+
+                <li><a class="dropdown-item" href="Gudele.html">Gudele</a></li>
+                <li><a class="dropdown-item" href="Muniki.html">Munuki</a></li>
+                <li><a class="dropdown-item" href="Property_Rent.html?location=hai-amarat">Hai Amarat</a></li>
+                <li><a class="dropdown-item" href="Property_Rent.html?location=serikat">Serikat</a></li>
+                <li><a class="dropdown-item" href="Property_Rent.html?location=tongping">Tongping</a></li>
+                <li><a class="dropdown-item" href="Jebel.html">Jebel</a></li>
+                <li><a class="dropdown-item" href="Nyakuron.html">Nyakuron</a></li>
+                <li><a class="dropdown-item" href="Kator.html">Kator</a></li>
+
+              </ul>
+            </li>
+
+            <!-- Dropdown 2: Properties -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="propertiesDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                PROPERTIES
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
+                <li><a class="dropdown-item" href="Property_Sale.html">Property Sales</a></li>
+                <li><a class="dropdown-item" href="Property_Rent.html">Property Rentals</a></li>
+               
+                
+              </ul>
+            </li>
+
+            <!-- Dropdown 3: Find an Agent -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="Real_Estate_Agent.html"
+                id="agentDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                FIND A REAL ESTATE AGENT
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="agentDropdown">
+                <li><a class="dropdown-item" href="../../../brokers/Brokers_Profiles.html">Broker</a></li>
+                <li><a class="dropdown-item" href="Real_Estate_Agent.html?role=owner">Owner</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="Contact.html">CONTACT US</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="../../../auth/LogIn.html">SIGN IN</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+  <section class="bg-white border-bottom">
+    <div class="container py-4 py-md-5">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <span class="badge bg-success mb-2">AREA</span>
+          <h1 class="display-6 fw-bold mb-2">NYAKURON PROPERTIES</h1>
+          <p class="lead text-muted mb-4">Browse verified listings in <strong>NYAKURON</strong>.</p>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="../public/pages/public/Nyakuron.html" class="btn btn-success">View NYAKURON Rentals</a>
+            <a href="../public/pages/public/Property_Sale.html?location=nyakuron" class="btn btn-outline-success">View NYAKURON Sales</a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <img src="assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg" class="img-fluid rounded-4 shadow hero-img" alt="NYAKURON properties" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="py-4">
+    <div class="container">
+      <section class="py-2">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h2 class="h4 mb-0">Hottest Properties in NYAKURON</h2>
+          <a class="btn btn-outline-success btn-sm" href="../public/pages/public/Nyakuron.html">View all</a>
+        </div>
+
+        <div class="hottest-wrap">
+          <button class="btn btn-light hottest-nav-btn hottest-nav-left" type="button" id="hotLeft" aria-label="Scroll left"><i class="bi bi-chevron-left"></i></button>
+          <button class="btn btn-light hottest-nav-btn hottest-nav-right" type="button" id="hotRight" aria-label="Scroll right"><i class="bi bi-chevron-right"></i></button>
+
+          <div class="hottest-scroll" id="hottestScroll">
+
+            <!-- 5 cards -->
+            <!-- Card 1 -->
+            <div class="hottest-item">
+              <article class="card h-100 shadow-sm">
+                <img src="assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg" class="card-img-top card-img-fixed" alt="NYAKURON Property 1" />
+                <div class="card-body d-flex flex-column">
+                  <h3 class="h6 fw-semibold mb-2">NYAKURON Modern Family House</h3>
+                  <p class="mb-2"><span class="badge text-bg-success">$900 / month</span></p>
+                  <p class="text-muted small mb-3">NYAKURON • 4 Beds • 3 Baths</p>
+                  <button type="button" class="btn btn-success mt-auto open-gallery" data-title="NYAKURON Modern Family House"
+                    data-images="
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg
+                    ">View Details</button>
+                </div>
+              </article>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="hottest-item">
+              <article class="card h-100 shadow-sm">
+                <img src="assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg" class="card-img-top card-img-fixed" alt="NYAKURON Property 2" />
+                <div class="card-body d-flex flex-column">
+                  <h3 class="h6 fw-semibold mb-2">NYAKURON Spacious Apartment</h3>
+                  <p class="mb-2"><span class="badge text-bg-success">$600 / month</span></p>
+                  <p class="text-muted small mb-3">NYAKURON • 3 Beds • 2 Baths</p>
+                  <button type="button" class="btn btn-success mt-auto open-gallery" data-title="NYAKURON Spacious Apartment"
+                    data-images="
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg
+                    ">View Details</button>
+                </div>
+              </article>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="hottest-item">
+              <article class="card h-100 shadow-sm">
+                <img src="assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg" class="card-img-top card-img-fixed" alt="NYAKURON Property 3" />
+                <div class="card-body d-flex flex-column">
+                  <h3 class="h6 fw-semibold mb-2">NYAKURON Executive Villa</h3>
+                  <p class="mb-2"><span class="badge text-bg-success">$1,500 / month</span></p>
+                  <p class="text-muted small mb-3">NYAKURON • 5 Beds • 4 Baths</p>
+                  <button type="button" class="btn btn-success mt-auto open-gallery" data-title="NYAKURON Executive Villa"
+                    data-images="
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg
+                    ">View Details</button>
+                </div>
+              </article>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="hottest-item">
+              <article class="card h-100 shadow-sm">
+                <img src="assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg" class="card-img-top card-img-fixed" alt="NYAKURON Property 4" />
+                <div class="card-body d-flex flex-column">
+                  <h3 class="h6 fw-semibold mb-2">NYAKURON Two Bedroom Flat</h3>
+                  <p class="mb-2"><span class="badge text-bg-success">$400 / month</span></p>
+                  <p class="text-muted small mb-3">NYAKURON • 2 Beds • 1 Bath</p>
+                  <button type="button" class="btn btn-success mt-auto open-gallery" data-title="NYAKURON Two Bedroom Flat"
+                    data-images="
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg
+                    ">View Details</button>
+                </div>
+              </article>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="hottest-item">
+              <article class="card h-100 shadow-sm">
+                <img src="assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg" class="card-img-top card-img-fixed" alt="NYAKURON Property 5" />
+                <div class="card-body d-flex flex-column">
+                  <h3 class="h6 fw-semibold mb-2">NYAKURON Townhouse (Secure Compound)</h3>
+                  <p class="mb-2"><span class="badge text-bg-success">$750 / month</span></p>
+                  <p class="text-muted small mb-3">NYAKURON • 3 Beds • 2 Baths</p>
+                  <button type="button" class="btn btn-success mt-auto open-gallery" data-title="NYAKURON Townhouse (Secure Compound)"
+                    data-images="
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg,
+../../assets/pictures/whatsapp-image-2026-01-09-at-16.11.40.jpeg
+                    ">View Details</button>
+                </div>
+              </article>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="border-top">
+    <div class="container py-4 d-flex flex-column flex-md-row gap-2 align-items-center justify-content-between">
+      <p class="mb-0 text-muted">&copy; 2026 JUBA HOMEZ. All rights reserved.</p>
+      <div class="d-flex gap-3">
+        <a class="text-decoration-none text-muted" href="../public/pages/public/Contact.html">Contact</a>
+        <a class="text-decoration-none text-muted" href="../public/pages/public/Property_Rent.html">Rentals</a>
+        <a class="text-decoration-none text-muted" href="../public/pages/public/Property_Sale.html">Sales</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal fade" id="propertyGalleryModal" tabindex="-1" aria-labelledby="propertyGalleryTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="propertyGalleryTitle">Property Gallery</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="propertyGalleryCarousel" class="carousel slide" data-bs-ride="false">
+            <div class="carousel-inner rounded-3 overflow-hidden" id="galleryCarouselInner"></div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#propertyGalleryCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#propertyGalleryCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>
+            </button>
+          </div>
+          <div class="thumbs-wrap mt-3" id="galleryThumbs"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      const scroller = document.getElementById("hottestScroll");
+      const leftBtn = document.getElementById("hotLeft");
+      const rightBtn = document.getElementById("hotRight");
+      if (!scroller || !leftBtn || !rightBtn) return;
+      const scrollAmount = () => Math.max(320, Math.floor(scroller.clientWidth * 0.85));
+      leftBtn.addEventListener("click", () => scroller.scrollBy({ left: -scrollAmount(), behavior: "smooth" }));
+      rightBtn.addEventListener("click", () => scroller.scrollBy({ left: scrollAmount(), behavior: "smooth" }));
+    })();
+
+    (function () {
+      const modalEl = document.getElementById("propertyGalleryModal");
+      const titleEl = document.getElementById("propertyGalleryTitle");
+      const carouselInner = document.getElementById("galleryCarouselInner");
+      const thumbsWrap = document.getElementById("galleryThumbs");
+      const carouselEl = document.getElementById("propertyGalleryCarousel");
+      if (!modalEl || !titleEl || !carouselInner || !thumbsWrap || !carouselEl) return;
+
+      const bsModal = new bootstrap.Modal(modalEl);
+
+      function buildGallery(title, images) {
+        carouselInner.innerHTML = "";
+        thumbsWrap.innerHTML = "";
+        images.forEach((src, idx) => {
+          const cleanSrc = (src || "").trim();
+          if (!cleanSrc) return;
+
+          const slide = document.createElement("div");
+          slide.className = "carousel-item" + (idx === 0 ? " active" : "");
+          slide.innerHTML = `<img src="${cleanSrc}" class="d-block w-100 gallery-main-img" alt="${title} - ${idx + 1}">`;
+          carouselInner.appendChild(slide);
+
+          const thumbBtn = document.createElement("button");
+          thumbBtn.type = "button";
+          thumbBtn.className = "thumb-btn" + (idx === 0 ? " active" : "");
+          thumbBtn.setAttribute("data-bs-target", "#propertyGalleryCarousel");
+          thumbBtn.setAttribute("data-bs-slide-to", String(idx));
+          thumbBtn.setAttribute("aria-label", `Slide ${idx + 1}`);
+          thumbBtn.innerHTML = `<img src="${cleanSrc}" class="thumb-img" alt="Thumbnail ${idx + 1}">`;
+          thumbsWrap.appendChild(thumbBtn);
+        });
+        titleEl.textContent = title;
+      }
+
+      carouselEl.addEventListener("slid.bs.carousel", function (event) {
+        const btns = thumbsWrap.querySelectorAll(".thumb-btn");
+        btns.forEach((b) => b.classList.remove("active"));
+        if (btns[event.to]) btns[event.to].classList.add("active");
+      });
+
+      document.addEventListener("click", function (e) {
+        const btn = e.target.closest(".open-gallery");
+        if (!btn) return;
+
+        const title = btn.getAttribute("data-title") || "Property Gallery";
+        const imagesRaw = btn.getAttribute("data-images") || "";
+        const images = imagesRaw.split(",").map((s) => s.trim()).filter(Boolean);
+        if (!images.length) return;
+
+        buildGallery(title, images);
+
+        const carousel = bootstrap.Carousel.getOrCreateInstance(carouselEl, { interval: false, ride: false, touch: true });
+        carousel.to(0);
+        bsModal.show();
+      });
+    })();
+  </script>
+
+  <script src="assets/js/config.js"></script><script src="assets/js/areas-nav.js"></script>
+  <script src="assets/js/http.js"></script>
+  <script src="assets/js/listings.js"></script>
+</body>
+</html>
+
