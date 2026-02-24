@@ -1,0 +1,101 @@
+
+<!doctype html>
+<html lang="en">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name ="description" content="JUBA HOMEZ is a real estate company based in Juba, South Sudan, specializing in residential and commercial properties.">
+    <meta name="author" content="MOGGA ENOCH">
+    <link rel="icon" type="image/x-icon" href="assets/pictures/gemini_generated_image_yvrl7oyvrl7oyvrl.png">
+    <link rel="stylesheet" href="assets/css/general-styling.css">
+    <script src="assets/js/juba-homez.js" defer></script>
+    <title>JUBA HOMEZ</title>
+
+   
+</head>
+<body>
+  <header>
+    <h1>Customer Dashboard</h1>
+
+    <form action="property_rent.html" method="get" aria-label="Search listings">
+      <label for="cust-q">Search</label>
+      <input id="cust-q" name="q" type="search" placeholder="Location, price, bedrooms..." />
+      <button type="submit">Search</button>
+    </form>
+
+    <nav aria-label="Top actions">
+      <a href="notifications.html">🔔</a> <span id="notifBadge" style="display:none" class="badge bg-danger ms-1">0</span> |
+      <a href="messages-inbox.html">💬</a> <span id="msgBadge" style="display:none" class="badge bg-danger ms-1">0</span> |
+      <a href="customer-dashboard.html#profile">👤</a>
+    </nav>
+  </header>
+
+  <hr />
+
+  <div>
+    <aside>
+      <nav aria-label="Customer navigation">
+        <h2>Menu</h2>
+        <ul>
+          <li><a href="customer-dashboard.html">Home</a></li>
+          <li><a href="customer-favorites.html">Favorites</a></li>
+          <li><a href="customer-saved-searches.html">Saved Searches & Alerts</a></li>
+          <li><a href="customer-inquiries.html">My Inquiries</a></li>
+          <li><a href="customer-viewings.html">Viewing Requests</a></li>
+          <li><a href="customer-compare.html">Compare</a></li>
+          <li><a href="customer-documents.html">Documents (Optional)</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main>
+      <h2>Welcome back, Customer</h2>
+
+      <section aria-label="Recommended listings">
+        <h3>Recommended for you</h3>
+        <ul>
+          <li><a href="property-details.html?id=201">Listing #201 — Apartment</a></li>
+          <li><a href="property-details.html?id=202">Listing #202 — House</a></li>
+          <li><a href="property-details.html?id=203">Listing #203 — Land</a></li>
+        </ul>
+      </section>
+
+      <section aria-label="Alerts">
+        <h3>Alerts</h3>
+        <ul>
+          <li>Price drop: Listing #—</li>
+          <li>New listings in your area: —</li>
+        </ul>
+      </section>
+
+      <section aria-label="Recently viewed">
+        <h3>Recently viewed</h3>
+        <ol>
+          <li><a href="property-details.html?id=101">Listing #101</a></li>
+          <li><a href="property-details.html?id=102">Listing #102</a></li>
+          <li><a href="property-details.html?id=103">Listing #103</a></li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="border-top">
+    <div class="container py-4 d-flex flex-column flex-md-row gap-2 align-items-center justify-content-between">
+      <p class="mb-0 text-muted">&copy; 2026 JUBA HOMEZ. All rights reserved.</p>
+      <div class="d-flex gap-3">
+        <a class="text-decoration-none text-muted" href="contact.html">Contact</a>
+        <a class="text-decoration-none text-muted" href="property_rent.html">Rentals</a>
+        <a class="text-decoration-none text-muted" href="property_sale.html">Sales</a>
+      </div>
+    </div>
+  </footer>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/http.js"></script>
+  <script src="assets/js/nav-areas.js"></script>
+  <script src="assets/js/customer.js"></script>
+  <script>Customer.loadCounts();</script>
+</body>
+</html>
