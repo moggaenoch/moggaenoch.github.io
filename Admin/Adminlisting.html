@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Listings | JUBA HOMEZ</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+   
+  <style>
+    :root {
+      --jh-primary: #0d6efd;
+      --jh-sidebar-width: 260px;
+    }
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: #f8f9fa; 
+      color: #334155;
+    }
+    
+    /* Table Styling */
+    .table-container {
+      background: #ffffff;
+      border-radius: 0.75rem;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+    }
+    .table thead th {
+      background-color: #f8f9fa;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: #64748b;
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .table tbody td {
+      padding: 1rem;
+      vertical-align: middle;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    /* Property Thumbnail */
+    .prop-img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    /* Status Badges */
+    .badge-pill {
+      padding: 0.4em 0.8em;
+      font-weight: 500;
+      border-radius: 50rem;
+    }
+    
+    /* Search & Filter Bar */
+    .filter-section {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+    }
+
+    .sidebar-link {
+      color: #64748b;
+      font-weight: 500;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.5rem;
+      margin: 0.2rem 0.75rem;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .sidebar-link.active {
+      background-color: #e0e7ff;
+      color: var(--jh-primary);
+    }
+    .sidebar-link i { margin-right: 0.75rem; }
+    a { text-decoration: none; }
+  </style>
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-lg-2 d-none d-lg-block bg-white border-end min-vh-100 p-0 position-fixed">
+        <div class="p-3 border-bottom">
+          <a class="navbar-brand fw-bold text-primary fs-4" href="./AdminDashboard.html">
+            <i class="bi bi-house-door-fill me-2"></i>JUBA HOMEZ
+          </a>
+        </div>
+        <div class="pt-3">
+          <a href="./AdminDashboard.html" class="sidebar-link"><i class="bi bi-speedometer2"></i>Overview</a>
+          <a href="./AdminListing.html" class="sidebar-link active"><i class="bi bi-building"></i>Listings</a>
+          <a href="./AdminUsers.html" class="sidebar-link"><i class="bi bi-people"></i>Users</a>
+          <a href="./AdminVerification.html" class="sidebar-link"><i class="bi bi-patch-check"></i>Verifications</a>
+          <hr class="mx-3 text-muted">
+          <a href="./AdminSetting.html" class="sidebar-link"><i class="bi bi-gear"></i>Settings</a>
+        </div>
+      </nav>
+
+      <main class="col-lg-10 offset-lg-2 px-md-4 py-4">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./AdminDashboard.html">Admin</a></li>
+            
+          </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1 class="h3 fw-bold mb-0">Property Listings</h1>
+          <a href="./AdminListingNew.html" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Add New Listing
+          </a>
+        </div>
+
+        <div class="filter-section mb-4 shadow-sm">
+          <form class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label small fw-bold">Search</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control border-start-0" placeholder="Title, ID, or Owner...">
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label small fw-bold">Status</label>
+              <select class="form-select">
+                <option value="">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending Approval</option>
+                <option value="sold">Sold/Rented</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label small fw-bold">Category</label>
+              <select class="form-select">
+                <option value="">All Types</option>
+                <option value="residential">Residential</option>
+                <option value="commercial">Commercial</option>
+                <option value="land">Land</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label small fw-bold">Location</label>
+              <select class="form-select">
+                <option value="">Anywhere</option>
+                <option value="munuki">Munuki</option>
+                <option value="gudele">Gudele</option>
+                <option value="juba1">Juba 1</option>
+              </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <button type="submit" class="btn btn-outline-secondary w-100">Reset</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="table-container shadow-sm">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>Location</th>
+                  <th>Price</th>
+                  <th>Owner/Agent</th>
+                  <th>Status</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=100&q=80" class="prop-img" alt="Villa">
+                      <div>
+                        <div class="fw-bold text-dark">Modern Villa</div>
+                        <div class="small text-muted">ID: #JH-5021</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="small">Munuki, Juba</span></td>
+                  <td>
+                    <div class="fw-semibold">$2,500/mo</div>
+                    <div class="small text-muted">Rent</div>
+                  </td>
+                  <td><span class="small">Emmanuel Lado</span></td>
+                  <td><span class="badge bg-success-subtle text-success badge-pill">Active</span></td>
+                  <td class="text-end">
+                    <div class="dropdown">
+                      <button class="btn btn-sm btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Manage
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View Public</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-megaphone me-2"></i>Feature Listing</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=100&q=80" class="prop-img" alt="Office">
+                      <div>
+                        <div class="fw-bold text-dark">Gudele Commercial Space</div>
+                        <div class="small text-muted">ID: #JH-4892</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="small">Gudele, Juba</span></td>
+                  <td>
+                    <div class="fw-semibold">$150,000</div>
+                    <div class="small text-muted">Sale</div>
+                  </td>
+                  <td><span class="small">Sarah Kenyi</span></td>
+                  <td><span class="badge bg-warning-subtle text-warning badge-pill">Pending</span></td>
+                  <td class="text-end">
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-success"><i class="bi bi-check-lg"></i></button>
+                      <button class="btn btn-danger"><i class="bi bi-x-lg"></i></button>
+                      <button class="btn btn-outline-secondary border"><i class="bi bi-three-dots"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="p-3 border-top d-flex justify-content-between align-items-center bg-light-subtle">
+            <p class="small text-muted mb-0">Showing 1 to 10 of 193 listings</p>
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/http.js"></script>
+  <script src="assets/js/admin.js"></script>
+  <script>Admin.wireComingSoon(); Admin.loadBadges(); Admin.loadPendingCounts();</script>
+
+  <script src="assets/js/admin-listings.js"></script>
+</body>
+</html>

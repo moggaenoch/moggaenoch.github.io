@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Suite | Juba Homez Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; scroll-behavior: smooth; }
+        .sidebar-link.active { background-color: #1e293b; color: #3b82f6; border-right: 4px solid #3b82f6; }
+        #map { height: 380px; border-radius: 1.5rem; z-index: 1; }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        /* Professional Toggle Switch Logic */
+        .switch { position: relative; display: inline-block; width: 44px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #2563eb; }
+        input:checked + .slider:before { transform: translateX(22px); }
+        /* Custom Scrollbar for Pro UI */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-slate-900 text-white hidden lg:flex flex-col sticky top-0 h-screen shadow-2xl">
+            <div class="p-6 border-b border-slate-800">
+                <h1 class="text-xl font-black tracking-tighter text-blue-400 italic">JUBA HOMEZ</h1>
+                <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-1 font-bold">Platform Governance</p>
+            </div>
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto text-sm">
+                <a href="#dashboard-overview" class="sidebar-link active flex items-center space-x-3 p-3 rounded-xl transition">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span class="font-bold">Master Dashboard</span>
+                </a>
+                <a href="#users" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span class="font-medium">Users & Roles</span>
+                </a>
+                <a href="#analytics" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    <span class="font-medium">Market Analytics</span>
+                </a>
+                <a href="#settings" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span class="font-medium">System Settings</span>
+                </a>
+            </nav>
+            <div class="p-4 bg-slate-950/40">
+                <div class="flex items-center gap-3 p-2 rounded-xl border border-slate-800">
+                    <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-[10px] text-white">AD</div>
+                    <div class="overflow-hidden">
+                        <p class="text-xs font-bold truncate">System Admin</p>
+                        <p class="text-[9px] text-blue-400 font-bold uppercase tracking-tighter italic">Root Access</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-6 lg:p-10">
+            <header class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <h1 class="text-3xl font-black text-slate-900 tracking-tight">System Infrastructure</h1>
+                    <p class="text-slate-500 text-sm italic">Managing core verification rules, user roles, and regional performance.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl border border-emerald-100 shadow-sm shadow-emerald-50">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[10px] font-black uppercase tracking-wider">Server: Online</span>
+                    </div>
+                    
+                    <button class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-sm font-bold shadow-sm hover:bg-slate-50 flex items-center gap-2 transition">
+                        <i data-lucide="bell" class="w-4 h-4 text-slate-400"></i> Alerts
+                    </button>
+                    <button class="bg-slate-900 text-white px-5 py-2 rounded-xl text-sm font-bold shadow-lg shadow-slate-200 hover:bg-slate-800 active:scale-95 transition">
+                        Admin Profile
+                    </button>
+                </div>
+            </header>
+
+            <section id="dashboard-overview" class="mb-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                        <h2 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Total Users</h2>
+                        <p class="text-3xl font-black text-slate-900">1500</p>
+                        <p class="text-[10px] text-blue-600 font-bold mt-1">+5% MTD</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                        <h2 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Active Users</h2>
+                        <p class="text-3xl font-black text-slate-900">1200</p>
+                        <p class="text-[10px] text-emerald-600 font-bold mt-1">Live Status</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm border-l-4 border-l-orange-400">
+                        <h2 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1 text-orange-600">Pending Requests</h2>
+                        <p class="text-3xl font-black text-slate-900">50</p>
+                        <p class="text-[10px] text-slate-400 font-bold mt-1 italic">Action Required</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm mb-12">
+                    <h3 class="font-black text-slate-800 mb-6 flex items-center gap-2 text-lg">
+                        <i data-lucide="activity" class="text-blue-600 w-5 h-5"></i> Recent Activity Feed
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 transition">
+                            <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center"><i data-lucide="user-plus" class="w-4 h-4"></i></div>
+                            <span class="text-xs font-bold text-slate-700">JohnDoe registered.</span>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 transition">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center"><i data-lucide="user-cog" class="w-4 h-4"></i></div>
+                            <span class="text-xs font-bold text-slate-700">JaneSmith updated profile.</span>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 transition">
+                            <div class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center"><i data-lucide="key" class="w-4 h-4"></i></div>
+                            <span class="text-xs font-bold text-slate-700">MikeBrown requested reset.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="users" class="mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <i data-lucide="shield-check" class="text-blue-600"></i> Users & Role Control
+                    </h2>
+                    <button class="text-blue-600 text-[10px] font-black uppercase tracking-widest hover:underline">+ New Staff Member</button>
+                </div>
+                <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                            <tr>
+                                <th class="px-6 py-4">Identity</th>
+                                <th class="px-6 py-4">Assigned Role</th>
+                                <th class="px-6 py-4 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50 text-sm">
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 font-bold">Mogga Enoch</td>
+                                <td class="px-6 py-4"><span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-[9px] font-black uppercase">System Root</span></td>
+                                <td class="px-6 py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><i data-lucide="more-horizontal"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="settings" class="mb-12">
+                <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                    <i data-lucide="sliders" class="text-blue-600"></i> Verification Logic
+                </h2>
+                <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+                        <div>
+                            <p class="font-bold text-sm">Mandatory ID Verification</p>
+                            <p class="text-[10px] text-slate-400 font-medium italic">Require passport/ID for listings.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+                        <div>
+                            <p class="font-bold text-sm">Property Deed Validation</p>
+                            <p class="text-[10px] text-slate-400 font-medium italic">Verify land titles in Gudele sector.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                </div>
+            </section>
+
+            <section id="analytics" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                    <h3 class="font-black text-slate-800 text-lg mb-6 flex items-center gap-2">
+                        <i data-lucide="map" class="text-blue-600"></i> Juba Density Map
+                    </h3>
+                    <div id="map"></div>
+                </div>
+                <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex flex-col">
+                    <h3 class="font-black text-slate-800 text-lg mb-6 uppercase tracking-tight">Market Breakdown</h3>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // Platform Map Initialization
+        const map = L.map('map', { scrollWheelZoom: false }).setView([4.85, 31.57], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        
+        // Neighborhood Heatmap Data
+        L.circle([4.85, 31.545], { color: '#2563eb', fillOpacity: 0.3, radius: 800 }).addTo(map).bindPopup('<b>Gudele</b>: 420 Active Properties');
+        L.circle([4.87, 31.56], { color: '#8b5cf6', fillOpacity: 0.3, radius: 600 }).addTo(map).bindPopup('<b>Munuki</b>: 285 Active Properties');
+
+        // Neighborhood Performance Chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Gudele', 'Gurei', 'Other'],
+                datasets: [{
+                    data: [42, 31, 27],
+                    backgroundColor: ['#2563eb', '#10b981', '#f1f5f9'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10, weight: '700' } } } },
+                cutout: '75%'
+            }
+        });
+    </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/http.js"></script>
+  <script src="assets/js/admin.js"></script>
+  <script>Admin.wireComingSoon(); Admin.loadBadges(); Admin.loadPendingCounts();</script>
+</body>
+</html>

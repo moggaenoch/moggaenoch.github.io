@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Profile | Juba Homez</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root { --sidebar-width: 80px; }
+        body { background-color: #f8f9fa; min-height: 100vh; }
+        .app-wrapper { display: flex; min-height: 100vh; }
+        
+        /* Sidebar Styling (Consistent with other modules) */
+        .sidebar { width: var(--sidebar-width); background: #212529; display: flex; flex-direction: column; align-items: center; padding-top: 20px; flex-shrink: 0; }
+        .sidebar a { color: #adb5bd; margin: 20px 0; font-size: 1.4rem; transition: 0.2s; position: relative; }
+        .sidebar a:hover, .sidebar a.active { color: #0d6efd; }
+
+        /* Profile Header */
+        .profile-header { background: linear-gradient(135deg, #0d6efd 0%, #003d99 100%); height: 160px; border-radius: 12px; margin-bottom: 70px; position: relative; }
+        .profile-avatar-wrapper { position: absolute; bottom: -50px; left: 40px; }
+        .profile-avatar { width: 120px; height: 120px; border: 5px solid #fff; border-radius: 50%; object-fit: cover; background: #eee; }
+        
+        .content-area { flex-grow: 1; padding: 40px; overflow-y: auto; }
+        .nav-tabs-custom .nav-link { border: none; color: #6c757d; font-weight: 500; padding: 1rem 1.5rem; }
+        .nav-tabs-custom .nav-link.active { color: #0d6efd; border-bottom: 3px solid #0d6efd; background: transparent; }
+    </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+    <aside class="sidebar d-none d-lg-flex">
+        <span class="fw-bold text-primary fs-4 mb-4">JH</span>
+        <a href="AdminDashboard.html" title="Dashboard"><i class="bi bi-speedometer2"></i></a>
+        <a href="AdminListingPending.html" title="Listings"><i class="bi bi-card-list"></i></a>
+        <a href="AdminMessages.html" title="Messages"><i class="bi bi-chat-dots"></i></a>
+        <a href="AdminNotifications.html" title="Notifications"><i class="bi bi-bell"></i></a>
+        <a href="AdminModeration.html" title="Moderation"><i class="bi bi-shield-check"></i></a>
+        <a href="AdminProfile.html" class="active" title="Profile"><i class="bi bi-person-circle"></i></a>
+        <a href="#" class="mt-auto mb-4" title="Settings"><i class="bi bi-gear"></i></a>
+    </aside>
+
+    <main class="content-area">
+        <div class="container-fluid max-width-lg">
+            
+            <div class="profile-header shadow-sm">
+                <div class="profile-avatar-wrapper d-flex align-items-end gap-4">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=random&size=200" alt="Avatar" class="profile-avatar shadow">
+                    <div class="mb-2">
+                        <h2 class="fw-bold text-dark mb-0">System Administrator</h2>
+                        <p class="text-muted mb-0"><i class="bi bi-geo-alt me-1"></i> Juba Headquarters</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm overflow-hidden">
+                        <ul class="nav nav-tabs nav-tabs-custom bg-white border-bottom" id="profileTabs" role="tablist">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#personal">Personal Info</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#security">Security & Password</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#activity">Activity Log</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content p-4 bg-white">
+                            <div class="tab-pane fade show active" id="personal">
+                                <form id="personalInfoForm">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small text-uppercase">Full Name</label>
+                                            <input type="text" class="form-control" value="Emmanuel Ladu" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small text-uppercase">Email Address</label>
+                                            <input type="email" class="form-control" value="admin@jubahomez.com" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small text-uppercase">Phone Number</label>
+                                            <input type="tel" class="form-control" value="+211 920 000 000">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small text-uppercase">Admin Role</label>
+                                            <input type="text" class="form-control bg-light" value="Super Administrator" readonly>
+                                        </div>
+                                        <div class="col-12 mt-4">
+                                            <button type="submit" class="btn btn-primary px-4">Update Profile</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane fade" id="security">
+                                <h6 class="fw-bold mb-3">Change Password</h6>
+                                <form id="passwordForm" class="mb-5">
+                                    <div class="row g-3">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Current Password</label>
+                                            <input type="password" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">New Password</label>
+                                            <input type="password" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Confirm New Password</label>
+                                            <input type="password" class="form-control">
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-outline-primary">Update Password</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr>
+                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                    <div>
+                                        <h6 class="fw-bold mb-0">Two-Factor Authentication (2FA)</h6>
+                                        <p class="small text-muted mb-0">Add an extra layer of security to your account.</p>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" style="width: 3rem; height: 1.5rem;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="activity">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="small text-uppercase">Action</th>
+                                                <th class="small text-uppercase">Target</th>
+                                                <th class="small text-uppercase">Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="small">
+                                            <tr>
+                                                <td><span class="badge bg-success-subtle text-success">Approved Listing</span></td>
+                                                <td>Villa in Rock City (#501)</td>
+                                                <td class="text-muted">10 mins ago</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge bg-danger-subtle text-danger">Banned User</span></td>
+                                                <td>Spam_User_99</td>
+                                                <td class="text-muted">2 hours ago</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge bg-info-subtle text-info">Modified Content</span></td>
+                                                <td>Gudele Pricing Tiers</td>
+                                                <td class="text-muted">Yesterday</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">Account Status</h6>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="flex-grow-1">
+                                    <div class="small text-muted">Safety Score</div>
+                                    <div class="fw-bold">98% Secure</div>
+                                </div>
+                                <i class="bi bi-shield-check text-success fs-3"></i>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-success" style="width: 98%"></div>
+                            </div>
+                            <p class="small text-muted mt-3 mb-0">Your last password change was 45 days ago.</p>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm bg-primary text-white">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">Session Info</h6>
+                            <div class="small mb-2"><i class="bi bi-laptop me-2"></i> Current: Windows 11 (Juba, SS)</div>
+                            <div class="small mb-2"><i class="bi bi-clock me-2"></i> Logged in since: 08:30 AM</div>
+                            <button class="btn btn-sm btn-light w-100 mt-3">Sign out from all devices</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Simple notification simulation for production feel
+    document.querySelectorAll('form').forEach(form => {
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            alert('Settings saved successfully!');
+        };
+    });
+</script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/http.js"></script>
+  <script src="assets/js/admin.js"></script>
+  <script>Admin.wireComingSoon(); Admin.loadBadges(); Admin.loadPendingCounts();</script>
+</body>
+</html>

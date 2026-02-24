@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notifications | Juba Homez Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .sidebar-link.active { background-color: #1e293b; color: #3b82f6; border-right: 4px solid #3b82f6; }
+        .notif-unread { border-left: 4px solid #2563eb; background-color: #f0f7ff; }
+        
+        /* Preferences Toggle Styling */
+        .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 20px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #2563eb; }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-slate-900 text-white hidden lg:flex flex-col sticky top-0 h-screen shadow-2xl">
+            <div class="p-6 border-b border-slate-800">
+                <h1 class="text-xl font-black tracking-tighter text-blue-400 italic">JUBA HOMEZ</h1>
+                <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-1 font-bold">Platform Governance</p>
+            </div>
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <a href="AdminDashboard.html" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span class="font-medium text-sm">Master Dashboard</span>
+                </a>
+                <a href="AdminListingPending.html" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                    <span class="font-medium text-sm">Property Listings</span>
+                </a>
+                <a href="#" class="sidebar-link active flex items-center space-x-3 p-3 rounded-xl transition">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span class="font-bold text-sm">Notifications</span>
+                </a>
+                <a href="AdminModeration.html" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+                    <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                    <span class="font-medium text-sm">Moderation</span>
+                </a>
+            </nav>
+            <div class="p-4 bg-slate-950/40">
+                <div class="flex items-center gap-3 p-2 rounded-xl border border-slate-800">
+                    <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-[10px]">AD</div>
+                    <div class="overflow-hidden">
+                        <p class="text-xs font-bold truncate">System Admin</p>
+                        <p class="text-[9px] text-blue-400 font-bold uppercase tracking-tighter italic">Root Access</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-6 lg:p-10">
+            <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <div class="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                        <span>Management</span> <i data-lucide="chevron-right" class="w-3 h-3"></i> <span class="text-blue-600">Notifications</span>
+                    </div>
+                    <h1 class="text-3xl font-black text-slate-900 tracking-tight">System Notifications</h1>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl border border-emerald-100 shadow-sm">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="text-[10px] font-black uppercase tracking-wider">Server: Online</span>
+                    </div>
+                    
+                    <button onclick="togglePreferences()" class="bg-white border border-slate-200 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm hover:bg-slate-50 transition flex items-center gap-2">
+                        <i data-lucide="settings-2" class="w-4 h-4"></i> Preferences
+                    </button>
+                    <button onclick="markAllRead()" class="bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-xl shadow-blue-200 hover:bg-blue-700 transition flex items-center gap-2">
+                        <i data-lucide="check-check" class="w-4 h-4"></i> Mark All Read
+                    </button>
+                </div>
+            </header>
+
+            <div class="space-y-4 max-w-5xl">
+                
+                <div class="notif-card notif-unread bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex gap-6 hover:shadow-md transition group">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                        <i data-lucide="home" class="w-6 h-6"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-1">
+                            <h4 class="font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition">New Listing Pending Approval</h4>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase italic">5 mins ago</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4 leading-relaxed">Emmanuel Ladu submitted a new modern villa in <strong class="text-slate-900">Rock City</strong> for review.</p>
+                        <div class="flex gap-3">
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-xl text-[10px] font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition">Review Listing</button>
+                            <button class="px-4 py-2 bg-slate-50 border border-slate-200 text-slate-600 rounded-xl text-[10px] font-bold hover:bg-slate-100 transition">Dismiss</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notif-card notif-unread border-l-red-500 bg-red-50/20 p-6 rounded-3xl border border-slate-100 shadow-sm flex gap-6 hover:shadow-md transition group">
+                    <div class="w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                        <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-1">
+                            <h4 class="font-black text-red-700 tracking-tight">High Risk Fraud Alert</h4>
+                            <span class="text-[10px] font-bold text-red-400 uppercase italic">45 mins ago</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4 leading-relaxed">Listing #742 (Muniki Apartment) has been reported for suspicious activity by 3 users.</p>
+                        <div class="flex gap-3">
+                            <button class="px-4 py-2 bg-red-600 text-white rounded-xl text-[10px] font-bold hover:bg-red-700 shadow-lg shadow-red-100 transition">View Security Report</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notif-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex gap-6 hover:shadow-md transition group">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
+                        <i data-lucide="cloud-check" class="w-6 h-6"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-1">
+                            <h4 class="font-black text-slate-800 tracking-tight">System Update Complete</h4>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase italic">2 hours ago</span>
+                        </div>
+                        <p class="text-sm text-slate-500 leading-relaxed italic">The automated image backup for Gudele and Muniki assets has finished successfully.</p>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="preferencesModal" class="fixed inset-0 z-[2000] hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="text-xl font-black text-slate-900 tracking-tight">Notification Preferences</h3>
+                <button onclick="togglePreferences()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x"></i></button>
+            </div>
+            <div class="p-8 space-y-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-bold text-sm text-slate-900">Listing Approvals</p>
+                        <p class="text-[10px] text-slate-500 italic">Alerts for new property submissions.</p>
+                    </div>
+                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-bold text-sm text-slate-900">Security & Fraud</p>
+                        <p class="text-[10px] text-slate-500 italic">Critical takedown and user reports.</p>
+                    </div>
+                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-bold text-sm text-slate-900">System Logs</p>
+                        <p class="text-[10px] text-slate-500 italic">Updates on server health and backups.</p>
+                    </div>
+                    <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+                <div class="flex items-center justify-between border-t border-slate-100 pt-6">
+                    <div>
+                        <p class="font-bold text-sm text-slate-900">Email Notifications</p>
+                        <p class="text-[10px] text-slate-500 italic">Weekly executive summaries via email.</p>
+                    </div>
+                    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                </div>
+            </div>
+            <div class="p-6 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button onclick="togglePreferences()" class="bg-blue-600 text-white px-6 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-100 transition">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function togglePreferences() {
+            const modal = document.getElementById('preferencesModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function markAllRead() {
+            document.querySelectorAll('.notif-unread').forEach(card => {
+                card.classList.remove('notif-unread', 'bg-blue-50/30', 'bg-red-50/20', 'border-l-red-500');
+                card.classList.add('bg-white');
+            });
+            alert('Enterprise System: Notifications cleared.');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('preferencesModal');
+            if (event.target == modal) {
+                modal.classList.add('hidden');
+            }
+        }
+    </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/http.js"></script>
+  <script src="assets/js/admin.js"></script>
+  <script>Admin.wireComingSoon(); Admin.loadBadges(); Admin.loadPendingCounts();</script>
+</body>
+</html>
