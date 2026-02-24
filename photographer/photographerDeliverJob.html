@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Placeholder</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<h1>Placeholder</h1>
+<p>Auto-generated placeholder for missing page: pages/photographer/photographer-deliver-job.html</p>
+<p>Referenced 2 times.</p>
+<p><a href="index.html">Home</a></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="container py-4">
+  <h1 class="h4">Upload Deliverables</h1>
+  <div id="uploadAlert"></div>
+  <form id="uploadForm" class="card mt-3 p-3">
+    <div class="mb-3">
+      <label class="form-label">Select photos/videos</label>
+      <input type="file" class="form-control" id="files" name="files" multiple required>
+      <div class="form-text">Images/videos will be validated and attached to the correct property.</div>
+    </div>
+    <button class="btn btn-primary" type="submit">Upload</button>
+  </form>
+</div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/http.js"></script>
+  <script src="assets/js/nav-areas.js"></script>
+  <script src="assets/js/photographer.js"></script>
+  <script src="assets/js/photojobs.js"></script>
+  <script>
+          Photographer.loadCounts();
+          const jobId = new URLSearchParams(location.search).get("id");
+          const alertBox = document.getElementById("uploadAlert");
+          function show(type,msg){ alertBox.innerHTML = `<div class="alert alert-${type}">${msg}</div>`; }
+          document.getElementById("uploadForm")?.addEventListener("submit", async (e)=>{
+            e.preventDefault();
+            if(!jobId) return show("warning","Missing job id");
+            const files = document.getElementById("files").files;
+            if(!files.length) return show("warning","Choose at least one file.");
+            try{
+              show("info","Uploading…");
+              const res = await uploadDeliverables(jobId, files);
+              const count = res?.data?.uploaded || res?.uploaded || files.length;
+              show("success", `Uploaded ${count} file(s). Pending admin media approval.`);
+              e.target.reset();
+            }catch(err){
+              show("danger", err.message || "Upload failed.");
+            }
+          });
+        </script>
+</body>
+</html>
