@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broker Inventory & Analytics | Juba Homez</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; overflow: hidden; }
+        .sidebar-link.active { background-color: #1e293b; color: #3b82f6; border-right: 4px solid #3b82f6; }
+        .inventory-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .inventory-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        .status-badge { font-size: 9px; font-weight: 900; text-transform: uppercase; padding: 2px 8px; border-radius: 9999px; letter-spacing: 0.05em; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="h-screen flex">
+
+    <aside class="w-64 bg-slate-900 text-white hidden lg:flex flex-col h-full shadow-2xl shrink-0">
+        <div class="p-6 border-b border-slate-800">
+            <h1 class="text-xl font-black tracking-tighter text-blue-400 italic">JUBA HOMEZ</h1>
+            <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-1 font-bold">Inventory System</p>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            <a href="BrokersDashboard.html" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition text-sm">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                <span class="font-medium">Dashboard</span>
+            </a>
+            <a href="#" class="sidebar-link active flex items-center space-x-3 p-3 rounded-xl transition text-sm">
+                <i data-lucide="package" class="w-5 h-5"></i>
+                <span class="font-bold">My Inventory</span>
+            </a>
+            <a href="messages-inbox.html" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition text-sm">
+                <i data-lucide="message-square" class="w-5 h-5"></i>
+                <span class="font-medium">Communications</span>
+            </a>
+        </nav>
+        <div class="p-4 bg-slate-950/40">
+            <div class="flex items-center gap-3 p-2 rounded-xl border border-slate-800">
+                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-[10px]">BR</div>
+                <div class="overflow-hidden text-xs">
+                    <p class="font-bold truncate">Certified Broker</p>
+                    <p class="text-[9px] text-blue-400 font-bold uppercase italic">ID: #JH-402</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        
+        <header class="h-20 bg-white border-b border-slate-100 flex items-center justify-between px-8 shrink-0 sticky top-0 z-10">
+            <div>
+                <h2 class="text-xl font-black text-slate-900 tracking-tight uppercase">Broker Portfolio Analysis</h2>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Analytics & Listing Management</p>
+            </div>
+            <div class="flex gap-3">
+                <button class="bg-blue-600 text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100 hover:bg-blue-700 transition">
+                    Export Inventory (CSV)
+                </button>
+            </div>
+        </header>
+
+        <div class="p-8 space-y-8">
+            <section class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                    <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest mb-1">Active Properties</p>
+                    <h3 class="text-2xl font-black text-slate-900 tracking-tighter" id="statActive" id="statClosed" id="statWithdrawn" id="statViews">24</h3>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm border-l-4 border-l-emerald-500">
+                    <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest mb-1">Closed Deals</p>
+                    <h3 class="text-2xl font-black text-slate-900 tracking-tighter text-emerald-600">156</h3>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm border-l-4 border-l-orange-400">
+                    <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest mb-1 text-orange-600">Withdrawn</p>
+                    <h3 class="text-2xl font-black text-slate-900 tracking-tighter">08</h3>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                    <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest mb-1">Total Views</p>
+                    <h3 class="text-2xl font-black text-slate-900 tracking-tighter">4,280</h3>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+                    <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-6">Regional Distribution</h3>
+                    <div class="h-[300px]">
+                        <canvas id="regionalChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white shadow-2xl">
+                    <h3 class="text-sm font-black text-blue-400 uppercase tracking-widest mb-6">Portfolio Health</h3>
+                    <div class="h-[300px]">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden mb-10">
+                <div class="p-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
+                    <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">Inventory List</h3>
+                    <div class="flex gap-2">
+                        <select class="bg-white border border-slate-200 text-[10px] font-bold px-3 py-1.5 rounded-lg outline-none">
+                            <option>All Areas</option>
+                            <option>Gudele</option>
+                            <option>Munuki</option>
+                            <option>Rock City</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                            <tr>
+                                <th class="px-8 py-4">JH Index ID</th>
+                                <th class="px-8 py-4">Property Area</th>
+                                <th class="px-8 py-4">Status</th>
+                                <th class="px-8 py-4">Leads</th>
+                                <th class="px-8 py-4 text-right">Portfolio Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTbody" class="divide-y divide-slate-50">
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-8 py-5 font-black text-slate-900">JH-MUN-01</td>
+                                <td class="px-8 py-5 text-slate-500 italic">Munuki Sector 2</td>
+                                <td class="px-8 py-5"><span class="status-badge bg-emerald-100 text-emerald-700">Active</span></td>
+                                <td class="px-8 py-5 font-bold text-blue-600">42 Inquiries</td>
+                                <td class="px-8 py-5 text-right flex justify-end gap-2">
+                                    <button class="p-2 text-slate-400 hover:text-blue-600" title="Performance Details"><i data-lucide="trending-up" class="w-4 h-4"></i></button>
+                                    <button class="p-2 text-slate-400 hover:text-red-600" title="Withdraw Portfolio"><i data-lucide="x-circle" class="w-4 h-4"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-8 py-5 font-black text-slate-900">JH-GUD-14</td>
+                                <td class="px-8 py-5 text-slate-500 italic">Gudele Block 4</td>
+                                <td class="px-8 py-5"><span class="status-badge bg-slate-100 text-slate-500">Sold/Rented</span></td>
+                                <td class="px-8 py-5 font-bold text-slate-400">Transaction Complete</td>
+                                <td class="px-8 py-5 text-right flex justify-end gap-2">
+                                    <button class="p-2 text-slate-400 hover:text-blue-600"><i data-lucide="file-text" class="w-4 h-4"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // 1. Regional Distribution Bar Chart
+        const regionalCtx = document.getElementById('regionalChart').getContext('2d');
+        new Chart(regionalCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Gudele', 'Munuki', 'Rock City', 'Gurei', 'Atlabara'],
+                datasets: [{
+                    label: 'Properties in Inventory',
+                    data: [12, 19, 8, 15, 6],
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 8,
+                    barThickness: 30
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { borderDash: [5, 5] }, ticks: { font: { size: 10, weight: '700' } } },
+                    x: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' } } }
+                }
+            }
+        });
+
+        // 2. Status Portfolio Doughnut Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Active', 'Closed', 'Withdrawn'],
+                datasets: [{
+                    data: [24, 156, 8],
+                    backgroundColor: ['#3b82f6', '#10b981', '#f1f5f9'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#94a3b8', font: { size: 11, weight: '700' }, usePointStyle: true, padding: 20 }
+                    }
+                },
+                cutout: '75%'
+            }
+        });
+    </script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/http.js"></script>
+  <script src="assets/js/nav-areas.js"></script>
+  <script src="assets/js/broker.js"></script>
+  <script src="assets/js/broker-inventory.js"></script>
+  <script>Broker.loadCounts(); Broker.loadDashboardStats();</script>
+  <script>
+          (async ()=>{
+            try{
+              const areaSelect = document.querySelector("select");
+              const tbody = document.getElementById("inventoryTbody") || document.querySelector("tbody");
+              const load = async ()=>{
+                const area = areaSelect && areaSelect.value && areaSelect.value !== "All Areas" ? areaSelect.value : null;
+                const props = await loadBrokerInventory({ area });
+                renderInventoryTable(tbody, props);
+              };
+              areaSelect?.addEventListener("change", load);
+              await load();
+            }catch(e){ console.warn(e); }
+          })();
+        </script>
+</body>
+</html>
