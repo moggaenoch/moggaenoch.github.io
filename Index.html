@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="JUBA HOMEZ is a real estate company based in Juba, South Sudan, specializing in residential and commercial properties." name="description"/>
+<meta content="MOGGA ENOCH" name="author"/>
+<title>JUBA HOMEZ</title>
+<!-- Favicon -->
+<link href="assets/pictures/gemini_generated_image_yvrl7oyvrl7oyvrl.png" rel="icon" type="image/x-icon"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+<style>
+    :root {
+      --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      --font-heading: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body { font-family: var(--font-body); }
+    h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: var(--font-heading); }
+
+    /* Hover dropdown on desktop (navbar-expand-lg) */
+    @media (min-width: 992px) {
+      .navbar .dropdown:hover > .dropdown-menu {
+        display: block;
+        margin-top: 0;
+      }
+    }
+     /* Remove the dropdown caret/arrow */
+  .dropdown-toggle::after {
+    display: none !important;}
+    /* Hero image */
+    .hero-img {
+      width: 100%;
+      max-height: 380px;
+      object-fit: cover;
+    }
+
+    /* Card image consistency */
+    .card-img-fixed {
+      height: 180px;
+      object-fit: cover;
+    }
+
+    /* =========================
+       HOTTEST PROPERTIES SLIDER
+       ========================= */
+    .hottest-wrap { position: relative; }
+
+    .hottest-scroll {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 0.25rem 0 0.75rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .hottest-item {
+      flex: 0 0 auto;
+      width: 320px;
+      scroll-snap-align: start;
+    }
+
+    @media (max-width: 576px) {
+      .hottest-item { width: 85vw; }
+    }
+
+    .hottest-scroll::-webkit-scrollbar { height: 8px; }
+
+    .hottest-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      border-radius: 999px;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    }
+
+    .hottest-nav-left { left: -10px; }
+    .hottest-nav-right { right: -10px; }
+
+    @media (max-width: 992px) {
+      .hottest-nav-btn { display: none; }
+    }
+
+    /* Gallery modal images */
+    .gallery-main-img {
+      width: 100%;
+      height: 540px;
+      object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-main-img { height: 320px; }
+    }
+
+    /* Thumbnail strip */
+    .thumbs-wrap {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+
+    .thumbs-wrap::-webkit-scrollbar { height: 8px; }
+
+    .thumb-btn {
+      border: 2px solid transparent;
+      padding: 0;
+      border-radius: 10px;
+      background: transparent;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .thumb-btn.active { border-color: #0d6efd; }
+
+    .thumb-img {
+      width: 92px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+    }
+
+    body, button, input, select, textarea {
+    font-family: Candara, "Calibri", "Segoe UI", Arial, sans-serif !important;
+  }
+  </style>
+</link></link></head>
+<body class="bg-body">
+<!-- HEADER -->
+<header id="main-header">
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+<div class="container">
+<a class="navbar-brand fw-bold" href="./Index.html">JUBA HOMEZ</a>
+<button aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#mainNav" data-bs-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="mainNav">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<!-- Dropdown 1: Areas we cover -->
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="manageDropdown" role="button">
+                AREAS WE COVER
+              </a>
+<ul aria-labelledby="manageDropdown" class="dropdown-menu">
+<li><a class="dropdown-item" href="../../../propertyManagement/Gudele.html">Gudele</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Muniki.html">Munuki</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Hai_Amarat.html">Jebel</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Serikat.html"> Joppa</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Tongping.html">Kator</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Jebel.html">Lemongaba</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Nyakuron.html">Nyakuron</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Kator.html">Rock City</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Gurei.html">Gurei</a></li>
+</ul>
+</li>
+<!-- Dropdown 2: Properties -->
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="propertiesDropdown" role="button">
+                PROPERTIES
+              </a>
+<ul aria-labelledby="propertiesDropdown" class="dropdown-menu">
+<li><a class="dropdown-item" href="../public/Property_Sale.html">Property Sales</a></li>
+<li><a class="dropdown-item" href="../public/Property_Rent.html">Property Rentals</a></li>
+</ul>
+</li>
+<!-- Dropdown 3: Find an Agent -->
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="../public/Real_Estate_Agent.html" id="agentDropdown" role="button">
+                FIND A REAL ESTATE AGENT
+              </a>
+<ul aria-labelledby="agentDropdown" class="dropdown-menu">
+<li><a class="dropdown-item" href="../../../brokers/Brokers_Profiles.html">Broker</a></li>
+<li><a class="dropdown-item" href="../public/Real_Estate_Agent.html?role=owner">Owner</a></li>
+</ul>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="../public/Contact.html">CONTACT US</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="../../../auth/LogIn.html">SIGN IN</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<!-- HERO -->
+<section class="bg-light border-bottom">
+<div class="container py-4 py-md-5">
+<div class="row align-items-center g-4">
+<div class="col-lg-6">
+<h1 class="display-6 fw-bold mb-2">WELCOME TO JUBA HOMEZ</h1>
+<p class="lead text-muted mb-4">
+              Find homes, rentals, and property services in Juba, South Sudan.
+            </p>
+<form role="search">
+<div class="input-group input-group-lg">
+<span class="input-group-text"><i class="bi bi-search"></i></span>
+<input aria-label="Search" class="form-control" id="searchLocation" placeholder="Search by location, address..." type="search"/>
+<button class="btn btn-primary" type="submit">Search</button>
+</div>
+</form>
+</div>
+<div class="col-lg-6">
+<img alt="Juba Homez properties" class="img-fluid rounded-4 shadow hero-img" src="../../../../assets/pictures logo/Gudele/propertyone/JHG-09.png"/>
+</div>
+</div>
+</div>
+</section>
+</header>
+<!-- MAIN -->
+<main>
+<!-- FILTER SECTION -->
+<section class="py-4" id="filter-section">
+<div class="container">
+<div class="d-flex align-items-center justify-content-between mb-3">
+<h2 class="h4 mb-0">Filter Properties</h2>
+<span class="text-muted small">Refine your search</span>
+</div>
+<div class="card shadow-sm">
+<div class="card-body">
+<form class="row g-3 align-items-end">
+<div class="col-12 col-md-4">
+<label class="form-label" for="location-filter">Location</label>
+<select class="form-select" id="location-filter">
+<option value="">All Locations</option>
+<option value="munuki">Munuki</option>
+<option value="gudele">Gudele</option>
+<option value="hai-amarat">Hai Amarat</option>
+<option value="serikat">Serikat</option>
+<option value="tongping">Tongping</option>
+<option value="jebel">Jebel</option>
+<option value="nyakuron">Nyakuron</option>
+<option value="kator">Kator</option>
+</select>
+</div>
+<div class="col-12 col-md-4">
+<label class="form-label" for="price-filter">Price Range</label>
+<select class="form-select" id="price-filter">
+<option value="">All Prices</option>
+<option value="0-500">$0 - $500</option>
+<option value="500-750">$500 - $750</option>
+<option value="750-1000">$750 - $1000</option>
+<option value="1000+">$1000+</option>
+</select>
+</div>
+<div class="col-12 col-md-4">
+<label class="form-label" for="bedrooms-filter">Bedrooms</label>
+<select class="form-select" id="bedrooms-filter">
+<option value="">All Bedrooms</option>
+<option value="1">1 Bedroom</option>
+<option value="2">2 Bedrooms</option>
+<option value="3">3 Bedrooms</option>
+<option value="4">4 Bedrooms</option>
+<option value="5+">5+ Bedrooms</option>
+</select>
+</div>
+<div class="col-12 d-flex gap-2">
+<button class="btn btn-outline-secondary" type="reset">Reset</button>
+<button class="btn btn-primary ms-auto" type="submit">Apply</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</section>
+<!-- HOTTEST PROPERTIES -->
+<section class="py-4" id="rent">
+<div class="container">
+<div class="d-flex align-items-center justify-content-between mb-3">
+<h2 class="h4 mb-0">Hottest Properties for Rent this month</h2>
+<a class="btn btn-outline-primary btn-sm" href="../public/Property_Rent.html">View all</a>
+</div>
+<div class="hottest-wrap">
+<button aria-label="Scroll left" class="btn btn-light hottest-nav-btn hottest-nav-left" id="hotLeft" type="button">
+<i class="bi bi-chevron-left"></i>
+</button>
+<button aria-label="Scroll right" class="btn btn-light hottest-nav-btn hottest-nav-right" id="hotRight" type="button">
+<i class="bi bi-chevron-right"></i>
+</button>
+<div class="hottest-scroll" data-dynamic="true" id="hottestScroll">
+<!-- PROPERTY 1 -->
+<div class="hottest-item">
+<article class="card h-100 shadow-sm">
+<img alt="Modern Apartment in Munuki" class="card-img-top card-img-fixed" src="../../../../assets/pictures logo/muniki/property one/JHG-09.png"/>
+<div class="card-body d-flex flex-column">
+<h3 class="h6 fw-semibold mb-2">Modern Apartment in Munuki</h3>
+<p class="mb-2"><span class="badge text-bg-success">$500 / month</span></p>
+<p class="text-muted small mb-3">3 Beds • 2 Baths</p>
+<button class="btn btn-primary mt-auto open-gallery" data-images="
+../../../../assets/pictures logo/muniki/property one/JHG-01.png,
+../../../../assets/pictures logo/muniki/property one/JHG-02.png,
+../../../../assets/pictures logo/muniki/property one/JHG-03.png,
+../../../../assets/pictures logo/muniki/property one/JHG-04.png,
+../../../../assets/pictures logo/muniki/property one/JHG-05.png,
+../../../../assets/pictures logo/muniki/property one/JHG-06.png,
+../../../../assets/pictures logo/muniki/property one/JHG-07.png,
+../../../../assets/pictures logo/muniki/property one/JHG-08.png,
+../../../../assets/pictures logo/muniki/property one/JHG-09.png,
+                    " data-title="Modern Apartment in Munuki" type="button">
+                    View Details
+                  </button>
+  <a class="btn btn-outline-secondary mt-2" href="#">Contact the broker?</a>
+
+</div>
+</article>
+</div>
+<!-- PROPERTY 2 -->
+<div class="hottest-item">
+<article class="card h-100 shadow-sm">
+<img alt="Family House in Gudele" class="card-img-top card-img-fixed" src="../../../../assets/pictures logo/Gudele/propertyone/JHG-01.png"/>
+<div class="card-body d-flex flex-column">
+<h3 class="h6 fw-semibold mb-2">Family House in Gudele</h3>
+<p class="mb-2"><span class="badge text-bg-success">$900 / month</span></p>
+<p class="text-muted small mb-3">4 Beds • 3 Baths</p>
+<button class="btn btn-primary mt-auto open-gallery" data-images="
+../../../../assets/pictures logo/Gudele/propertyone/JHG-01.png,
+../../../../assets/pictures logo/Gudele/propertyone/JHG-02.png,
+../../../../assets/pictures logo/Gudele/propertyone/JHG-03.png,
+../../../../assets/pictures logo/Gudele/propertyone/JHG-04.png,
+../../../../assets/pictures logo/Gudele/propertyone/JHG-05.png,
+../../../../assets/pictures logo/Gudele/propertyone/JHG-06.png,
+../../../../assets/pictures logo/Gudele/propertyone/JHG-07.png,
+../../../../assets/pictures logo/Gudele/propertyone/JHG-08.png,
+../../../../assets/pictures logo/Gudele/propertyone/JHG-09.png,
+
+                    " data-title="Family House in Gudele" type="button">
+                    View Details
+                  </button>
+<a class="btn btn-outline-secondary mt-2" href="#">Contact the broker?</a>
+</div>
+</article>
+</div>
+<!-- PROPERTY 3 -->
+<div class="hottest-item">
+<article class="card h-100 shadow-sm">
+<img alt="Studio in Hai Amarat" class="card-img-top card-img-fixed" src="../../../../assets/pictures logo/Hi Amarat/property one/JHG-03.png"/>
+<div class="card-body d-flex flex-column">
+<h3 class="h6 fw-semibold mb-2">Studio in Hai Amarat</h3>
+<p class="mb-2"><span class="badge text-bg-success">$250 / month</span></p>
+<p class="text-muted small mb-3">1 Bed • 1 Bath</p>
+<button class="btn btn-primary mt-auto open-gallery" data-images="
+../../../../assets/pictures logo/Hi Amarat/property one/JHG-01.png,
+../../../../assets/pictures logo/Hi Amarat/property one/JHG-02.png,
+../../../../assets/pictures logo/Hi Amarat/property one/JHG-03.png,
+../../../../assets/pictures logo/Hi Amarat/property one/JHG-04.png,
+../../../../assets/pictures logo/Hi Amarat/property one/JHG-05.png,
+../../../../assets/pictures logo/Hi Amarat/property one/JHG-06.png,
+../../../../assets/pictures logo/Hi Amarat/property one/JHG-07.png,
+../../../../assets/pictures logo/Hi Amarat/property one/JHG-08.png,
+../../../../assets/pictures logo/Hi Amarat/property one/JHG-09.png,
+
+                    " data-title="Studio in Hai Amarat" type="button">
+                    View Details
+                  </button>
+<a class="btn btn-outline-secondary mt-2" href="#">Contact the broker?</a>
+</div>
+</article>
+</div>
+<!-- PROPERTY 4 -->
+<div class="hottest-item">
+<article class="card h-100 shadow-sm">
+<img alt="Luxury Apartment in Nyakuron" class="card-img-top card-img-fixed" src="../../../../assets/pictures logo/Nyakuron/property one/JHG-01.png"/>
+<div class="card-body d-flex flex-column">
+<h3 class="h6 fw-semibold mb-2">Luxury Apartment in Nyakuron</h3>
+<p class="mb-2"><span class="badge text-bg-success">$1,200 / month</span></p>
+<p class="text-muted small mb-3">3 Beds • 2 Baths</p>
+<button class="btn btn-primary mt-auto open-gallery" data-images="
+../../../../assets/pictures logo/Nyakuron/property one/JHG-01.png,
+../../../../assets/pictures logo/Nyakuron/property one/JHG-02.png,
+../../../../assets/pictures logo/Nyakuron/property one/JHG-03.png,
+../../../../assets/pictures logo/Nyakuron/property one/JHG-04.png,
+../../../../assets/pictures logo/Nyakuron/property one/JHG-05.png,
+../../../../assets/pictures logo/Nyakuron/property one/JHG-06.png,
+../../../../assets/pictures logo/Nyakuron/property one/JHG-07.png,
+../../../../assets/pictures logo/Nyakuron/property one/JHG-08.png,
+../../../../assets/pictures logo/Nyakuron/property one/JHG-09.png,
+
+                    " data-title="Luxury Apartment in Nyakuron" type="button">
+                    View Details
+                  </button>
+<a class="btn btn-outline-secondary mt-2" href="#">Contact the broker?</a>
+
+</div>
+</article>
+</div>
+<!-- PROPERTY 5 -->
+<div class="hottest-item">
+<article class="card h-100 shadow-sm">
+<img alt="Townhouse in Kator" class="card-img-top card-img-fixed" src="../../../../assets/pictures logo/Kator/property one/JHG-01.png"/>
+<div class="card-body d-flex flex-column">
+<h3 class="h6 fw-semibold mb-2">Townhouse in Kator</h3>
+<p class="mb-2"><span class="badge text-bg-success">$700 / month</span></p>
+<p class="text-muted small mb-3">3 Beds • 2 Baths</p>
+<button class="btn btn-primary mt-auto open-gallery" data-images="
+../../../../assets/pictures logo/Kator/property one/JHG-01.png,
+../../../../assets/pictures logo/Kator/property one/JHG-02.png,
+../../../../assets/pictures logo/Kator/property one/JHG-03.png,
+../../../../assets/pictures logo/Kator/property one/JHG-04.png,
+../../../../assets/pictures logo/Kator/property one/JHG-05.png,
+../../../../assets/pictures logo/Kator/property one/JHG-06.png,
+../../../../assets/pictures logo/Kator/property one/JHG-07.png,
+../../../../assets/pictures logo/Kator/property one/JHG-08.png,
+../../../../assets/pictures logo/Kator/property one/JHG-09.png,
+
+                    " data-title="Townhouse in Kator" type="button">
+                    View Details
+                  </button>
+<a class="btn btn-outline-secondary mt-2" href="#">Contact the broker?</a>
+</div>
+</article>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ABOUT -->
+<section class="py-5">
+<div class="container">
+<div class="row g-4 align-items-start">
+<div class="col-12 col-lg-8">
+<h2 class="h4">About JUBA HOMEZ</h2>
+<p class="text-muted">
+              JUBA HOMEZ connects buyers, sellers, landlords, and tenants with ideal residential and commercial properties
+              in Juba, South Sudan. We focus on reliability, transparency, and quality service.
+            </p>
+</div>
+<div class="col-12 col-lg-4">
+<div class="card shadow-sm">
+<div class="card-body">
+<h3 class="h6 text-muted text-uppercase">Need help?</h3>
+<p class="mb-3">Talk to us about renting, buying, selling, or property management.</p>
+<a class="btn btn-primary w-100" href="../public/Contact.html">Contact Us</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer class="border-top">
+<div class="container py-4 d-flex flex-column flex-md-row gap-2 align-items-center justify-content-between">
+<p class="mb-0 text-muted">© 2026 JUBA HOMEZ. All rights reserved.</p>
+<div class="d-flex gap-3">
+<a class="text-decoration-none text-muted" href="../public/Contact.html">Contact</a>
+<a class="text-decoration-none text-muted" href="../public/Property_Rent.html">Rentals</a>
+<a class="text-decoration-none text-muted" href="../public/Property_Sale.html">Sales</a>
+</div>
+</div>
+</footer>
+<!-- ONE reusable Gallery Modal -->
+<div aria-hidden="true" aria-labelledby="propertyGalleryTitle" class="modal fade" id="propertyGalleryModal" tabindex="-1">
+<div class="modal-dialog modal-dialog-centered modal-xl">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="propertyGalleryTitle">Property Gallery</h5>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="carousel slide" data-bs-ride="false" id="propertyGalleryCarousel">
+<div class="carousel-inner rounded-3 overflow-hidden" id="galleryCarouselInner"></div>
+<button class="carousel-control-prev" data-bs-slide="prev" data-bs-target="#propertyGalleryCarousel" type="button">
+<span aria-hidden="true" class="carousel-control-prev-icon"></span>
+<span class="visually-hidden">Previous</span>
+</button>
+<button class="carousel-control-next" data-bs-slide="next" data-bs-target="#propertyGalleryCarousel" type="button">
+<span aria-hidden="true" class="carousel-control-next-icon"></span>
+<span class="visually-hidden">Next</span>
+</button>
+</div>
+<div class="thumbs-wrap mt-3" id="galleryThumbs"></div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-outline-secondary" data-bs-dismiss="modal" type="button">Close</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // ===== Horizontal slider arrows (desktop) =====
+    (function () {
+      const scroller = document.getElementById("hottestScroll");
+      const leftBtn = document.getElementById("hotLeft");
+      const rightBtn = document.getElementById("hotRight");
+      if (!scroller || !leftBtn || !rightBtn) return;
+
+      const scrollAmount = () => Math.max(280, Math.floor(scroller.clientWidth * 0.8));
+
+      leftBtn.addEventListener("click", () => {
+        scroller.scrollBy({ left: -scrollAmount(), behavior: "smooth" });
+      });
+
+      rightBtn.addEventListener("click", () => {
+        scroller.scrollBy({ left: scrollAmount(), behavior: "smooth" });
+      });
+    })();
+
+    // ===== Gallery modal builder (one modal for all cards) =====
+    (function () {
+      const modalEl = document.getElementById("propertyGalleryModal");
+      const titleEl = document.getElementById("propertyGalleryTitle");
+      const carouselInner = document.getElementById("galleryCarouselInner");
+      const thumbsWrap = document.getElementById("galleryThumbs");
+      const carouselEl = document.getElementById("propertyGalleryCarousel");
+
+      if (!modalEl || !titleEl || !carouselInner || !thumbsWrap || !carouselEl) return;
+
+      const bsModal = new bootstrap.Modal(modalEl);
+
+      function buildGallery(title, images) {
+        carouselInner.innerHTML = "";
+        thumbsWrap.innerHTML = "";
+
+        images.forEach((src, idx) => {
+          const cleanSrc = (src || "").trim();
+          if (!cleanSrc) return;
+
+          const slide = document.createElement("div");
+          slide.className = "carousel-item" + (idx === 0 ? " active" : "");
+          slide.innerHTML = `
+            <img src="${cleanSrc}" class="d-block w-100 gallery-main-img" alt="${title} - ${idx + 1}">
+          `;
+          carouselInner.appendChild(slide);
+
+          const thumbBtn = document.createElement("button");
+          thumbBtn.type = "button";
+          thumbBtn.className = "thumb-btn" + (idx === 0 ? " active" : "");
+          thumbBtn.setAttribute("data-bs-target", "#propertyGalleryCarousel");
+          thumbBtn.setAttribute("data-bs-slide-to", String(idx));
+          thumbBtn.setAttribute("aria-label", `Slide ${idx + 1}`);
+          thumbBtn.innerHTML = `<img src="${cleanSrc}" class="thumb-img" alt="Thumbnail ${idx + 1}">`;
+          thumbsWrap.appendChild(thumbBtn);
+        });
+
+        titleEl.textContent = title;
+      }
+
+      carouselEl.addEventListener("slid.bs.carousel", function (event) {
+        const btns = thumbsWrap.querySelectorAll(".thumb-btn");
+        btns.forEach((b) => b.classList.remove("active"));
+        const activeIndex = event.to;
+        if (btns[activeIndex]) btns[activeIndex].classList.add("active");
+      });
+
+      document.addEventListener("click", function (e) {
+        const btn = e.target.closest(".open-gallery");
+        if (!btn) return;
+
+        const title = btn.getAttribute("data-title") || "Property Gallery";
+        const imagesRaw = btn.getAttribute("data-images") || "";
+        const images = imagesRaw.split(",").map((s) => s.trim()).filter(Boolean);
+        if (images.length === 0) return;
+
+        buildGallery(title, images);
+
+        const carousel = bootstrap.Carousel.getOrCreateInstance(carouselEl, {
+          interval: false,
+          ride: false,
+          touch: true,
+        });
+        carousel.to(0);
+
+        bsModal.show();
+      });
+    })();
+  </script>
+<script src="assets/js/config.js"></script><script src="assets/js/http.js"></script><script src="assets/js/listings.js"></script></body>
+</html>
