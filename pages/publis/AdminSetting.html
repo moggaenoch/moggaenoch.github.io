@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Global Settings | Juba Homez Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root { --sidebar-width: 80px; --settings-nav-width: 250px; }
+        body { background-color: #f8f9fa; height: 100vh; overflow: hidden; }
+        .app-wrapper { display: flex; height: 100vh; }
+        
+        /* Sidebar Styling (Consistent with Juba Homez Admin Suite) */
+        .sidebar-main { width: var(--sidebar-width); background: #212529; display: flex; flex-direction: column; align-items: center; padding-top: 20px; flex-shrink: 0; }
+        .sidebar-main a { color: #adb5bd; margin: 20px 0; font-size: 1.4rem; transition: 0.2s; }
+        .sidebar-main a:hover, .sidebar-main a.active { color: #0d6efd; }
+
+        /* Settings Specific Layout */
+        .settings-container { flex-grow: 1; display: flex; overflow: hidden; }
+        .settings-nav { width: var(--settings-nav-width); background: #fff; border-right: 1px solid #dee2e6; padding: 20px 0; overflow-y: auto; }
+        .settings-content { flex-grow: 1; padding: 40px; overflow-y: auto; background: #fff; }
+
+        .nav-link-custom { padding: 12px 25px; color: #495057; display: flex; align-items: center; gap: 12px; text-decoration: none; transition: 0.2s; border-left: 3px solid transparent; }
+        .nav-link-custom:hover { background: #f8f9fa; color: #0d6efd; }
+        .nav-link-custom.active { background: #e7f1ff; color: #0d6efd; border-left-color: #0d6efd; font-weight: 600; }
+        
+        .setting-section { max-width: 800px; margin-bottom: 3rem; }
+        .form-label { font-weight: 600; color: #212529; margin-bottom: 0.5rem; }
+        .helper-text { font-size: 0.85rem; color: #6c757d; margin-top: 0.25rem; }
+    </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+    <aside class="sidebar-main">
+        <span class="fw-bold text-primary fs-4 mb-4">JH</span>
+        <a href="AdminDashboard.html"><i class="bi bi-speedometer2"></i></a>
+        <a href="AdminListingPending.html"><i class="bi bi-card-list"></i></a>
+        <a href="AdminMessages.html"><i class="bi bi-chat-dots"></i></a>
+        <a href="AdminNotifications.html"><i class="bi bi-bell"></i></a>
+        <a href="AdminModeration.html"><i class="bi bi-shield-check"></i></a>
+        <a href="AdminSetting.html" class="active"><i class="bi bi-gear-fill"></i></a>
+    </aside>
+
+    <div class="settings-container">
+        <nav class="settings-nav">
+            <div class="px-4 mb-3"><h5 class="fw-bold">Settings</h5></div>
+            <a href="#general" class="nav-link-custom active"><i class="bi bi-sliders"></i> General</a>
+            <a href="#regional" class="nav-link-custom"><i class="bi bi-globe"></i> Regional & Currency</a>
+            <a href="#listings" class="nav-link-custom"><i class="bi bi-house-gear"></i> Listing Rules</a>
+            <a href="#integrations" class="nav-link-custom"><i class="bi bi-plugin"></i> Integrations</a>
+            <a href="#security" class="nav-link-custom"><i class="bi bi-shield-lock"></i> Security Policy</a>
+            <a href="#maintenance" class="nav-link-custom"><i class="bi bi-tools"></i> Maintenance</a>
+        </nav>
+
+        <main class="settings-content">
+            <form id="globalSettingsForm">
+                
+                <div class="setting-section" id="general">
+                    <h4 class="fw-bold mb-4">General Configuration</h4>
+                    <div class="row g-4">
+                        <div class="col-md-12">
+                            <label class="form-label">Platform Name</label>
+                            <input type="text" class="form-control" value="Juba Homez">
+                            <div class="helper-text">This name appears in browser tabs and system emails.</div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Support Email Address</label>
+                            <input type="email" class="form-control" value="support@jubahomez.com">
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-5">
+
+                <div class="setting-section" id="regional">
+                    <h4 class="fw-bold mb-4">Regional & Currency</h4>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Default Currency</label>
+                            <select class="form-select">
+                                <option>USD - United States Dollar</option>
+                                <option selected>SSP - South Sudanese Pound</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Multi-Currency Display</label>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" checked>
+                                <label class="form-check-label">Show both SSP and USD on listings</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Timezone</label>
+                            <select class="form-select">
+                                <option selected>CAT (UTC+2) - Juba</option>
+                                <option>EAT (UTC+3)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-5">
+
+                <div class="setting-section" id="listings">
+                    <h4 class="fw-bold mb-4">Listing & Approval Rules</h4>
+                    <div class="row g-4">
+                        <div class="col-md-12">
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" checked>
+                                <label class="form-check-label fw-semibold">Mandatory Admin Approval</label>
+                                <p class="helper-text">All new listings must be reviewed by an admin before going live.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Max Photos Per Property</label>
+                            <input type="number" class="form-control" value="20">
+                            <div class="helper-text">Limits the number of images per listing (Standard: 20).</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Listing Duration (Days)</label>
+                            <input type="number" class="form-control" value="90">
+                            <div class="helper-text">Number of days before a listing is marked as expired.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sticky-bottom bg-white py-3 border-top mt-5 d-flex gap-3">
+                    <button type="submit" class="btn btn-primary px-5 py-2">Save All Changes</button>
+                    <button type="reset" class="btn btn-outline-secondary px-4">Discard</button>
+                </div>
+
+            </form>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Simple logic for side-nav switching and active states
+    document.querySelectorAll('.nav-link-custom').forEach(link => {
+        link.addEventListener('click', function() {
+            document.querySelector('.nav-link-custom.active').classList.remove('active');
+            this.classList.add('active');
+        });
+    });
+
+    document.getElementById('globalSettingsForm').onsubmit = (e) => {
+        e.preventDefault();
+        alert('Global settings updated successfully for Juba Homez.');
+    };
+</script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/http.js"></script>
+  <script src="assets/js/admin.js"></script>
+  <script>Admin.wireComingSoon(); Admin.loadBadges(); Admin.loadPendingCounts();</script>
+</body>
+</html>

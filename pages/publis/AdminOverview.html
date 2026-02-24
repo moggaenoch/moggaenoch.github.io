@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Juba Homez</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-slate-900 text-white hidden md:flex flex-col">
+            <div class="p-6">
+                <h1 class="text-xl font-bold tracking-tight"><a href="./AdminDashboard.html" class="text-white no-underline">JUBA HOMEZ</a></h1>
+                
+            </div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="./AdminOverview.html" class="flex items-center space-x-3 p-3 bg-blue-600 rounded-lg transition">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="./AdminUsers.html" class="flex items-center space-x-3 p-3 hover:bg-slate-800 rounded-lg transition">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Users</span>
+                </a>
+                <a href="./AdminListing.html" class="flex items-center space-x-3 p-3 hover:bg-slate-800 rounded-lg transition">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                    <span>Properties</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-8">
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Admin Overview</h2>
+                    <p class="text-gray-500">Platform performance at a glance.</p>
+                </div>
+                <button class="bg-white border border-gray-200 px-4 py-2 rounded-lg flex items-center space-x-2 shadow-sm hover:bg-gray-50 transition">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>Export Report</span>
+                </button>
+            </header>
+
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-2 bg-blue-50 rounded-lg text-blue-600">
+                            <i data-lucide="users" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-green-500 text-sm font-medium">+12%</span>
+                    </div>
+                    <h3 class="text-gray-500 text-sm font-medium">Total Users</h3>
+                    <p class="text-3xl font-bold mt-1">1,500</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-2 bg-green-50 rounded-lg text-green-600">
+                            <i data-lucide="user-check" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-green-500 text-sm font-medium">80% Active</span>
+                    </div>
+                    <h3 class="text-gray-500 text-sm font-medium">Active Users</h3>
+                    <p class="text-3xl font-bold mt-1">1,200</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-2 bg-orange-50 rounded-lg text-orange-600">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-orange-500 text-sm font-medium">Priority</span>
+                    </div>
+                    <h3 class="text-gray-500 text-sm font-medium">Pending Requests</h3>
+                    <p class="text-3xl font-bold mt-1">50</p>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-xl border border-gray-100 shadow-sm">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg font-bold">Recent Activity</h3>
+                    <a href="#" class="text-blue-600 text-sm font-medium hover:underline">View All</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-400 uppercase text-xs font-semibold">
+                                <th class="px-6 py-3">Event</th>
+                                <th class="px-6 py-3">User</th>
+                                <th class="px-6 py-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-6 py-4">New Registration</td>
+                                <td class="px-6 py-4 font-medium">JohnDoe</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Completed</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-6 py-4">Profile Update</td>
+                                <td class="px-6 py-4 font-medium">JaneSmith</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">Updated</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-6 py-4">Password Reset</td>
+                                <td class="px-6 py-4 font-medium">MikeBrown</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full">Pending</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/http.js"></script>
+  <script src="assets/js/admin.js"></script>
+  <script>Admin.wireComingSoon(); Admin.loadBadges(); Admin.loadPendingCounts();</script>
+</body>
+</html>
