@@ -1,98 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Juba Homez - Broker Profiles" />
-  <meta name="author" content="MOGGA ENOCH" />
-  <title>JUBA HOMEZ | Broker Profiles</title>
-
-  <!-- Favicon (update path if needed) -->
-  <link rel="icon" type="image/x-icon" href="assets/pictures logo/JUBA HOMEZ LOGO.png" />
-
-  <!-- Bootstrap 5.3 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-  <!-- Optional Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-
-  <style>
-    body { background:#f8fafc; }
-    .page-hero { background: linear-gradient(180deg, #0f172a 0%, #111827 100%); color:#fff; }
-    .card-hover { transition: transform .15s ease, box-shadow .15s ease; }
-    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(2,6,23,.08); }
-    .avatar {
-      width: 56px; height: 56px; border-radius: 50%;
-      display:flex; align-items:center; justify-content:center;
-      background:#e2e8f0; color:#0f172a; font-weight:700;
-      flex: 0 0 56px;
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="JUBA HOMEZ is a real estate company based in Juba, South Sudan, specializing in residential and commercial properties." name="description"/>
+<meta content="MOGGA ENOCH" name="author"/>
+<title>JUBA HOMEZ</title>
+<!-- Favicon -->
+<link href="assets/pictures/gemini_generated_image_yvrl7oyvrl7oyvrl.png" rel="icon" type="image/x-icon"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Poppins:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+<style>
+    :root {
+      --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      --font-heading: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     }
-    .badge-soft { background:#eef2ff; color:#3730a3; border:1px solid #e0e7ff; }
-    .small-muted { color:#64748b; }
-    .truncate-2 {
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden;
+
+    body { font-family: var(--font-body); }
+    h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: var(--font-heading); }
+
+    /* Hover dropdown on desktop (navbar-expand-lg) */
+    @media (min-width: 992px) {
+      .navbar .dropdown:hover > .dropdown-menu {
+        display: block;
+        margin-top: 0;
+      }
     }
+     /* Remove the dropdown caret/arrow */
+  .dropdown-toggle::after {
+    display: none !important;}
+    /* Hero image */
+    .hero-img {
+      width: 100%;
+      max-height: 380px;
+      object-fit: cover;
+    }
+
+    /* Card image consistency */
+    .card-img-fixed {
+      height: 180px;
+      object-fit: cover;
+    }
+
+    /* =========================
+       HOTTEST PROPERTIES SLIDER
+       ========================= */
+    .hottest-wrap { position: relative; }
+
+    .hottest-scroll {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 0.25rem 0 0.75rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .hottest-item {
+      flex: 0 0 auto;
+      width: 320px;
+      scroll-snap-align: start;
+    }
+
+    @media (max-width: 576px) {
+      .hottest-item { width: 85vw; }
+    }
+
+    .hottest-scroll::-webkit-scrollbar { height: 8px; }
+
+    .hottest-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      border-radius: 999px;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    }
+
+    .hottest-nav-left { left: -10px; }
+    .hottest-nav-right { right: -10px; }
+
+    @media (max-width: 992px) {
+      .hottest-nav-btn { display: none; }
+    }
+
+    /* Gallery modal images */
+    .gallery-main-img {
+      width: 100%;
+      height: 540px;
+      object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-main-img { height: 320px; }
+    }
+
+    /* Thumbnail strip */
+    .thumbs-wrap {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+
+    .thumbs-wrap::-webkit-scrollbar { height: 8px; }
+
+    .thumb-btn {
+      border: 2px solid transparent;
+      padding: 0;
+      border-radius: 10px;
+      background: transparent;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .thumb-btn.active { border-color: #0d6efd; }
+
+    .thumb-img {
+      width: 92px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+    }
+
+    body, button, input, select, textarea {
+    font-family: Candara, "Calibri", "Segoe UI", Arial, sans-serif !important;
+  }
   </style>
-</head>
+</link></link></head>
+<body class="bg-body">
+<!-- HEADER -->
+<header id="main-header">
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+<div class="container">
+<a class="navbar-brand fw-bold" href="./Index.html">JUBA HOMEZ</a>
+<button aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#mainNav" data-bs-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="mainNav">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<!-- Dropdown 1: Areas we cover -->
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="manageDropdown" role="button">
+                AREAS WE COVER
+              </a>
+<ul aria-labelledby="manageDropdown" class="dropdown-menu">
+<li><a class="dropdown-item" href="../../../propertyManagement/Gudele.html">Gudele</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Muniki.html">Munuki</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Hai_Amarat.html">Jebel</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Serikat.html"> Joppa</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Tongping.html">Kator</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Jebel.html">Lemongaba</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Nyakuron.html">Nyakuron</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Kator.html">Rock City</a></li>
+<li><a class="dropdown-item" href="../../../propertyManagement/Gurei.html">Gurei</a></li>
+</ul>
+</li>
 
-<body>
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-dark-subtle sticky-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">JUBA HOMEZ</a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-
-
-          <!-- Dropdown: Areas we cover -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="manageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              AREAS WE COVER
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="manageDropdown">
-              <li><a class="dropdown-item" href="../propertyManagement/Gudele.html">Gudele</a></li>
-              <li><a class="dropdown-item" href="../propertyManagement/Gurei.html">Gurei</a></li>
-              <li><a class="dropdown-item" href="../propertyManagement/Jebel.html">Jebel</a></li>
-              <li><a class="dropdown-item" href="../propertyManagement/Joppa.html">Joppa</a></li>
-              <li><a class="dropdown-item" href="../propertyManagement/Kator.html">Kator</a></li>
-              <li><a class="dropdown-item" href="../propertyManagement/LemonGaba.html">Lemongaba</a></li>
-              <li><a class="dropdown-item" href="../propertyManagement/Muniki.html">Muniki</a></li>
-              <li><a class="dropdown-item" href="../propertyManagement/Nyakuron.html">Nyakuron</a></li>
-              <li><a class="dropdown-item" href="../propertyManagement/RockCity.html">Rock City</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item"><a class="nav-link active" href="./BrokersProfiles.html">Brokers</a></li>
-          <li class="nav-item"><a class="nav-link" href="../property-owner/Property_Owner_Profile.html">Property Owners</a></li>
-
-          <li class="nav-item ms-lg-2">
-            <a class="btn btn-primary btn-sm" href="../auth/login.html"><i class="bi bi-box-arrow-in-right me-1"></i>Sign In</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <header class="page-hero py-5">
-    <div class="container">
-      <div class="row align-items-center g-3">
-        <div class="col-lg-8">
-          <h1 class="display-6 fw-bold mb-2">Broker Profiles</h1>
-          <p class="mb-0 text-white-50">Browse verified brokers and contact them directly for property inquiries.</p>
-        </div>
-        
-      </div>
-    </div>
-  </header>
+<!-- Dropdown 2: Find an Agent -->
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="../public/Real_Estate_Agent.html" id="agentDropdown" role="button">
+                FIND AN AGENT
+              </a>
+<ul aria-labelledby="agentDropdown" class="dropdown-menu">
+<li><a class="dropdown-item" href="brokers/Brokers_Profiles.html">Broker</a></li>
+<li><a class="dropdown-item" href="../public/Real_Estate_Agent.html?role=owner">Owner</a></li>
+</ul>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="../public/Contact.html">CONTACT US</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="../auth/LogIn.html">SIGN IN</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<!-- HERO -->
+<section class="bg-light border-bottom">
+<div class="container py-4 py-md-5">
+<div class="row align-items-center g-4">
+<div class="col-lg-6">
+<h1 class="display-6 fw-bold mb-2">WELCOME TO JUBA HOMEZ</h1>
+<p class="lead text-muted mb-4">
+              Find homes, rentals, and property services in Juba, South Sudan.
+            </p>
+<form role="search">
+<div class="input-group input-group-lg">
+<span class="input-group-text"><i class="bi bi-search"></i></span>
+<input aria-label="Search" class="form-control" id="searchLocation" placeholder="Search by location, address..." type="search"/>
+<button class="btn btn-primary" type="submit">Search</button>
+</div>
+</form>
+</div>
+<div class="col-lg-6">
+<img alt="Juba Homez properties" class="img-fluid rounded-4 shadow hero-img" src="../Pictures juba homez/Gudele/propertyone/JHG-09.png"/>
+</div>
+</div>
+</div>
+</section>
+</header>
 
   <!-- CONTENT -->
   <main class="py-4">
@@ -107,7 +233,7 @@
                 <span class="input-group-text"><i class="bi bi-search"></i></span>
                 <input id="searchInput" type="text" class="form-control" placeholder="Search by name, area, or company..." />
               </div>
-              <div class="small small-muted mt-1">Tip: try “Gudele”, “rent”, “commercial”, “Joppa”.</div>
+              
             </div>
             <div class="col-lg-3">
               <label class="form-label fw-semibold">Filter by area</label>
