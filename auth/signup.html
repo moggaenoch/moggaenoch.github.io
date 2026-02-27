@@ -9,97 +9,58 @@
 
   <title>JUBA HOMEZ - Sign Up</title>
 
-  <!--  Bootstrap 5.3 (CDN) -->
+  <!-- Bootstrap 5.3 (CDN) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-
-
-
-  <!-- Optional: your existing CSS (keep if you want custom styling) -->
-  <!-- NOTE: If your old CSS conflicts with Bootstrap, comment this out -->
+  <!-- Optional: your existing CSS -->
   <link rel="stylesheet" href="../css-documents/General Styling.css" />
   <style>
-    
     body, button, input, select, textarea {
-    font-family: Candara, "Calibri", "Segoe UI", Arial, sans-serif !important;
-  }
-
-  /* Remove the dropdown caret/arrow */
+      font-family: Candara, "Calibri", "Segoe UI", Arial, sans-serif !important;
+    }
     .dropdown-toggle::after { display: none !important; }
-
-     /* Optional: make the dropdown menu open on hover for desktop */
     @media (min-width: 992px) {
       .navbar .dropdown:hover > .dropdown-menu { display: block; margin-top: 0; }
     }
   </style>
-
-  <!-- Your existing JS -->
-  
 </head>
 
 <body class="bg-light">
 
-  <!-- Simple Header -->
-   <header id="main-header">
-
-    <!-- NAVBAR -->
+  <header id="main-header">
     <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">JUBA HOMEZ</a>
+        <a class="navbar-brand fw-bold" href="../index.html">JUBA HOMEZ</a>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#mainNav"
-          aria-controls="mainNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+          aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="mainNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-            <!-- Dropdown 1: Areas we cover -->
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="manageDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+              <a class="nav-link dropdown-toggle" href="#" id="manageDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 AREAS WE COVER
               </a>
-
-              <ul class="dropdown-menu" aria-labelledby="manageDropdown">
-
+              <ul class="dropdown-menu" aria-labelledby="manageDropdown" id="areasMenu">
                 <li><a class="dropdown-item" href="../propertyManagement/Gudele.html">Gudele</a></li>
                 <li><a class="dropdown-item" href="../propertyManagement/Muniki.html">Muniki</a></li>
                 <li><a class="dropdown-item" href="../propertyManagement/Jebel.html">Jebel</a></li>
-                <li><a class="dropdown-item" href="../propertyManagement/Joppa.html"> Joppa</a></li>
+                <li><a class="dropdown-item" href="../propertyManagement/Joppa.html">Joppa</a></li>
                 <li><a class="dropdown-item" href="../propertyManagement/Kator.html">Kator</a></li>
                 <li><a class="dropdown-item" href="../propertyManagement/Lemongaba.html">Lemongaba</a></li>
                 <li><a class="dropdown-item" href="../propertyManagement/Nyakuron.html">Nyakuron</a></li>
                 <li><a class="dropdown-item" href="../propertyManagement/RockCity.html">Rock City</a></li>
                 <li><a class="dropdown-item" href="../propertyManagement/Gurei.html">Gurei</a></li>
-                
               </ul>
             </li>
 
-            <!-- Dropdown 3: Find an Agent -->
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="real_estate_agent.html"
-                id="agentDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+              <a class="nav-link dropdown-toggle" href="#" id="agentDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 FIND A REAL ESTATE AGENT
               </a>
               <ul class="dropdown-menu" aria-labelledby="agentDropdown">
@@ -108,65 +69,39 @@
               </ul>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="../Contact.html">CONTACT US</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="logIn.html">SIGN IN</a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="../Contact.html">CONTACT US</a></li>
+            <li class="nav-item"><a class="nav-link" href="logIn.html">SIGN IN</a></li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <!-- HERO -->
     <section class="bg-light border-bottom">
       <div class="container py-4 py-md-5">
         <div class="row align-items-center g-4">
-
-          <div class="col-lg-6">
+          <div class="col-lg-8">
             <h1 class="display-6 fw-bold mb-2">WELCOME TO JUBA HOMEZ</h1>
-            <p class="lead text-muted mb-4">
-              Find homes, rentals, and property services in Juba, South Sudan.
-            </p>
-
-            <!-- Search below welcome -->
-            <form role="search">
-              <div class="input-group input-group-lg">
-                <span class="input-group-text"><i class="bi bi-search"></i></span>
-                <input
-                  class="form-control"
-                  type="search"
-                  placeholder="Search by location, address..."
-                  aria-label="Search"
-                />
-                <button class="btn btn-primary" type="submit">Search</button>
-              </div>
-            </form>
+            <p class="lead text-muted mb-0">Create your account to access listings and services.</p>
           </div>
-
         </div>
       </div>
     </section>
   </header>
-  
 
   <main class="py-5">
     <div class="container">
       <div class="row justify-content-center align-items-center g-4">
-
-        <!-- Form Card -->
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-7 col-xl-6">
           <div class="card shadow-sm border-0">
             <div class="card-body p-4 p-md-5">
               <h2 class="h4 mb-4 text-center">Create an Account</h2>
 
-              <!-- Keep your action/method as you wrote it -->
               <div data-auth-alert class="mb-3"></div>
 
               <form id="signupForm" class="needs-validation" novalidate>
                 <div class="row g-3">
+
+                  <!-- PROFILE -->
                   <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name</label>
                     <input type="text" class="form-control" id="firstName" name="firstName" required />
@@ -179,40 +114,75 @@
                     <div class="invalid-feedback">Last name is required.</div>
                   </div>
 
-                  
-        <div class="col-12">
-          <label for="role" class="form-label">Register as</label>
-          <select class="form-select" id="role" name="role" required>
-            <option value="customer" selected>Customer</option>
-            <option value="broker">Broker</option>
-            <option value="owner">Property Owner</option>
-            <option value="photographer">Photographer</option>
-          </select>
-          <div class="form-text">Brokers/Owners/Photographers may require admin approval.</div>
-        </div>
-        <div class="col-12">
-                    <label for="username" class="form-label">Username or Email</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="username"
-                      name="username"
-                      placeholder="example@gmail.com"
-                      required
-                    />
-                    <div class="invalid-feedback">Username or email is required.</div>
+                  <div class="col-md-6">
+                    <label for="sex" class="form-label">Sex</label>
+                    <select class="form-select" id="sex" name="sex" required>
+                      <option value="" selected disabled>Select...</option>
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
+                    </select>
+                    <div class="invalid-feedback">Sex is required.</div>
                   </div>
 
-                  
-        <div class="col-12">
-          <label for="phone" class="form-label">Phone Number</label>
-          <input type="text" class="form-control" id="phone" name="phone" required placeholder="+211..." />
-          <div class="invalid-feedback">Phone number is required.</div>
-        </div>
-        <div class="col-12">
+                  <div class="col-md-6">
+                    <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required />
+                    <div class="invalid-feedback">Date of birth is required.</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address" name="address" required placeholder="e.g. Gudele block 6" />
+                    <div class="invalid-feedback">Address is required.</div>
+                  </div>
+
+                  <!-- USER -->
+                  <div class="col-12">
+                    <label for="role" class="form-label">Register as</label>
+                    <select class="form-select" id="role" name="role" required>
+                      <option value="client" selected>Client</option>
+                      <option value="broker">Broker</option>
+                      <option value="owner">Property Owner</option>
+                      <option value="photographer">Photographer</option>
+                      <option value="staff">Staff</option>
+                    </select>
+                    <div class="form-text">Some roles may require admin approval.</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" required placeholder="example@gmail.com" autocomplete="email" />
+                    <div class="invalid-feedback">Valid email is required.</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required placeholder="+211..." autocomplete="tel" />
+                    <div class="invalid-feedback">Phone number is required.</div>
+                  </div>
+
+                  <div class="col-12">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required />
-                    <div class="invalid-feedback">Password is required.</div>
+                    <input type="password" class="form-control" id="password" name="password" required minlength="6" />
+                    <div class="invalid-feedback">Password is required (min 6 characters).</div>
+                  </div>
+
+                  <!-- Role-specific: Location -->
+                  <div class="col-12 d-none" id="locationWrap">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="location" name="location" placeholder="e.g. Muniki" />
+                    <div class="form-text">For brokers/owners/photographers.</div>
+                  </div>
+
+                  <!-- Role-specific: Branch + Position (Staff) -->
+                  <div class="col-md-6 d-none" id="branchWrap">
+                    <label for="branch" class="form-label">Branch</label>
+                    <input type="text" class="form-control" id="branch" name="branch" placeholder="e.g. Juba" />
+                  </div>
+
+                  <div class="col-md-6 d-none" id="positionWrap">
+                    <label for="position" class="form-label">Position</label>
+                    <input type="text" class="form-control" id="position" name="position" placeholder="e.g. Manager" />
                   </div>
 
                   <div class="col-12 d-grid mt-2">
@@ -220,84 +190,106 @@
                   </div>
                 </div>
 
-                <div class="text-center my-3">
-                  <span class="text-muted">— OR —</span>
-                </div>
-
-                <p class="text-center mb-0">
+                <p class="text-center mt-3 mb-0">
                   Already have an account?
                   <a href="login.html" class="link-primary fw-semibold">Sign In</a>
                 </p>
               </form>
+
             </div>
           </div>
         </div>
-        
-        </div>
-
       </div>
     </div>
-
   </main>
 
   <footer class="border-top">
     <div class="container py-4 d-flex flex-column flex-md-row gap-2 align-items-center justify-content-between">
       <p class="mb-0 text-muted">&copy; 2026 JUBA HOMEZ. All rights reserved.</p>
       <div class="d-flex gap-3">
-        <a class="text-decoration-none text-muted" href="contact.html">Contact</a>
-        <a class="text-decoration-none text-muted" href="property_rent.html">Rentals</a>
-        <a class="text-decoration-none text-muted" href="property_sale.html">Sales</a>
+        <a class="text-decoration-none text-muted" href="../Contact.html">Contact</a>
+        <a class="text-decoration-none text-muted" href="../property_rent.html">Rentals</a>
+        <a class="text-decoration-none text-muted" href="../property_sale.html">Sales</a>
       </div>
     </div>
   </footer>
 
- <!-- Bootstrap JS Bundle (ONLY ONCE) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Axios -->
-<script src="https://cdn.jsdelivr.net/npm/axios@1.7.9/dist/axios.min.js"></script>
+  <!-- Load config + http + auth (recommended) -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/http.js"></script>
+  <script src="../assets/js/auth.js"></script>
 
-<!-- Config (ONLY ONCE) -->
-<script src="../assets/js/config.js"></script>
+  <script>
+    // Show/Hide role-specific fields
+    const roleEl = document.getElementById("role");
+    const locationWrap = document.getElementById("locationWrap");
+    const branchWrap = document.getElementById("branchWrap");
+    const positionWrap = document.getElementById("positionWrap");
 
-<!-- Create window.http (because auth.js uses window.http.post) -->
-<script>
-  window.http = {
-    async post(path, data) {
-      const url = window.APP_CONFIG.API_BASE_URL.replace(/\/+$/, "") + (path.startsWith("/") ? path : "/" + path);
-      const res = await axios.post(url, data, { headers: { "Content-Type": "application/json" }, timeout: 20000 });
-      return res.data;
-    },
-    async get(path) {
-      const url = window.APP_CONFIG.API_BASE_URL.replace(/\/+$/, "") + (path.startsWith("/") ? path : "/" + path);
-      const res = await axios.get(url, { timeout: 20000 });
-      return res.data;
-    }
-  };
-</script>
+    function updateRoleFields() {
+      const role = roleEl.value;
 
-<!-- Your scripts -->
-<script src="../assets/js/main.js"></script>
-<script src="../assets/js/nav-areas.js"></script>
-<script src="../assets/js/auth.js"></script>
+      // reset
+      locationWrap.classList.add("d-none");
+      branchWrap.classList.add("d-none");
+      positionWrap.classList.add("d-none");
 
-<!-- Submit handler -->
-<script>
-  document.getElementById("signupForm")?.addEventListener("submit", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
+      document.getElementById("location").required = false;
+      document.getElementById("branch").required = false;
+      document.getElementById("position").required = false;
 
-    if (!this.checkValidity()) {
-      this.classList.add("was-validated");
-      return;
-    }
+      if (role === "broker" || role === "owner" || role === "photographer") {
+        locationWrap.classList.remove("d-none");
+        document.getElementById("location").required = true;
+      }
 
-    if (typeof window.handleSignup !== "function") {
-      console.error("handleSignup() not found. Your assets/js/auth.js does not define it.");
-      return;
+      if (role === "staff") {
+        branchWrap.classList.remove("d-none");
+        positionWrap.classList.remove("d-none");
+        document.getElementById("branch").required = true;
+        document.getElementById("position").required = true;
+      }
     }
 
-    window.handleSignup(this);
-  });
-</script>
-  
+    roleEl.addEventListener("change", updateRoleFields);
+    updateRoleFields();
+
+    // Bootstrap validation
+    (() => {
+      "use strict";
+      const forms = document.querySelectorAll(".needs-validation");
+      Array.from(forms).forEach((form) => {
+        form.addEventListener("submit", (event) => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add("was-validated");
+        }, false);
+      });
+    })();
+
+    // Submit -> your auth.js handleSignup(form) should read these fields:
+    // role, email, phone, password, firstName, lastName, sex, dateOfBirth, address, location/branch/position
+    document.getElementById("signupForm")?.addEventListener("submit", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!this.checkValidity()) {
+        this.classList.add("was-validated");
+        return;
+      }
+
+      if (typeof window.handleSignup !== "function") {
+        console.error("handleSignup() not found. Check ../assets/js/auth.js loading.");
+        return;
+      }
+
+      window.handleSignup(this);
+    });
+  </script>
+</body>
+</html>
