@@ -19,6 +19,15 @@
     localStorage.removeItem(USER_KEY);
   }
 
+  // ✅ Auto-try /auth/* then fallback to /*
+  async function postAuth(path, body) {
+    try {
+      return await window.http.post(`/auth${path}`, body);
+    } catch (e) {
+      return await window.http.post(path, body);
+    }
+  }
+
   // ---------- SIGNUP ----------
   window.handleSignup = async function handleSignup(form) {
     const box = alertBox();
@@ -27,37 +36,28 @@
     const btn = form.querySelector('button[type="submit"]');
     window.ui?.setLoading(btn, true, "Creating account...");
 
-    const firstName = (form.firstName?.value || "").trim();
-    const lastName = (form.lastName?.value || "").trim();
-    const role = (form.role?.value || "customer").trim();
-    const username = (form.username?.value || "").trim(); // email or username
-    const phone = (form.phone?.value || "").trim();
-    const password = form.password?.value || "";
+    const payload = {
+      firstName: (form.firstName?.value || "").trim(),
+      lastName: (form.lastName?.value || "").trim(),
+      role: (form.role?.value || "customer").trim(),
+      username: (form.username?.value || "").trim(),
+      phone: (form.phone?.value || "").trim(),
+      password: form.password?.value || "",
+    };
 
-    if (!firstName || !lastName || !username || !phone || !password) {
+    if (!payload.firstName || !payload.lastName || !payload.username || !payload.phone || !payload.password) {
       window.ui?.setLoading(btn, false);
       window.ui?.setAlert(box, "Please fill in all required fields.", "warning");
       return;
     }
 
     try {
-      const res = await window.http.post("/register", {
-        firstName,
-        lastName,
-        role,
-        username,
-        phone,
-        password,
-      });
+      const res = await postAuth("/register", payload);
 
-      // If backend returns token+user:
       if (res?.token) saveAuth(res.token, res.user);
 
       window.ui?.setAlert(box, res?.message || "Account created successfully.", "success");
-
-      setTimeout(() => {
-        window.location.href = "login.html"; // adjust if file name differs
-      }, 800);
+      setTimeout(() => (window.location.href = "login.html"), 800);
     } catch (err) {
       window.ui?.setAlert(box, err.message || "Sign up failed.", "danger");
     } finally {
@@ -83,16 +83,14 @@
     }
 
     try {
-      const res = await window.http.post("/login", { username, password });
+      const res = await postAuth("/login", { username, password });
 
       if (!res?.token) throw new Error(res?.message || "Login response missing token.");
 
       saveAuth(res.token, res.user);
       window.ui?.setAlert(box, "Login successful. Redirecting...", "success");
 
-      setTimeout(() => {
-        window.location.href = "../index.html"; // from /auth/ back to home
-      }, 600);
+      setTimeout(() => (window.location.href = "../index.html"), 600);
     } catch (err) {
       window.ui?.setAlert(box, err.message || "Login failed.", "danger");
     } finally {
@@ -116,7 +114,7 @@
     }
 
     try {
-      const res = await window.http.post("/password/forgot", { email });
+      const res = await postAuth("/password/forgot", { email });
 
       window.ui?.setAlert(
         box,
@@ -158,18 +156,12 @@
     window.ui?.setLoading(btn, true, "Resetting...");
 
     try {
-      const res = await window.http.post("/password/reset", { token, newPassword });
+      const res = await postAuth("/password/reset", { token, newPassword });
 
-      window.ui?.setAlert(
-        box,
-        res?.message || "Password reset successful. You can now sign in.",
-        "success"
-      );
+      window.ui?.setAlert(box, res?.message || "Password reset successful. You can now sign in.", "success");
       clearAuth();
 
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 900);
+      setTimeout(() => (window.location.href = "login.html"), 900);
     } catch (err) {
       window.ui?.setAlert(box, err.message || "Reset failed.", "danger");
     } finally {
@@ -182,4 +174,5 @@
     window.location.href = redirectTo;
   };
 })();
+
 
