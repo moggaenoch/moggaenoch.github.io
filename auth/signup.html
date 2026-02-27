@@ -251,50 +251,37 @@
     </div>
   </footer>
 
-  <!--  Bootstrap JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
-  <!-- Optional: Bootstrap validation helper -->
-  <script>
-    (() => {
-      "use strict";
-      const forms = document.querySelectorAll(".needs-validation");
-      Array.from(forms).forEach((form) => {
-        form.addEventListener("submit", (event) => {
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-          form.classList.add("was-validated");
-        }, false);
-      });
-    })();
-  </script>
-<!-- Bootstrap JS Bundle -->
+ <!-- Bootstrap JS Bundle (ONLY ONCE) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Axios (if auth.js uses api.post / axios) -->
+<!-- Axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios@1.7.9/dist/axios.min.js"></script>
 
-<!-- ✅ Correct paths (go up one level from /auth/) -->
+<!-- Config (ONLY ONCE) -->
 <script src="../assets/js/config.js"></script>
 
-<!-- ✅ Create global api client for auth.js -->
+<!-- Create window.http (because auth.js uses window.http.post) -->
 <script>
-  window.api = axios.create({
-    baseURL: window.APP_CONFIG.API_BASE_URL,
-    headers: { "Content-Type": "application/json" },
-    timeout: 20000
-  });
+  window.http = {
+    async post(path, data) {
+      const url = window.APP_CONFIG.API_BASE_URL.replace(/\/+$/, "") + (path.startsWith("/") ? path : "/" + path);
+      const res = await axios.post(url, data, { headers: { "Content-Type": "application/json" }, timeout: 20000 });
+      return res.data;
+    },
+    async get(path) {
+      const url = window.APP_CONFIG.API_BASE_URL.replace(/\/+$/, "") + (path.startsWith("/") ? path : "/" + path);
+      const res = await axios.get(url, { timeout: 20000 });
+      return res.data;
+    }
+  };
 </script>
 
-<script src="../assets/js/config.js"></script>
+<!-- Your scripts -->
 <script src="../assets/js/main.js"></script>
 <script src="../assets/js/nav-areas.js"></script>
 <script src="../assets/js/auth.js"></script>
 
-<!-- submit handler -->
+<!-- Submit handler -->
 <script>
   document.getElementById("signupForm")?.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -305,13 +292,12 @@
       return;
     }
 
-    if (typeof handleSignup !== "function") {
-      console.error("handleSignup() not found. Check ../assets/js/auth.js path.");
+    if (typeof window.handleSignup !== "function") {
+      console.error("handleSignup() not found. Your assets/js/auth.js does not define it.");
       return;
     }
 
-    handleSignup(this);
+    window.handleSignup(this);
   });
 </script>
-</body>
-</html>
+  
