@@ -10,11 +10,9 @@
     hostname === "127.0.0.1" ||
     hostname.endsWith(".local");
 
-  // Local backend (change port if yours differs)
-  const DEV_API_BASE_URL = "http://localhost:5000/api";
-
-  // ✅ Render backend
-  const PROD_API_BASE_URL = "https://juba-homez-backend.onrender.com/api";
+  // ✅ Your backend mounts routes at /api/v1
+  const DEV_API_BASE_URL = "http://localhost:5000/api/v1";
+  const PROD_API_BASE_URL = "https://juba-homez-backend.onrender.com/api/v1";
 
   const API_BASE_URL = isLocal ? DEV_API_BASE_URL : PROD_API_BASE_URL;
 
@@ -64,7 +62,6 @@
     },
   };
 
-  // Validate + log (only locally)
   try {
     new URL(window.APP_CONFIG.API_BASE_URL);
     if (window.APP_CONFIG.FEATURES.DEBUG_LOGS) {
