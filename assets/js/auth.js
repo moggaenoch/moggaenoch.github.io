@@ -1,12 +1,13 @@
 // assets/js/auth.js
 (function () {
+  "use strict";
+
   function alertBox() {
     return document.querySelector("[data-auth-alert]");
   }
 
-  // Use keys from config if present, otherwise fallback
   const TOKEN_KEY = window.APP_CONFIG?.STORAGE_KEYS?.ACCESS_TOKEN || "jh_access_token";
-  const USER_KEY  = window.APP_CONFIG?.STORAGE_KEYS?.USER || "jh_user";
+  const USER_KEY = window.APP_CONFIG?.STORAGE_KEYS?.USER || "jh_user";
 
   function saveAuth(token, user) {
     localStorage.setItem(TOKEN_KEY, token);
@@ -18,56 +19,7 @@
     localStorage.removeItem(USER_KEY);
   }
 
-  // Ensure we have a HTTP client
-  function ensureHttp() {
-    if (window.http && typeof window.http.post === "function") return;
-
-    const baseURL = window.APP_CONFIG?.API_BASE_URL;
-    if (!baseURL) throw new Error("APP_CONFIG.API_BASE_URL missing. Load config.js first.");
-
-    // If axios is available, create http client using it
-    if (window.axios) {
-      window.http = {
-        async post(path, data) {
-          const res = await axios.post(`${baseURL}${path.startsWith("/") ? path : "/" + path}`, data, {
-            headers: { "Content-Type": "application/json" },
-            timeout: 20000,
-          });
-          return res.data;
-        },
-        async get(path) {
-          const res = await axios.get(`${baseURL}${path.startsWith("/") ? path : "/" + path}`, {
-            timeout: 20000,
-          });
-          return res.data;
-        }
-      };
-      return;
-    }
-
-    // Fallback fetch client
-    window.http = {
-      async post(path, data) {
-        const res = await fetch(`${baseURL}${path.startsWith("/") ? path : "/" + path}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-        const json = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(json.message || `HTTP ${res.status}`);
-        return json;
-      },
-      async get(path) {
-        const res = await fetch(`${baseURL}${path.startsWith("/") ? path : "/" + path}`);
-        const json = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(json.message || `HTTP ${res.status}`);
-        return json;
-      }
-    };
-  }
-
   // ---------- SIGNUP ----------
-  // Backend should implement: POST /auth/register
   window.handleSignup = async function handleSignup(form) {
     const box = alertBox();
     window.ui?.clearAlert(box);
@@ -76,11 +28,11 @@
     window.ui?.setLoading(btn, true, "Creating account...");
 
     const firstName = (form.firstName?.value || "").trim();
-    const lastName  = (form.lastName?.value || "").trim();
-    const role      = (form.role?.value || "customer").trim();
-    const username  = (form.username?.value || "").trim(); // could be email
-    const phone     = (form.phone?.value || "").trim();
-    const password  = form.password?.value || "";
+    const lastName = (form.lastName?.value || "").trim();
+    const role = (form.role?.value || "customer").trim();
+    const username = (form.username?.value || "").trim(); // email or username
+    const phone = (form.phone?.value || "").trim();
+    const password = form.password?.value || "";
 
     if (!firstName || !lastName || !username || !phone || !password) {
       window.ui?.setLoading(btn, false);
@@ -89,22 +41,23 @@
     }
 
     try {
-      ensureHttp();
+      const res = await window.http.post("/register", {
+        firstName,
+        lastName,
+        role,
+        username,
+        phone,
+        password,
+      });
 
-      const payload = { firstName, lastName, role, username, phone, password };
+      // If backend returns token+user:
+      if (res?.token) saveAuth(res.token, res.user);
 
-      const res = await window.http.post("/auth/register", payload);
+      window.ui?.setAlert(box, res?.message || "Account created successfully.", "success");
 
-      // Some APIs return { token, user }, others just { message }
-      if (res?.token) {
-        saveAuth(res.token, res.user);
-        window.ui?.setAlert(box, "Account created. Redirecting...", "success");
-        setTimeout(() => (window.location.href = "login.html"), 700);
-      } else {
-        window.ui?.setAlert(box, res?.message || "Account created. You can now sign in.", "success");
-        form.reset();
-        setTimeout(() => (window.location.href = "login.html"), 900);
-      }
+      setTimeout(() => {
+        window.location.href = "login.html"; // adjust if file name differs
+      }, 800);
     } catch (err) {
       window.ui?.setAlert(box, err.message || "Sign up failed.", "danger");
     } finally {
@@ -130,9 +83,7 @@
     }
 
     try {
-      ensureHttp();
-
-      const res = await window.http.post("/auth/login", { username, password });
+      const res = await window.http.post("/login", { username, password });
 
       if (!res?.token) throw new Error(res?.message || "Login response missing token.");
 
@@ -140,7 +91,7 @@
       window.ui?.setAlert(box, "Login successful. Redirecting...", "success");
 
       setTimeout(() => {
-        window.location.href = "../index.html"; // from /auth/
+        window.location.href = "../index.html"; // from /auth/ back to home
       }, 600);
     } catch (err) {
       window.ui?.setAlert(box, err.message || "Login failed.", "danger");
@@ -165,9 +116,7 @@
     }
 
     try {
-      ensureHttp();
-
-      const res = await window.http.post("/auth/forgot-password", { email });
+      const res = await window.http.post("/password/forgot", { email });
 
       window.ui?.setAlert(
         box,
@@ -209,11 +158,13 @@
     window.ui?.setLoading(btn, true, "Resetting...");
 
     try {
-      ensureHttp();
+      const res = await window.http.post("/password/reset", { token, newPassword });
 
-      const res = await window.http.post("/auth/reset-password", { token, newPassword });
-
-      window.ui?.setAlert(box, res?.message || "Password reset successful. You can now sign in.", "success");
+      window.ui?.setAlert(
+        box,
+        res?.message || "Password reset successful. You can now sign in.",
+        "success"
+      );
       clearAuth();
 
       setTimeout(() => {
@@ -231,3 +182,4 @@
     window.location.href = redirectTo;
   };
 })();
+
