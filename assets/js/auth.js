@@ -2,15 +2,12 @@
 (function () {
   "use strict";
 
-  // ---------- Config ----------
   const CONFIG = window.APP_CONFIG || {};
 
-  // ✅ AUTH_BASE will be: https://.../api/v1/auth (no double /api/v1)
+  // Base: https://.../api/v1/auth (uses your config.js builder)
   const AUTH_BASE = CONFIG?.utils?.apiUrl
     ? CONFIG.utils.apiUrl("/auth")
-    : ((CONFIG.API_BASE_URL || CONFIG.API_URL || "").replace(/\/+$/, "") +
-       ((CONFIG.API_PREFIX || "/api/v1").replace(/\/+$/, "")) +
-       ((CONFIG.AUTH_PATH || "/auth").replace(/\/+$/, "")));
+    : "/api/v1/auth";
 
   // ---------- UI helpers ----------
   function alertBox() {
@@ -21,26 +18,28 @@
     if (x == null) return "";
     if (typeof x === "string") return x;
     if (typeof x === "number" || typeof x === "boolean") return String(x);
-    if (Array.isArray(x)) return x.map(normalizeMessage).filter(Boolean).join(", ");
+
+    // backend error format: { error: { message, details: [] } }
     if (typeof x === "object") {
-      return (
-        x.message ||
-        x.error ||
-        x.msg ||
-        (x.errors && normalizeMessage(x.errors)) ||
-        JSON.stringify(x)
-      );
+      if (x.error) return normalizeMessage(x.error);
+
+      const msg = x.message || x.error || x.msg || "";
+      const details = Array.isArray(x.details) ? x.details.join("\n") : "";
+      return [msg, details].filter(Boolean).join("\n") || JSON.stringify(x);
     }
+
     return String(x);
   }
 
   function setAlert(box, msg, type = "danger") {
     if (!box) return;
     const text = normalizeMessage(msg) || "Something went wrong.";
+
     box.innerHTML = "";
     const div = document.createElement("div");
     div.className = `alert alert-${type}`;
-    div.textContent = text; // ✅ avoids [object Object] and prevents HTML injection
+    div.style.whiteSpace = "pre-line"; // allow \n from details
+    div.textContent = text;
     box.appendChild(div);
   }
 
@@ -80,40 +79,26 @@
     return (form?.[name]?.value || "").trim();
   }
 
-  function extractError(err, fallback) {
-    return (
-      err?.response?.data?.message ||
-      err?.response?.data?.error ||
-      err?.data?.message ||
-      err?.data?.error ||
-      err?.message ||
-      fallback
-    );
-  }
-
-  // ---------- HTTP (fetch-only to avoid http.js duplicating /api/v1 or sending GET) ----------
+  // ---------- HTTP (fetch-only) ----------
   async function apiPost(path, payload) {
-    // path example: "/register"  or "/password/forgot"
-    // We always POST to AUTH_BASE + path
     const url = `${AUTH_BASE}${path.startsWith("/") ? path : `/${path}`}`;
 
     const res = await fetch(url, {
-      method: "POST", // ✅ force POST
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
     const ct = res.headers.get("content-type") || "";
-    const data = ct.includes("application/json") ? await res.json() : await res.text();
+    const json = ct.includes("application/json") ? await res.json() : { raw: await res.text() };
 
     if (!res.ok) {
-      const err = new Error(normalizeMessage(data) || `Request failed (${res.status})`);
-      err.status = res.status;
-      err.data = data;
-      throw err;
+      // backend sends: { error: { message, details } }
+      throw json;
     }
 
-    return data;
+    // backend sends: { data: {...} }
+    return json.data ?? json;
   }
 
   // ---------- SIGNUP ----------
@@ -125,70 +110,63 @@
     setLoading(btn, true, "Creating...");
 
     let role = getVal(form, "role") || "customer";
+
+    // UI uses "client" but backend expects "customer"
     if (role === "client") role = "customer";
+
+    // Backend allowed roles: customer, broker, owner, photographer
+    if (role === "staff") {
+      setLoading(btn, false);
+      setAlert(box, "Staff accounts must be created/approved by Admin. Please choose Client, Broker, Owner, or Photographer.", "warning");
+      return;
+    }
+
+    const firstName = getVal(form, "firstName");
+    const lastName = getVal(form, "lastName");
+
+    // ✅ backend requires 'name'
+    const name = `${firstName} ${lastName}`.trim();
 
     const email = getVal(form, "email");
     const phone = getVal(form, "phone");
     const password = form.password?.value || "";
 
-    const firstName = getVal(form, "firstName");
-    const lastName = getVal(form, "lastName");
-    const sex = (getVal(form, "sex") || "").toLowerCase(); // "m" or "f"
-    const dateOfBirth = getVal(form, "dateOfBirth"); // YYYY-MM-DD
-    const address = getVal(form, "address");
-
-    const location = getVal(form, "location");
-    const branch = getVal(form, "branch");
-    const position = getVal(form, "position");
-
-    if (!firstName || !lastName || !sex || !dateOfBirth || !address || !email || !phone || !password) {
+    // Basic checks (match backend rules)
+    if (!name || !email || !phone || !password) {
       setLoading(btn, false);
-      setAlert(box, "Please fill in all required fields.", "warning");
+      setAlert(box, "Please fill in First Name, Last Name, Email, Phone, and Password.", "warning");
       return;
     }
 
-    if (!["m", "f"].includes(sex)) {
+    if (password.length < 8) {
       setLoading(btn, false);
-      setAlert(box, "Sex must be 'm' or 'f'.", "warning");
+      setAlert(box, "Password must be at least 8 characters.", "warning");
       return;
     }
 
-    if (["broker", "owner", "photographer"].includes(role) && !location) {
-      setLoading(btn, false);
-      setAlert(box, "Location is required for Broker/Owner/Photographer.", "warning");
-      return;
-    }
-
-    if (role === "staff" && (!branch || !position)) {
-      setLoading(btn, false);
-      setAlert(box, "Branch and Position are required for Staff.", "warning");
-      return;
-    }
-
-    const payload = {
-      role,
-      email,
-      phone,
-      password,
-      firstName,
-      lastName,
-      sex,
-      dateOfBirth,
-      address,
-      location: location || null,
-      branch: branch || null,
-      position: position || null,
-    };
+    // ✅ Send ONLY what backend expects
+    const payload = { role, name, email, phone, password };
 
     try {
-      const res = await apiPost("/register", payload);
+      const out = await apiPost("/register", payload);
 
-      if (res?.token) saveAuth(res.token, res.user);
-
-      setAlert(box, res?.message || "Account created successfully. Redirecting…", "success");
-      setTimeout(() => (window.location.href = "login.html"), 800);
+      // out = { user, token }  (token is null if pending)
+      if (out?.token) {
+        saveAuth(out.token, out.user);
+        setAlert(box, "Account created successfully. Redirecting…", "success");
+        setTimeout(() => (window.location.href = "../index.html"), 800);
+      } else {
+        // broker/owner/photographer become "pending" on backend
+        setAlert(
+          box,
+          "Account submitted successfully and is pending admin approval. You will be able to log in after approval.",
+          "success"
+        );
+        form.reset();
+      }
     } catch (err) {
-      setAlert(box, extractError(err, "Sign up failed."), "danger");
+      // err is the backend json: { error: { message, details } }
+      setAlert(box, err, "danger");
       console.error("SIGNUP ERROR:", err);
     } finally {
       setLoading(btn, false);
@@ -203,29 +181,26 @@
     const btn = form.querySelector('button[type="submit"]');
     setLoading(btn, true, "Signing in...");
 
-    const usernameOrEmail = getVal(form, "username") || getVal(form, "email");
+    const email = getVal(form, "email") || getVal(form, "username");
     const password = form.password?.value || "";
 
-    if (!usernameOrEmail || !password) {
+    if (!email || !password) {
       setLoading(btn, false);
       setAlert(box, "Please enter your email and password.", "warning");
       return;
     }
 
     try {
-      const res = await apiPost("/login", {
-        username: usernameOrEmail,
-        email: usernameOrEmail,
-        password,
-      });
+      // backend expects ONLY { email, password }
+      const out = await apiPost("/login", { email, password });
 
-      if (!res?.token) throw new Error(res?.message || "Login response missing token.");
+      if (!out?.token) throw { error: { message: "Login response missing token." } };
 
-      saveAuth(res.token, res.user);
+      saveAuth(out.token, out.user);
       setAlert(box, "Login successful. Redirecting…", "success");
       setTimeout(() => (window.location.href = "../index.html"), 600);
     } catch (err) {
-      setAlert(box, extractError(err, "Login failed."), "danger");
+      setAlert(box, err, "danger");
       console.error("LOGIN ERROR:", err);
     } finally {
       setLoading(btn, false);
@@ -248,11 +223,11 @@
     }
 
     try {
-      const res = await apiPost("/password/forgot", { email });
-      setAlert(box, res?.message || "If the email exists, a reset link has been sent.", "success");
+      const out = await apiPost("/password/forgot", { email });
+      setAlert(box, out?.message || "If the email exists, reset instructions were sent.", "success");
       form.reset();
     } catch (err) {
-      setAlert(box, extractError(err, "Could not send reset link."), "danger");
+      setAlert(box, err, "danger");
       console.error("FORGOT ERROR:", err);
     } finally {
       setLoading(btn, false);
@@ -273,8 +248,8 @@
     const newPassword = form.newPassword?.value || "";
     const confirmPassword = form.confirmPassword?.value || "";
 
-    if (!newPassword || newPassword.length < 6) {
-      setAlert(box, "Password must be at least 6 characters.", "warning");
+    if (!newPassword || newPassword.length < 8) {
+      setAlert(box, "Password must be at least 8 characters.", "warning");
       return;
     }
     if (newPassword !== confirmPassword) {
@@ -286,28 +261,23 @@
     setLoading(btn, true, "Resetting...");
 
     try {
-      const res = await apiPost("/password/reset", { token, newPassword });
-      setAlert(box, res?.message || "Password reset successful. You can now sign in.", "success");
+      const out = await apiPost("/password/reset", { token, newPassword });
+      setAlert(box, out?.message || "Password reset successful. You can now sign in.", "success");
       clearAuth();
       setTimeout(() => (window.location.href = "login.html"), 900);
     } catch (err) {
-      setAlert(box, extractError(err, "Reset failed."), "danger");
+      setAlert(box, err, "danger");
       console.error("RESET ERROR:", err);
     } finally {
       setLoading(btn, false);
     }
   };
 
-  // ---------- LOGOUT ----------
   window.logout = function logout(redirectTo = "../index.html") {
     clearAuth();
     window.location.href = redirectTo;
   };
-
-  // Optional debug
-  if (CONFIG?.FEATURES?.DEBUG_LOGS) {
-    console.log("AUTH_BASE =", AUTH_BASE);
-  }
 })();
+
 
 
