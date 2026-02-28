@@ -12,12 +12,13 @@
   // ---------- DASHBOARD ROUTES (EDIT THESE PATHS TO MATCH YOUR FOLDERS) ----------
   // These paths are from the AUTH pages location. If your auth pages are in /auth/,
   // then "../dashboards/..." is usually correct.
-  const DASHBOARD_BY_ROLE = {
-    customer: "../dashboards/CustomerDashboard.html",
-    broker: "../dashboards/broker-dashboard.html",
-    owner: "../dashboards/owner-dashboard.html",
-    photographer: "../dashboards/photographer-dashboard.html",
-    admin: "../dashboards/admin-dashboard.html",
+    const DASHBOARD_BY_ROLE = {
+       customer: "/customer/CustomerDashboard.html",
+       broker: "/brokers/BrokersDashboard.html",
+       owner: "/property-owner/PropertyOwnerDashboard.html",
+       admin: "/Admin/AdminDashboard.html",
+       photographer: "/photographer/PhotographersDashoard.html", // (spelling is Dashoard)
+};
   };
 
   function redirectToDashboard(user) {
@@ -306,6 +307,7 @@
   // Optional: expose redirect map (useful for debugging)
   window.JH_DASHBOARD_BY_ROLE = DASHBOARD_BY_ROLE;
 })();
+
 
 
 
