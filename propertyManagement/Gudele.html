@@ -8,167 +8,184 @@
   <meta name="author" content="MOGGA ENOCH" />
   <title>GUDELE Listings - JUBA HOMEZ</title>
 
-  <link rel="icon" type="image/x-icon" href="assets/pictures/gemini_generated_image_yvrl7oyvrl7oyvrl.png" />
+  <!-- Favicon -->
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="assets/pictures/gemini_generated_image_yvrl7oyvrl7oyvrl.png"
+  />
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  />
 
   <style>
-    :root{--font-body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--font-heading:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;}
+    :root{
+      --font-body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      --font-heading:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    }
+
     body{font-family:var(--font-body);}
     h1,h2,h3,h4,h5,h6,.navbar-brand{font-family:var(--font-heading);}
-    .brand-badge{border-radius:10px;}
+
     .hero-img{width:100%;max-height:360px;object-fit:cover;}
     .card-img-fixed{height:200px;object-fit:cover;}
-    @media (min-width: 992px){.navbar .dropdown:hover > .dropdown-menu{display:block;margin-top:0;}}
+
+    /* Hover dropdown on desktop */
+    @media (min-width: 992px){
+      .navbar .dropdown:hover > .dropdown-menu{display:block;margin-top:0;}
+    }
+
+    /* Hottest scroller */
     .hottest-wrap{position:relative;}
-    .hottest-scroll{display:flex;gap:1rem;overflow-x:auto;padding:0.25rem 0 0.75rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+    .hottest-scroll{
+      display:flex;gap:1rem;overflow-x:auto;padding:0.25rem 0 0.75rem;
+      scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    }
     .hottest-item{flex:0 0 auto;width:360px;scroll-snap-align:start;}
     @media (max-width:576px){.hottest-item{width:85vw;}}
     .hottest-scroll::-webkit-scrollbar{height:8px;}
-    .hottest-nav-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:2;border-radius:999px;width:42px;height:42px;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.18);}
+
+    .hottest-nav-btn{
+      position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+      border-radius:999px;width:42px;height:42px;display:grid;place-items:center;
+      box-shadow:0 6px 18px rgba(0,0,0,.18);
+    }
     .hottest-nav-left{left:-10px;}
     .hottest-nav-right{right:-10px;}
     @media (max-width:992px){.hottest-nav-btn{display:none;}}
+
+    /* Gallery */
     .gallery-main-img{width:100%;height:540px;object-fit:cover;}
     @media (max-width:768px){.gallery-main-img{height:320px;}}
+
     .thumbs-wrap{display:flex;gap:.5rem;flex-wrap:nowrap;overflow-x:auto;padding-bottom:.25rem;}
     .thumbs-wrap::-webkit-scrollbar{height:8px;}
     .thumb-btn{border:2px solid transparent;padding:0;border-radius:10px;background:transparent;cursor:pointer;flex:0 0 auto;}
     .thumb-btn.active{border-color:#198754;}
     .thumb-img{width:92px;height:70px;object-fit:cover;border-radius:8px;display:block;}
-     /* Remove the dropdown caret/arrow */
-    .dropdown-toggle::after {
-    display: none !important;}
 
-    /* Navbar: remove black background */
-  .navbar {
-    background-color: #ffffff !important;
-  }
-  .navbar .nav-link, .navbar .navbar-brand {
-    color: #212529 !important;
-  }
-  .navbar .nav-link:hover {
-    color: #0d6efd !important;
-  }
+    /* Remove dropdown caret/arrow */
+    .dropdown-toggle::after{display:none !important;}
 
-  /* Footer: remove black background */
-  footer {
-    background-color: #f8f9fa !important;
-    color: #212529 !important;
-  }
-  footer a {
-    color: #0d6efd !important;
-    
-  }
+    /* Navbar: force light look (avoid duplicate bg classes) */
+    .navbar{background-color:#ffffff !important;}
+    .navbar .nav-link,.navbar .navbar-brand{color:#212529 !important;}
+    .navbar .nav-link:hover{color:#0d6efd !important;}
 
-  body, button, input, select, textarea {
-      font-family: Candara, "Calibri", "Segoe UI", Arial, sans-serif !important;
-    }
-
+    /* Footer: light look */
+    footer{background-color:#f8f9fa !important;color:#212529 !important;}
+    footer a{color:#0d6efd !important;}
   </style>
 </head>
 
 <body class="bg-light">
-  <input type="hidden" id="searchLocation" value="gudele">
+  <input type="hidden" id="searchLocation" value="gudele" />
 
+  <nav class="navbar navbar-expand-lg border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="../index.html">JUBA HOMEZ</a>
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="../index.html">JUBA HOMEZ</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#mainNav"
+        aria-controls="mainNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#mainNav"
-          aria-controls="mainNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- Areas we cover -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="manageDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              AREAS WE COVER
+            </a>
 
-        <div class="collapse navbar-collapse" id="mainNav">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="dropdown-menu" aria-labelledby="manageDropdown">
+              <li><a class="dropdown-item" href="Gudele.html">Gudele</a></li>
+              <li><a class="dropdown-item" href="Muniki.html">Muniki</a></li>
+              <li><a class="dropdown-item" href="Jebel.html">Jebel</a></li>
+              <li><a class="dropdown-item" href="Joppa.html">Joppa</a></li>
+              <li><a class="dropdown-item" href="Kator.html">Kator</a></li>
+              <li><a class="dropdown-item" href="LemonGaba.html">Lemongaba</a></li>
+              <li><a class="dropdown-item" href="Nyakuron.html">Nyakuron</a></li>
+              <li><a class="dropdown-item" href="RockCity.html">Rock City</a></li>
+              <li><a class="dropdown-item" href="Gurei.html">Gurei</a></li>
+            </ul>
+          </li>
 
-            <!-- Dropdown 1: Areas we cover -->
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="manageDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                AREAS WE COVER
-              </a>
+          <!-- Find an Agent -->
+          <li class="nav-item dropdown">
+            <!-- NOTE: if you want dropdown to open, keep href="#". If you want direct page navigation, remove dropdown markup. -->
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="agentDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              FIND AN AGENT
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="agentDropdown">
+              <li><a class="dropdown-item" href="../Pages/brokers/BrokersProfiles.html">Broker</a></li>
+              <li><a class="dropdown-item" href="../Pages/property-owner/Property_Owner_Profile.html">Owner</a></li>
+            </ul>
+          </li>
 
-              <ul class="dropdown-menu" aria-labelledby="manageDropdown">
-                
+          <li class="nav-item">
+            <a class="nav-link" href="../Contact.html">CONTACT US</a>
+          </li>
 
-                <li><a class="dropdown-item" href="Gudele.html">Gudele</a></li>
-                <li><a class="dropdown-item" href="Muniki.html">Muniki</a></li>
-                <li><a class="dropdown-item" href="Jebel.html">Jebel</a></li>
-                <li><a class="dropdown-item" href="Joppa.html"> Joppa</a></li>
-                <li><a class="dropdown-item" href="Kator.html">Kator</a></li>
-                <li><a class="dropdown-item" href="LemonGaba.html">Lemongaba</a></li>
-                <li><a class="dropdown-item" href="Nyakuron.html">Nyakuron</a></li>
-                <li><a class="dropdown-item" href="RockCity.html">Rock City</a></li>
-                <li><a class="dropdown-item" href="Gurei.html">Gurei</a></li>
-              </ul>
-
-             
-            </li>
-
-
-
-            <!-- Dropdown 3: Find an Agent -->
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="Real_Estate_Agent.html"
-                id="agentDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                FIND AN AGENT
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="agentDropdown">
-                <li><a class="dropdown-item" href="../Pages/brokers/BrokersProfiles.html">Broker</a></li>
-                <li><a class="dropdown-item" href="../Pages/property-owner/Property_Owner_Profile.html">Owner</a></li>
-              </ul>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="../Contact.html">CONTACT US</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="../auth/login.html">SIGN IN</a>
-            </li>
-          </ul>
-        </div>
+          <li class="nav-item">
+            <a class="nav-link" href="../auth/login.html">SIGN IN</a>
+          </li>
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
 
   <section class="bg-white border-bottom">
     <div class="container py-4 py-md-5">
       <div class="row align-items-center g-4">
         <div class="col-lg-6">
-         
           <h1 class="display-6 fw-bold mb-2">GUDELE PROPERTIES</h1>
-          <p class="lead text-muted mb-4">Browse verified listings in <strong>GUDELE</strong>.</p>
-          
+          <p class="lead text-muted mb-4">
+            Browse verified listings in <strong>GUDELE</strong>.
+          </p>
         </div>
         <div class="col-lg-6">
-          <img src="../Pictures juba homez/Gudele/propertyone/JHG-01.png" class="img-fluid rounded-4 shadow hero-img" alt="GUDELE properties" />
+          <img
+            src="../Pictures juba homez/Gudele/propertyone/JHG-01.png"
+            class="img-fluid rounded-4 shadow hero-img"
+            alt="GUDELE properties"
+          />
         </div>
       </div>
     </div>
@@ -179,37 +196,47 @@
       <section class="py-2">
         <div class="d-flex align-items-center justify-content-between mb-3">
           <h2 class="h4 mb-0">Hottest Properties in GUDELE</h2>
-          
         </div>
 
         <div class="hottest-wrap">
-          <button class="btn btn-light hottest-nav-btn hottest-nav-left" type="button" id="hotLeft" aria-label="Scroll left"><i class="bi bi-chevron-left"></i></button>
-          <button class="btn btn-light hottest-nav-btn hottest-nav-right" type="button" id="hotRight" aria-label="Scroll right"><i class="bi bi-chevron-right"></i></button>
+          <button class="btn btn-light hottest-nav-btn hottest-nav-left" type="button" id="hotLeft" aria-label="Scroll left">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <button class="btn btn-light hottest-nav-btn hottest-nav-right" type="button" id="hotRight" aria-label="Scroll right">
+            <i class="bi bi-chevron-right"></i>
+          </button>
 
           <div class="hottest-scroll" id="hottestScroll">
-
-            <!-- 5 cards -->
             <!-- Card 1 -->
             <div class="hottest-item">
               <article class="card h-100 shadow-sm">
-                <img src=" ../Pictures juba homez/Gudele/propertyone/JHG-04.png" class="card-img-top card-img-fixed" alt="GUDELE Property 1" />
+                <img
+                  src="../Pictures juba homez/Gudele/propertyone/JHG-04.png"
+                  class="card-img-top card-img-fixed"
+                  alt="GUDELE Property 1"
+                />
                 <div class="card-body d-flex flex-column">
                   <h3 class="h6 fw-semibold mb-2">GUDELE Modern Family House</h3>
                   <p class="mb-2"><span class="badge text-bg-success">$900 / month</span></p>
                   <p class="text-muted small mb-3">GUDELE • 4 Beds • 3 Baths</p>
-                  <button type="button" class="btn btn-success mt-auto open-gallery" data-title="GUDELE Modern Family House"
+                  <button
+                    type="button"
+                    class="btn btn-success mt-auto open-gallery"
+                    data-title="GUDELE Modern Family House"
                     data-images="
-                    ../Pictures juba homez/Gudele/propertyone/JHG-01.png,
-                    ../Pictures juba homez/Gudele/propertyone/JHG-02.png,
-                    ../Pictures juba homez/Gudele/propertyone/JHG-03.png,
-                    ../Pictures juba homez/Gudele/propertyone/JHG-04.png,
-                    ../Pictures juba homez/Gudele/propertyone/JHG-05.png,
-                    ../Pictures juba homez/Gudele/propertyone/JHG-06.png,
-                    ../Pictures juba homez/Gudele/propertyone/JHG-07.png,
-                    ../Pictures juba homez/Gudele/propertyone/JHG-08.png,
-                    ../Pictures juba homez/Gudele/propertyone/JHG-09.png,
+                      ../Pictures juba homez/Gudele/propertyone/JHG-01.png,
+                      ../Pictures juba homez/Gudele/propertyone/JHG-02.png,
+                      ../Pictures juba homez/Gudele/propertyone/JHG-03.png,
+                      ../Pictures juba homez/Gudele/propertyone/JHG-04.png,
+                      ../Pictures juba homez/Gudele/propertyone/JHG-05.png,
+                      ../Pictures juba homez/Gudele/propertyone/JHG-06.png,
+                      ../Pictures juba homez/Gudele/propertyone/JHG-07.png,
+                      ../Pictures juba homez/Gudele/propertyone/JHG-08.png,
+                      ../Pictures juba homez/Gudele/propertyone/JHG-09.png
                     "
-                  >View Details</button>
+                  >
+                    View Details
+                  </button>
                 </div>
               </article>
             </div>
@@ -217,12 +244,19 @@
             <!-- Card 2 -->
             <div class="hottest-item">
               <article class="card h-100 shadow-sm">
-                <img src="../Pictures juba homez/Gudele/propertytwo/JHG-01.png" class="card-img-top card-img-fixed" alt="GUDELE Property 2" />
+                <img
+                  src="../Pictures juba homez/Gudele/propertytwo/JHG-01.png"
+                  class="card-img-top card-img-fixed"
+                  alt="GUDELE Property 2"
+                />
                 <div class="card-body d-flex flex-column">
                   <h3 class="h6 fw-semibold mb-2">GUDELE Spacious Apartment</h3>
                   <p class="mb-2"><span class="badge text-bg-success">$600 / month</span></p>
                   <p class="text-muted small mb-3">GUDELE • 3 Beds • 2 Baths</p>
-                  <button type="button" class="btn btn-success mt-auto open-gallery" data-title="GUDELE Spacious Apartment"
+                  <button
+                    type="button"
+                    class="btn btn-success mt-auto open-gallery"
+                    data-title="GUDELE Spacious Apartment"
                     data-images="
                       ../Pictures juba homez/Gudele/propertytwo/JHG-01.png,
                       ../Pictures juba homez/Gudele/propertytwo/JHG-02.png,
@@ -232,9 +266,11 @@
                       ../Pictures juba homez/Gudele/propertytwo/JHG-06.png,
                       ../Pictures juba homez/Gudele/propertytwo/JHG-07.png,
                       ../Pictures juba homez/Gudele/propertytwo/JHG-08.png,
-                      ../Pictures juba homez/Gudele/propertytwo/JHG-09.png,
-
-                    ">View Details</button>
+                      ../Pictures juba homez/Gudele/propertytwo/JHG-09.png
+                    "
+                  >
+                    View Details
+                  </button>
                 </div>
               </article>
             </div>
@@ -242,12 +278,19 @@
             <!-- Card 3 -->
             <div class="hottest-item">
               <article class="card h-100 shadow-sm">
-                <img src="../Pictures juba homez/Gudele/propertythree/JHG-01.png" class="card-img-top card-img-fixed" alt="GUDELE Property 3" />
+                <img
+                  src="../Pictures juba homez/Gudele/propertythree/JHG-01.png"
+                  class="card-img-top card-img-fixed"
+                  alt="GUDELE Property 3"
+                />
                 <div class="card-body d-flex flex-column">
                   <h3 class="h6 fw-semibold mb-2">GUDELE Executive Villa</h3>
                   <p class="mb-2"><span class="badge text-bg-success">$1,500 / month</span></p>
                   <p class="text-muted small mb-3">GUDELE • 5 Beds • 4 Baths</p>
-                  <button type="button" class="btn btn-success mt-auto open-gallery" data-title="GUDELE Executive Villa"
+                  <button
+                    type="button"
+                    class="btn btn-success mt-auto open-gallery"
+                    data-title="GUDELE Executive Villa"
                     data-images="
                       ../Pictures juba homez/Gudele/propertythree/JHG-01.png,
                       ../Pictures juba homez/Gudele/propertythree/JHG-02.png,
@@ -257,9 +300,11 @@
                       ../Pictures juba homez/Gudele/propertythree/JHG-06.png,
                       ../Pictures juba homez/Gudele/propertythree/JHG-07.png,
                       ../Pictures juba homez/Gudele/propertythree/JHG-08.png,
-                      ../Pictures juba homez/Gudele/propertythree/JHG-09.png,
-
-                    ">View Details</button>
+                      ../Pictures juba homez/Gudele/propertythree/JHG-09.png
+                    "
+                  >
+                    View Details
+                  </button>
                 </div>
               </article>
             </div>
@@ -267,14 +312,21 @@
             <!-- Card 4 -->
             <div class="hottest-item">
               <article class="card h-100 shadow-sm">
-                <img src="../Pictures juba homez/Gudele/propertyfour/JHG-01.png" class="card-img-top card-img-fixed" alt="GUDELE Property 4" />
+                <img
+                  src="../Pictures juba homez/Gudele/propertyfour/JHG-01.png"
+                  class="card-img-top card-img-fixed"
+                  alt="GUDELE Property 4"
+                />
                 <div class="card-body d-flex flex-column">
                   <h3 class="h6 fw-semibold mb-2">GUDELE Two Bedroom Flat</h3>
                   <p class="mb-2"><span class="badge text-bg-success">$400 / month</span></p>
                   <p class="text-muted small mb-3">GUDELE • 2 Beds • 1 Bath</p>
-                  <button type="button" class="btn btn-success mt-auto open-gallery" data-title="GUDELE Two Bedroom Flat"
+                  <button
+                    type="button"
+                    class="btn btn-success mt-auto open-gallery"
+                    data-title="GUDELE Two Bedroom Flat"
                     data-images="
-Pictures juba homez/Gudele/propertytwo/JHG-01.png,
+                      ../Pictures juba homez/Gudele/propertyfour/JHG-01.png,
                       ../Pictures juba homez/Gudele/propertyfour/JHG-02.png,
                       ../Pictures juba homez/Gudele/propertyfour/JHG-03.png,
                       ../Pictures juba homez/Gudele/propertyfour/JHG-04.png,
@@ -282,9 +334,11 @@ Pictures juba homez/Gudele/propertytwo/JHG-01.png,
                       ../Pictures juba homez/Gudele/propertyfour/JHG-06.png,
                       ../Pictures juba homez/Gudele/propertyfour/JHG-07.png,
                       ../Pictures juba homez/Gudele/propertyfour/JHG-08.png,
-                      ../Pictures juba homez/Gudele/propertyfour/JHG-09.png,
-
-                    ">View Details</button>
+                      ../Pictures juba homez/Gudele/propertyfour/JHG-09.png
+                    "
+                  >
+                    View Details
+                  </button>
                 </div>
               </article>
             </div>
@@ -292,14 +346,21 @@ Pictures juba homez/Gudele/propertytwo/JHG-01.png,
             <!-- Card 5 -->
             <div class="hottest-item">
               <article class="card h-100 shadow-sm">
-                <img src="../Pictures juba homez/Gudele/propertyfive/JHG-01.png" class="card-img-top card-img-fixed" alt="GUDELE Property 5" />
+                <img
+                  src="../Pictures juba homez/Gudele/propertyfive/JHG-01.png"
+                  class="card-img-top card-img-fixed"
+                  alt="GUDELE Property 5"
+                />
                 <div class="card-body d-flex flex-column">
                   <h3 class="h6 fw-semibold mb-2">GUDELE Townhouse (Secure Compound)</h3>
                   <p class="mb-2"><span class="badge text-bg-success">$750 / month</span></p>
                   <p class="text-muted small mb-3">GUDELE • 3 Beds • 2 Baths</p>
-                  <button type="button" class="btn btn-success mt-auto open-gallery" data-title="GUDELE Townhouse (Secure Compound)"
+                  <button
+                    type="button"
+                    class="btn btn-success mt-auto open-gallery"
+                    data-title="GUDELE Townhouse (Secure Compound)"
                     data-images="
-Pictures juba homez/Gudele/propertytwo/JHG-01.png,
+                      ../Pictures juba homez/Gudele/propertyfive/JHG-01.png,
                       ../Pictures juba homez/Gudele/propertyfive/JHG-02.png,
                       ../Pictures juba homez/Gudele/propertyfive/JHG-03.png,
                       ../Pictures juba homez/Gudele/propertyfive/JHG-04.png,
@@ -307,13 +368,14 @@ Pictures juba homez/Gudele/propertytwo/JHG-01.png,
                       ../Pictures juba homez/Gudele/propertyfive/JHG-06.png,
                       ../Pictures juba homez/Gudele/propertyfive/JHG-07.png,
                       ../Pictures juba homez/Gudele/propertyfive/JHG-08.png,
-                      ../Pictures juba homez/Gudele/propertyfive/JHG-09.png,
-                    
-                    ">View Details</button>
+                      ../Pictures juba homez/Gudele/propertyfive/JHG-09.png
+                    "
+                  >
+                    View Details
+                  </button>
                 </div>
               </article>
             </div>
-
           </div>
         </div>
       </section>
@@ -323,10 +385,10 @@ Pictures juba homez/Gudele/propertytwo/JHG-01.png,
   <footer class="border-top">
     <div class="container py-4 d-flex flex-column flex-md-row gap-2 align-items-center justify-content-between">
       <p class="mb-0 text-muted">&copy; 2026 JUBA HOMEZ. All rights reserved.</p>
-   
     </div>
   </footer>
 
+  <!-- Gallery Modal -->
   <div class="modal fade" id="propertyGalleryModal" tabindex="-1" aria-labelledby="propertyGalleryTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
@@ -334,18 +396,22 @@ Pictures juba homez/Gudele/propertytwo/JHG-01.png,
           <h5 class="modal-title" id="propertyGalleryTitle">Property Gallery</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
         <div class="modal-body">
           <div id="propertyGalleryCarousel" class="carousel slide" data-bs-ride="false">
             <div class="carousel-inner rounded-3 overflow-hidden" id="galleryCarouselInner"></div>
             <button class="carousel-control-prev" type="button" data-bs-target="#propertyGalleryCarousel" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#propertyGalleryCarousel" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
             </button>
           </div>
           <div class="thumbs-wrap mt-3" id="galleryThumbs"></div>
         </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
         </div>
@@ -353,13 +419,16 @@ Pictures juba homez/Gudele/propertytwo/JHG-01.png,
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
   <script>
     (function () {
       const scroller = document.getElementById("hottestScroll");
       const leftBtn = document.getElementById("hotLeft");
       const rightBtn = document.getElementById("hotRight");
       if (!scroller || !leftBtn || !rightBtn) return;
+
       const scrollAmount = () => Math.max(320, Math.floor(scroller.clientWidth * 0.85));
       leftBtn.addEventListener("click", () => scroller.scrollBy({ left: -scrollAmount(), behavior: "smooth" }));
       rightBtn.addEventListener("click", () => scroller.scrollBy({ left: scrollAmount(), behavior: "smooth" }));
@@ -378,6 +447,7 @@ Pictures juba homez/Gudele/propertytwo/JHG-01.png,
       function buildGallery(title, images) {
         carouselInner.innerHTML = "";
         thumbsWrap.innerHTML = "";
+
         images.forEach((src, idx) => {
           const cleanSrc = (src || "").trim();
           if (!cleanSrc) return;
@@ -396,6 +466,7 @@ Pictures juba homez/Gudele/propertytwo/JHG-01.png,
           thumbBtn.innerHTML = `<img src="${cleanSrc}" class="thumb-img" alt="Thumbnail ${idx + 1}">`;
           thumbsWrap.appendChild(thumbBtn);
         });
+
         titleEl.textContent = title;
       }
 
@@ -412,6 +483,7 @@ Pictures juba homez/Gudele/propertytwo/JHG-01.png,
         const title = btn.getAttribute("data-title") || "Property Gallery";
         const imagesRaw = btn.getAttribute("data-images") || "";
         const images = imagesRaw.split(",").map((s) => s.trim()).filter(Boolean);
+
         if (!images.length) return;
 
         buildGallery(title, images);
@@ -423,9 +495,13 @@ Pictures juba homez/Gudele/propertytwo/JHG-01.png,
     })();
   </script>
 
-  <script src="assets/js/config.js"></script><script src="assets/js/areas-nav.js"></script>
-  <script src="assets/js/http.js"></script>
-  <script src="assets/js/listings.js"></script>
+  <!-- NOTE:
+    I removed these because they are not used anywhere in THIS HTML.
+    If your listings are supposed to load dynamically, then keep them.
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/areas-nav.js"></script>
+    <script src="assets/js/http.js"></script>
+    <script src="assets/js/listings.js"></script>
+  -->
 </body>
 </html>
-
