@@ -9,6 +9,25 @@
     ? CONFIG.utils.apiUrl("/auth")
     : "/api/v1/auth";
 
+  // ---------- DASHBOARD ROUTES (EDIT THESE PATHS TO MATCH YOUR FOLDERS) ----------
+  // These paths are from the AUTH pages location. If your auth pages are in /auth/,
+  // then "../dashboards/..." is usually correct.
+  const DASHBOARD_BY_ROLE = {
+    customer: "../dashboards/customer-dashboard.html",
+    broker: "../dashboards/broker-dashboard.html",
+    owner: "../dashboards/owner-dashboard.html",
+    photographer: "../dashboards/photographer-dashboard.html",
+    admin: "../dashboards/admin-dashboard.html",
+  };
+
+  function redirectToDashboard(user) {
+    const role = String(user?.role || "").toLowerCase();
+
+    // If role is missing or unknown, go home
+    const target = DASHBOARD_BY_ROLE[role] || "../index.html";
+    window.location.href = target;
+  }
+
   // ---------- UI helpers ----------
   function alertBox() {
     return document.querySelector("[data-auth-alert]");
@@ -114,10 +133,14 @@
     // UI uses "client" but backend expects "customer"
     if (role === "client") role = "customer";
 
-    // Backend allowed roles: customer, broker, owner, photographer
+    // Backend allowed roles: customer, broker, owner, photographer (admin should be created by DB)
     if (role === "staff") {
       setLoading(btn, false);
-      setAlert(box, "Staff accounts must be created/approved by Admin. Please choose Client, Broker, Owner, or Photographer.", "warning");
+      setAlert(
+        box,
+        "Staff accounts must be created/approved by Admin. Please choose Client, Broker, Owner, or Photographer.",
+        "warning"
+      );
       return;
     }
 
@@ -154,7 +177,7 @@
       if (out?.token) {
         saveAuth(out.token, out.user);
         setAlert(box, "Account created successfully. Redirecting…", "success");
-        setTimeout(() => (window.location.href = "../index.html"), 800);
+        setTimeout(() => redirectToDashboard(out.user), 700);
       } else {
         // broker/owner/photographer become "pending" on backend
         setAlert(
@@ -165,7 +188,6 @@
         form.reset();
       }
     } catch (err) {
-      // err is the backend json: { error: { message, details } }
       setAlert(box, err, "danger");
       console.error("SIGNUP ERROR:", err);
     } finally {
@@ -198,7 +220,9 @@
 
       saveAuth(out.token, out.user);
       setAlert(box, "Login successful. Redirecting…", "success");
-      setTimeout(() => (window.location.href = "../index.html"), 600);
+
+      // ✅ role-based redirect
+      setTimeout(() => redirectToDashboard(out.user), 500);
     } catch (err) {
       setAlert(box, err, "danger");
       console.error("LOGIN ERROR:", err);
@@ -273,10 +297,14 @@
     }
   };
 
+  // ---------- LOGOUT ----------
   window.logout = function logout(redirectTo = "../index.html") {
     clearAuth();
     window.location.href = redirectTo;
   };
+
+  // Optional: expose redirect map (useful for debugging)
+  window.JH_DASHBOARD_BY_ROLE = DASHBOARD_BY_ROLE;
 })();
 
 
