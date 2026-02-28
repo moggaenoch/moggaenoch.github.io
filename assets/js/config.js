@@ -16,7 +16,7 @@
 
   const API_BASE_URL = isLocal ? DEV_API_BASE_URL : PROD_API_BASE_URL;
 
-  window.APP_CONFIG = {
+  window.APP_CONFIG = { REQUEST: { TIMEOUT_MS: 60000 },
     API_BASE_URL,
     APP_NAME: "JUBA HOMEZ",
     VERSION: "1.0.0",
@@ -74,5 +74,6 @@
     );
   }
 })();
+
 
 
