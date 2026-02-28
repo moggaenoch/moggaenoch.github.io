@@ -168,11 +168,23 @@
 
                   <!-- Role-specific: Location -->
                   <div class="col-12 d-none" id="locationWrap">
-                    <label for="location" class="form-label">Location</label>
-                    <input type="text" class="form-control" id="location" name="location" placeholder="e.g. Muniki" />
-                    <div class="form-text">For brokers/owners/photographers.</div>
-                  </div>
+                     <label for="location" class="form-label">Location</label>
+                     <input type="text" class="form-control" id="location" name="location" placeholder="e.g. Muniki" />
+                     <div class="form-text">For brokers/owners/photographers.</div>
+                     <!-- Role-specific: Branch + Position (Staff) -->
+                     <div class="col-md-6 d-none" id="branchWrap">
+                     <label for="branch" class="form-label">Branch</label>
+                     <input type="text" class="form-control" id="branch" name="branch" placeholder="e.g. Juba" />
+                     <div class="invalid-feedback">Branch is required for staff.</div>
+                   </div>
 
+<div class="col-md-6 d-none" id="positionWrap">
+  <label for="position" class="form-label">Position</label>
+  <input type="text" class="form-control" id="position" name="position" placeholder="e.g. Manager" />
+  <div class="invalid-feedback">Position is required for staff.</div>
+</div>
+                  </div>
+                   
                
 
                   <div class="col-12 d-grid mt-2">
@@ -223,9 +235,13 @@
       branchWrap.classList.add("d-none");
       positionWrap.classList.add("d-none");
 
-      document.getElementById("location").required = false;
-      document.getElementById("branch").required = false;
-      document.getElementById("position").required = false;
+          const loc = document.getElementById("location");
+          const br = document.getElementById("branch");
+         const pos = document.getElementById("position");
+
+if (loc) loc.required = false;
+if (br) br.required = false;
+if (pos) pos.required = false;
 
       if (role === "broker" || role === "owner" || role === "photographer") {
         locationWrap.classList.remove("d-none");
