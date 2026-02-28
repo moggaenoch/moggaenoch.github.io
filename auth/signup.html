@@ -12,7 +12,6 @@
   <!-- Bootstrap 5.3 (CDN) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-
   <style>
     body, button, input, select, textarea {
       font-family: Candara, "Calibri", "Segoe UI", Arial, sans-serif !important;
@@ -166,26 +165,25 @@
                     <div class="invalid-feedback">Password is required (min 6 characters).</div>
                   </div>
 
-                  <!-- Role-specific: Location -->
+                  <!-- Role-specific: Location (Broker/Owner/Photographer) -->
                   <div class="col-12 d-none" id="locationWrap">
-                     <label for="location" class="form-label">Location</label>
-                     <input type="text" class="form-control" id="location" name="location" placeholder="e.g. Muniki" />
-                     <div class="form-text">For brokers/owners/photographers.</div>
-                     <!-- Role-specific: Branch + Position (Staff) -->
-                     <div class="col-md-6 d-none" id="branchWrap">
-                     <label for="branch" class="form-label">Branch</label>
-                     <input type="text" class="form-control" id="branch" name="branch" placeholder="e.g. Juba" />
-                     <div class="invalid-feedback">Branch is required for staff.</div>
-                   </div>
-
-<div class="col-md-6 d-none" id="positionWrap">
-  <label for="position" class="form-label">Position</label>
-  <input type="text" class="form-control" id="position" name="position" placeholder="e.g. Manager" />
-  <div class="invalid-feedback">Position is required for staff.</div>
-</div>
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="location" name="location" placeholder="e.g. Muniki" />
+                    <div class="form-text">For brokers/owners/photographers.</div>
                   </div>
-                   
-               
+
+                  <!-- Role-specific: Branch + Position (Staff) -->
+                  <div class="col-md-6 d-none" id="branchWrap">
+                    <label for="branch" class="form-label">Branch</label>
+                    <input type="text" class="form-control" id="branch" name="branch" placeholder="e.g. Juba" />
+                    <div class="invalid-feedback">Branch is required for staff.</div>
+                  </div>
+
+                  <div class="col-md-6 d-none" id="positionWrap">
+                    <label for="position" class="form-label">Position</label>
+                    <input type="text" class="form-control" id="position" name="position" placeholder="e.g. Manager" />
+                    <div class="invalid-feedback">Position is required for staff.</div>
+                  </div>
 
                   <div class="col-12 d-grid mt-2">
                     <button type="submit" class="btn btn-primary btn-lg">Create an Account</button>
@@ -208,51 +206,49 @@
   <footer class="border-top">
     <div class="container py-4 d-flex flex-column flex-md-row gap-2 align-items-center justify-content-between">
       <p class="mb-0 text-muted">&copy; 2026 JUBA HOMEZ. All rights reserved.</p>
-   
     </div>
   </footer>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Load config + http + auth (recommended) -->
+  <!-- Load config + http + auth -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/http.js"></script>
   <script src="../assets/js/auth.js"></script>
 
   <script>
-    // Show/Hide role-specific fields
+    // Show/Hide role-specific fields (SAFE)
     const roleEl = document.getElementById("role");
     const locationWrap = document.getElementById("locationWrap");
     const branchWrap = document.getElementById("branchWrap");
     const positionWrap = document.getElementById("positionWrap");
 
+    const loc = document.getElementById("location");
+    const br = document.getElementById("branch");
+    const pos = document.getElementById("position");
+
     function updateRoleFields() {
       const role = roleEl.value;
 
-      // reset
-      locationWrap.classList.add("d-none");
-      branchWrap.classList.add("d-none");
-      positionWrap.classList.add("d-none");
+      if (locationWrap) locationWrap.classList.add("d-none");
+      if (branchWrap) branchWrap.classList.add("d-none");
+      if (positionWrap) positionWrap.classList.add("d-none");
 
-          const loc = document.getElementById("location");
-          const br = document.getElementById("branch");
-         const pos = document.getElementById("position");
-
-if (loc) loc.required = false;
-if (br) br.required = false;
-if (pos) pos.required = false;
+      if (loc) loc.required = false;
+      if (br) br.required = false;
+      if (pos) pos.required = false;
 
       if (role === "broker" || role === "owner" || role === "photographer") {
-        locationWrap.classList.remove("d-none");
-        document.getElementById("location").required = true;
+        if (locationWrap) locationWrap.classList.remove("d-none");
+        if (loc) loc.required = true;
       }
 
       if (role === "staff") {
-        branchWrap.classList.remove("d-none");
-        positionWrap.classList.remove("d-none");
-        document.getElementById("branch").required = true;
-        document.getElementById("position").required = true;
+        if (branchWrap) branchWrap.classList.remove("d-none");
+        if (positionWrap) positionWrap.classList.remove("d-none");
+        if (br) br.required = true;
+        if (pos) pos.required = true;
       }
     }
 
@@ -274,8 +270,7 @@ if (pos) pos.required = false;
       });
     })();
 
-    // Submit -> your auth.js handleSignup(form) should read these fields:
-    // role, email, phone, password, firstName, lastName, sex, dateOfBirth, address, location/branch/position
+    // Submit handler
     document.getElementById("signupForm")?.addEventListener("submit", function (e) {
       e.preventDefault();
       e.stopPropagation();
