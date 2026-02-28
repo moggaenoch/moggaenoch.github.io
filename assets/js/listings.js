@@ -7,23 +7,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const locationEl = document.getElementById("location-filter");
   const priceEl = document.getElementById("price-filter");
   const bedsEl = document.getElementById("bedrooms-filter");
+  const applyBtn = document.getElementById("btnApplyFilters");
 
   const scroller = document.getElementById("hottestScroll");
-  if (!form || !locationEl || !priceEl || !bedsEl || !scroller) return;
 
-  // All items we will filter (each is a .hottest-item card)
+  if (!form || !locationEl || !priceEl || !bedsEl || !scroller) {
+    console.warn("Filter init failed: missing elements");
+    return;
+  }
+
   const getItems = () => Array.from(scroller.querySelectorAll(".hottest-item"));
+  const norm = (s) => String(s || "").trim().toLowerCase();
 
-  // Known locations (match your dropdown values)
   const LOCS = [
     "munuki", "gudele", "hai amarat", "hai-amarat", "serikat",
     "tongping", "jebel", "nyakuron", "kator"
   ];
 
-  const norm = (s) => String(s || "").trim().toLowerCase();
-
   function parsePrice(item) {
-    // Example: "$500 / month" or "$1,200 / month"
     const badge = item.querySelector(".badge");
     const txt = norm(badge?.textContent);
     const m = txt.match(/\$([\d,]+)/);
@@ -32,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function parseBedrooms(item) {
-    // Example: "3 Beds • 2 Baths"
     const p = item.querySelector(".text-muted.small");
     const txt = norm(p?.textContent);
     const m = txt.match(/(\d+)\s*bed/);
@@ -41,20 +41,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function parseLocation(item) {
-    // Try title first: "Modern Apartment in Munuki"
     const title = norm(item.querySelector("h3")?.textContent);
+
     for (const loc of LOCS) {
       const token = loc.replace("-", " ");
-      if (title.includes(token)) return loc.includes(" ") ? loc.replace(" ", "-") : loc;
-      if (title.includes(loc)) return loc;
+      if (title.includes(token) || title.includes(loc)) {
+        return loc.includes(" ") ? loc.replace(" ", "-") : loc;
+      }
     }
 
-    // fallback: check whole item text
     const text = norm(item.textContent);
     for (const loc of LOCS) {
       const token = loc.replace("-", " ");
-      if (text.includes(token)) return loc.includes(" ") ? loc.replace(" ", "-") : loc;
-      if (text.includes(loc)) return loc;
+      if (text.includes(token) || text.includes(loc)) {
+        return loc.includes(" ") ? loc.replace(" ", "-") : loc;
+      }
     }
 
     return "";
@@ -108,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (ok) shown++;
     });
 
-    // Optional: show a message when no results
+    // optional "no results" message
     let msg = document.getElementById("filterNoResults");
     if (!msg) {
       msg = document.createElement("div");
@@ -121,26 +122,22 @@ document.addEventListener("DOMContentLoaded", () => {
     msg.style.display = shown === 0 ? "block" : "none";
   }
 
-  // Prevent page reload and apply filters
+  // ✅ Apply button click (most reliable)
+  applyBtn?.addEventListener("click", () => applyFilters());
+
+  // ✅ Prevent Enter key from submitting/reloading
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     applyFilters();
   });
 
-  // Apply instantly when dropdown changes
-  [locationEl, priceEl, bedsEl].forEach((el) => {
-    el.addEventListener("change", applyFilters);
-  });
-
-  // Reset button should re-show everything
+  // ✅ Reset button re-shows everything
   form.addEventListener("reset", () => {
     setTimeout(applyFilters, 0);
   });
 
-  // If items ever become dynamic later, this keeps filters working
-  const observer = new MutationObserver(() => applyFilters());
-  observer.observe(scroller, { childList: true, subtree: true });
+  // Optional: live filtering on change
+  [locationEl, priceEl, bedsEl].forEach((el) => el.addEventListener("change", applyFilters));
 
-  // First run
   applyFilters();
 });
