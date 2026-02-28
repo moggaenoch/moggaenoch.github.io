@@ -4,6 +4,8 @@
 
   const CONFIG = window.APP_CONFIG || {};
 
+  redirectToDashboard(out.user);
+
   // Base: https://.../api/v1/auth (uses your config.js builder)
   const AUTH_BASE = CONFIG?.utils?.apiUrl
     ? CONFIG.utils.apiUrl("/auth")
@@ -307,6 +309,7 @@
   // Optional: expose redirect map (useful for debugging)
   window.JH_DASHBOARD_BY_ROLE = DASHBOARD_BY_ROLE;
 })();
+
 
 
 
