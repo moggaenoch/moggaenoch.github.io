@@ -10,7 +10,7 @@
     hostname === "127.0.0.1" ||
     hostname.endsWith(".local");
 
-  // ✅ Base URL WITHOUT /api/v1 (important)
+  // ✅ Base URL WITHOUT /api/v1
   const DEV_API_BASE_URL = "http://localhost:5000";
   const PROD_API_BASE_URL = "https://juba-homez-backend.onrender.com";
 
@@ -19,13 +19,8 @@
   window.APP_CONFIG = {
     REQUEST: { TIMEOUT_MS: 60000 },
 
-    // ✅ Base only
     API_BASE_URL,
-
-    // ✅ Prefix added once here (so no duplication)
     API_PREFIX: "/api/v1",
-
-    // Auth path
     AUTH_PATH: "/auth",
 
     APP_NAME: "JUBA HOMEZ",
@@ -44,15 +39,30 @@
     utils: {
       isLocal,
 
-      // ✅ builds: https://... + /api/v1 + /path
+      // ✅ builds base + prefix + path, but avoids double /api/v1
       apiUrl(path = "") {
         const base = String(API_BASE_URL || "").replace(/\/+$/, "");
-        const prefix = String(window.APP_CONFIG.API_PREFIX || "").replace(/\/+$/, "");
-        const p = String(path || "");
+        let prefix = String(window.APP_CONFIG.API_PREFIX || "").trim();
+        let p = String(path || "").trim();
 
-        const joined = `${base}${prefix}`;
-        if (!p) return joined;
-        return p.startsWith("/") ? `${joined}${p}` : `${joined}/${p}`;
+        // normalize prefix
+        if (prefix && !prefix.startsWith("/")) prefix = "/" + prefix;
+        prefix = prefix.replace(/\/+$/, "");
+
+        // normalize path
+        if (p && !p.startsWith("/")) p = "/" + p;
+
+        // If path already begins with prefix, don't add prefix again
+        if (prefix && p.startsWith(prefix + "/")) {
+          return `${base}${p}`;
+        }
+        if (prefix && p === prefix) {
+          return `${base}${p}`;
+        }
+
+        // return root or joined
+        if (!p) return `${base}${prefix || ""}`;
+        return `${base}${prefix || ""}${p}`;
       },
 
       getAccessToken() {
@@ -79,17 +89,8 @@
     },
   };
 
-  try {
-    // Validate base URL only (prefix is path)
-    new URL(window.APP_CONFIG.API_BASE_URL);
-    if (window.APP_CONFIG.FEATURES.DEBUG_LOGS) {
-      console.log("APP_CONFIG loaded:", window.APP_CONFIG);
-      console.log("API root:", window.APP_CONFIG.utils.apiUrl("")); // should show .../api/v1
-    }
-  } catch {
-    console.error(
-      "APP_CONFIG.API_BASE_URL is invalid or missing:",
-      window.APP_CONFIG.API_BASE_URL
-    );
+  if (window.APP_CONFIG.FEATURES.DEBUG_LOGS) {
+    console.log("APP_CONFIG loaded:", window.APP_CONFIG);
+    console.log("REGISTER URL =", window.APP_CONFIG.utils.apiUrl("/auth/register"));
   }
 })();
