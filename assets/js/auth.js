@@ -13,7 +13,7 @@
   // These paths are from the AUTH pages location. If your auth pages are in /auth/,
   // then "../dashboards/..." is usually correct.
   const DASHBOARD_BY_ROLE = {
-    customer: "../dashboards/customer-dashboard.html",
+    customer: "../dashboards/CustomerDashboard.html",
     broker: "../dashboards/broker-dashboard.html",
     owner: "../dashboards/owner-dashboard.html",
     photographer: "../dashboards/photographer-dashboard.html",
@@ -306,6 +306,7 @@
   // Optional: expose redirect map (useful for debugging)
   window.JH_DASHBOARD_BY_ROLE = DASHBOARD_BY_ROLE;
 })();
+
 
 
 
