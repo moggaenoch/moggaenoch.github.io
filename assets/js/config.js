@@ -16,18 +16,31 @@
 
   const API_BASE_URL = isLocal ? DEV_API_BASE_URL : PROD_API_BASE_URL;
 
-  window.APP_CONFIG = { REQUEST: { TIMEOUT_MS: 60000 },
+  window.APP_CONFIG = {
+    REQUEST: { TIMEOUT_MS: 60000 },
+
+    // base ALREADY contains /api/v1
     API_BASE_URL,
+
+    // ✅ IMPORTANT: prevent auth.js from adding /api/v1 again
+    API_PREFIX: "",
+
+    // optional (helps auth.js)
+    AUTH_PATH: "/auth",
+
     APP_NAME: "JUBA HOMEZ",
     VERSION: "1.0.0",
+
     STORAGE_KEYS: {
       ACCESS_TOKEN: "jh_access_token",
       REFRESH_TOKEN: "jh_refresh_token",
       USER: "jh_user",
     },
+
     FEATURES: {
       DEBUG_LOGS: isLocal,
     },
+
     utils: {
       isLocal,
 
@@ -74,6 +87,7 @@
     );
   }
 })();
+
 
 
 
