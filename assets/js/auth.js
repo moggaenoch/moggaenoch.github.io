@@ -44,7 +44,11 @@
   // ✅ Your backend uses /api/v1/auth/*
   const AUTH = "/auth";
 
-  // ---------- SIGNUP ----------
+  function getVal(form, name) {
+    return (form[name]?.value || "").trim();
+  }
+
+  // ---------- SIGNUP (Unified DB: users + profiles) ----------
   window.handleSignup = async function handleSignup(form) {
     const box = alertBox();
     clearAlert(box);
@@ -52,20 +56,57 @@
     const btn = form.querySelector('button[type="submit"]');
     setLoading(btn, true, "Creating...");
 
-    const payload = {
-      firstName: (form.firstName?.value || "").trim(),
-      lastName: (form.lastName?.value || "").trim(),
-      role: (form.role?.value || "customer").trim(),
-      username: (form.username?.value || "").trim(),
-      phone: (form.phone?.value || "").trim(),
-      password: form.password?.value || "",
-    };
+    // Required: users
+    const role = getVal(form, "role") || "client";
+    const email = getVal(form, "email");          // ✅ email (not username)
+    const phone = getVal(form, "phone");
+    const password = form.password?.value || "";
 
-    if (!payload.firstName || !payload.lastName || !payload.username || !payload.phone || !payload.password) {
+    // Required: profiles
+    const firstName = getVal(form, "firstName");
+    const lastName = getVal(form, "lastName");
+    const sex = getVal(form, "sex");              // 'm' or 'f'
+    const dateOfBirth = getVal(form, "dateOfBirth"); // YYYY-MM-DD
+    const address = getVal(form, "address");
+
+    // Optional role-specific
+    const location = getVal(form, "location");    // broker/owner/photographer
+    const branch = getVal(form, "branch");        // staff
+    const position = getVal(form, "position");    // staff
+
+    // Basic required checks
+    if (!firstName || !lastName || !sex || !dateOfBirth || !address || !email || !phone || !password) {
       setLoading(btn, false);
-      setAlert(box, "Please fill in all required fields.", "warning");
+      setAlert(box, "Please fill in all required fields (including sex, date of birth, and address).", "warning");
       return;
     }
+
+    // Role-specific required checks
+    if (["broker", "owner", "photographer"].includes(role) && !location) {
+      setLoading(btn, false);
+      setAlert(box, "Location is required for Broker/Owner/Photographer.", "warning");
+      return;
+    }
+    if (role === "staff" && (!branch || !position)) {
+      setLoading(btn, false);
+      setAlert(box, "Branch and Position are required for Staff.", "warning");
+      return;
+    }
+
+    const payload = {
+      role,
+      email,
+      phone,
+      password,
+      firstName,
+      lastName,
+      sex,
+      dateOfBirth,
+      address,
+      location: location || null,
+      branch: branch || null,
+      position: position || null,
+    };
 
     try {
       const res = await window.http.post(`${AUTH}/register`, payload);
@@ -82,6 +123,8 @@
   };
 
   // ---------- LOGIN ----------
+  // Backend should accept { username, password } OR { email, password }.
+  // We send username=email to stay compatible with your current login handler.
   window.handleLogin = async function handleLogin(form) {
     const box = alertBox();
     clearAlert(box);
@@ -89,12 +132,12 @@
     const btn = form.querySelector('button[type="submit"]');
     setLoading(btn, true, "Signing in...");
 
-    const username = (form.username?.value || "").trim();
+    const username = getVal(form, "username") || getVal(form, "email"); // support either input name
     const password = form.password?.value || "";
 
     if (!username || !password) {
       setLoading(btn, false);
-      setAlert(box, "Please enter your username/email and password.", "warning");
+      setAlert(box, "Please enter your email and password.", "warning");
       return;
     }
 
@@ -122,7 +165,7 @@
     const btn = form.querySelector('button[type="submit"]');
     setLoading(btn, true, "Sending...");
 
-    const email = (form.email?.value || "").trim();
+    const email = getVal(form, "email");
     if (!email) {
       setLoading(btn, false);
       setAlert(box, "Please enter your email address.", "warning");
