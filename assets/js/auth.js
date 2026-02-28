@@ -4,30 +4,23 @@
 
   const CONFIG = window.APP_CONFIG || {};
 
-  redirectToDashboard(out.user);
-
   // Base: https://.../api/v1/auth (uses your config.js builder)
   const AUTH_BASE = CONFIG?.utils?.apiUrl
     ? CONFIG.utils.apiUrl("/auth")
     : "/api/v1/auth";
 
-  // ---------- DASHBOARD ROUTES (EDIT THESE PATHS TO MATCH YOUR FOLDERS) ----------
-  // These paths are from the AUTH pages location. If your auth pages are in /auth/,
-  // then "../dashboards/..." is usually correct.
-    const DASHBOARD_BY_ROLE = {
-       customer: "/customer/CustomerDashboard.html",
-       broker: "/brokers/BrokersDashboard.html",
-       owner: "/property-owner/PropertyOwnerDashboard.html",
-       admin: "/Admin/AdminDashboard.html",
-       photographer: "/photographer/PhotographersDashoard.html", // (spelling is Dashoard)
-};
+  // ✅ DASHBOARD ROUTES (site-root paths)
+  const DASHBOARD_BY_ROLE = {
+    customer: "/customer/CustomerDashboard.html",
+    broker: "/brokers/BrokersDashboard.html",
+    owner: "/property-owner/PropertyOwnerDashboard.html",
+    admin: "/Admin/AdminDashboard.html",
+    photographer: "/photographer/PhotographersDashoard.html", // spelling is Dashoard
   };
 
   function redirectToDashboard(user) {
     const role = String(user?.role || "").toLowerCase();
-
-    // If role is missing or unknown, go home
-    const target = DASHBOARD_BY_ROLE[role] || "../index.html";
+    const target = DASHBOARD_BY_ROLE[role] || "/index.html";
     window.location.href = target;
   }
 
@@ -132,8 +125,6 @@
     setLoading(btn, true, "Creating...");
 
     let role = getVal(form, "role") || "customer";
-
-    // UI uses "client" but backend expects "customer"
     if (role === "client") role = "customer";
 
     // Backend allowed roles: customer, broker, owner, photographer (admin should be created by DB)
@@ -149,15 +140,12 @@
 
     const firstName = getVal(form, "firstName");
     const lastName = getVal(form, "lastName");
-
-    // ✅ backend requires 'name'
     const name = `${firstName} ${lastName}`.trim();
 
     const email = getVal(form, "email");
     const phone = getVal(form, "phone");
     const password = form.password?.value || "";
 
-    // Basic checks (match backend rules)
     if (!name || !email || !phone || !password) {
       setLoading(btn, false);
       setAlert(box, "Please fill in First Name, Last Name, Email, Phone, and Password.", "warning");
@@ -170,19 +158,16 @@
       return;
     }
 
-    // ✅ Send ONLY what backend expects
     const payload = { role, name, email, phone, password };
 
     try {
       const out = await apiPost("/register", payload);
 
-      // out = { user, token }  (token is null if pending)
       if (out?.token) {
         saveAuth(out.token, out.user);
         setAlert(box, "Account created successfully. Redirecting…", "success");
         setTimeout(() => redirectToDashboard(out.user), 700);
       } else {
-        // broker/owner/photographer become "pending" on backend
         setAlert(
           box,
           "Account submitted successfully and is pending admin approval. You will be able to log in after approval.",
@@ -216,7 +201,6 @@
     }
 
     try {
-      // backend expects ONLY { email, password }
       const out = await apiPost("/login", { email, password });
 
       if (!out?.token) throw { error: { message: "Login response missing token." } };
@@ -224,7 +208,6 @@
       saveAuth(out.token, out.user);
       setAlert(box, "Login successful. Redirecting…", "success");
 
-      // ✅ role-based redirect
       setTimeout(() => redirectToDashboard(out.user), 500);
     } catch (err) {
       setAlert(box, err, "danger");
@@ -291,7 +274,7 @@
       const out = await apiPost("/password/reset", { token, newPassword });
       setAlert(box, out?.message || "Password reset successful. You can now sign in.", "success");
       clearAuth();
-      setTimeout(() => (window.location.href = "login.html"), 900);
+      setTimeout(() => (window.location.href = "/auth/login.html"), 900);
     } catch (err) {
       setAlert(box, err, "danger");
       console.error("RESET ERROR:", err);
@@ -301,7 +284,7 @@
   };
 
   // ---------- LOGOUT ----------
-  window.logout = function logout(redirectTo = "../index.html") {
+  window.logout = function logout(redirectTo = "/index.html") {
     clearAuth();
     window.location.href = redirectTo;
   };
@@ -309,9 +292,3 @@
   // Optional: expose redirect map (useful for debugging)
   window.JH_DASHBOARD_BY_ROLE = DASHBOARD_BY_ROLE;
 })();
-
-
-
-
-
-
