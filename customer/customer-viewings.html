@@ -1,19 +1,366 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Placeholder</title>
-</head>
-<body>
-<h1>Placeholder</h1>
-<p>Auto-generated placeholder for missing page: pages/customer/customer-viewings.html</p>
-<p>Referenced 1 times.</p>
-<p><a href="index.html">Home</a></p>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/http.js"></script>
-  <script src="assets/js/nav-areas.js"></script>
-  <script src="assets/js/customer.js"></script>
-  <script>Customer.loadViewings(document.querySelector("#viewingsList") || document.querySelector("ul"));</script>
+  <title>My Viewings | Juba Homez</title>
+  <meta name="description" content="Manage your property viewing requests and upcoming viewing schedules on Juba Homez." />
+
+  
+
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons (optional) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --jh-bg: #f8fafc;
+      --jh-card: #ffffff;
+    }
+    body { background: var(--jh-bg); }
+    .page-header {
+      background: linear-gradient(180deg, rgba(25,135,84,.10), rgba(25,135,84,0));
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .view-card {
+      background: var(--jh-card);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,.04);
+      height: 100%;
+    }
+    .view-img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      background: #e9ecef;
+    }
+    .mono { font-variant-numeric: tabular-nums; }
+    .small-muted { color: #6c757d; }
+    .badge-soft {
+      background: rgba(25,135,84,.10);
+      color: #198754;
+      border: 1px solid rgba(25,135,84,.20);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top nav (adjust links as needed) -->
+  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-semibold" href="../index.html">
+        <i class="bi bi-house-door me-2"></i>Juba Homez
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav" aria-controls="topNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="topNav">
+        <ul class="navbar-nav ms-auto gap-1">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="./customerDashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="./customer-viewings.html">Viewings</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header py-4">
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+        <div>
+          <h1 class="h3 mb-1">My Viewings</h1>
+          <p class="mb-0 small-muted">Track upcoming viewings, requests, and past visits.</p>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center flex-wrap">
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input id="viewSearch" type="search" class="form-control" placeholder="Search by location / property / status" autocomplete="off" />
+          </div>
+
+          <select id="statusFilter" class="form-select" style="max-width: 220px;">
+            <option value="">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="py-4">
+    <div class="container">
+      <!-- States -->
+      <div id="viewingsLoading" class="alert alert-info d-flex align-items-center gap-2" role="alert">
+        <div class="spinner-border spinner-border-sm" aria-hidden="true"></div>
+        <div>Loading your viewings…</div>
+      </div>
+
+      <div id="viewingsError" class="alert alert-danger d-none" role="alert">
+        <div class="fw-semibold mb-1">Couldn’t load viewings.</div>
+        <div id="viewingsErrorMsg" class="small mb-0">Please refresh and try again.</div>
+      </div>
+
+      <div id="viewingsEmpty" class="border rounded-4 bg-white p-4 d-none">
+        <div class="d-flex align-items-start gap-3">
+          <div class="fs-3 text-success"><i class="bi bi-calendar-check"></i></div>
+          <div>
+            <div class="fw-semibold mb-1">No viewings yet</div>
+            <div class="small-muted mb-3">
+              When you request a property viewing, it will appear here.
+            </div>
+            <a class="btn btn-success" href="../index.html">
+              <i class="bi bi-search me-1"></i>Browse properties
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMPORTANT: keep UL because your loader uses (#viewingsList || ul) -->
+      <ul id="viewingsList" class="row g-3 list-unstyled m-0"></ul>
+    </div>
+  </main>
+
+  <footer class="py-4 border-top bg-white">
+    <div class="container d-flex flex-column flex-md-row justify-content-between gap-2 small-muted">
+      <div>© <span id="year"></span> Juba Homez</div>
+      <div class="d-flex gap-3">
+        <a class="text-decoration-none" href="../index.html">Home</a>
+        <a class="text-decoration-none" href="./customerDashboard.html">Dashboard</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Project scripts (paths assume this file is: pages/customer/customer-viewings.html) -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/http.js"></script>
+  <script src="../assets/js/nav-areas.js"></script>
+  <script src="../assets/js/customer.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ---- Helpers + fallback renderer (in case Customer.loadViewings isn't implemented or renders nothing) ----
+    const $ = (sel, root = document) => root.querySelector(sel);
+
+    function normalizeText(s) {
+      return String(s || "").trim().toLowerCase();
+    }
+
+    function formatDateTime(value) {
+      if (!value) return "";
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return String(value);
+      return d.toLocaleString();
+    }
+
+    // LocalStorage fallback keys (best-effort; won't break your backend loader)
+    const LS_KEYS = [
+      "jubahomez:viewings",
+      "juba_homez_viewings",
+      "jubaHomezViewings",
+      "viewings",
+      "customerViewings"
+    ];
+
+    function readViewingsFromLocalStorage() {
+      for (const k of LS_KEYS) {
+        try {
+          const raw = localStorage.getItem(k);
+          if (!raw) continue;
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) return { key: k, items: parsed };
+          if (parsed && Array.isArray(parsed.items)) return { key: k, items: parsed.items };
+        } catch (_) {}
+      }
+      return { key: LS_KEYS[0], items: [] };
+    }
+
+    function statusBadge(statusRaw) {
+      const s = normalizeText(statusRaw);
+      if (s.includes("confirm")) return `<span class="badge text-bg-success">Confirmed</span>`;
+      if (s.includes("cancel")) return `<span class="badge text-bg-danger">Cancelled</span>`;
+      if (s.includes("complete") || s.includes("done")) return `<span class="badge text-bg-secondary">Completed</span>`;
+      if (s.includes("pend")) return `<span class="badge text-bg-warning text-dark">Pending</span>`;
+      return `<span class="badge badge-soft">Scheduled</span>`;
+    }
+
+    function buildViewingCard(item) {
+      const id = item.id ?? item.viewingId ?? item._id ?? "";
+      const title = item.propertyTitle ?? item.title ?? item.name ?? "Property viewing";
+      const location = item.location ?? item.area ?? item.city ?? item.address ?? "";
+      const when = item.dateTime ?? item.date ?? item.scheduledAt ?? item.viewingDate ?? "";
+      const status = item.status ?? item.state ?? "Pending";
+      const img = item.image ?? item.coverImage ?? item.photo ?? item.thumbnail ?? "";
+      const detailsUrl =
+        item.url ?? item.link ?? (item.propertyId ? `../properties/property-details.html?id=${encodeURIComponent(item.propertyId)}` : "#");
+
+      const li = document.createElement("li");
+      li.className = "col-12 col-md-6 col-lg-4";
+      li.dataset.status = normalizeText(status);
+
+      li.innerHTML = `
+        <div class="view-card">
+          ${img ? `<img class="view-img" src="${img}" alt="${title}">` : `<div class="view-img d-flex align-items-center justify-content-center text-muted"><i class="bi bi-image fs-1"></i></div>`}
+          <div class="p-3">
+            <div class="d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">${title}</div>
+                ${location ? `<div class="small-muted"><i class="bi bi-geo-alt me-1"></i>${location}</div>` : `<div class="small-muted">&nbsp;</div>`}
+              </div>
+              ${statusBadge(status)}
+            </div>
+
+            <div class="mt-3 d-flex flex-wrap gap-2">
+              ${when ? `<span class="badge text-bg-light border mono"><i class="bi bi-clock me-1"></i>${formatDateTime(when)}</span>` : ""}
+              ${id ? `<span class="badge text-bg-light border mono"><i class="bi bi-hash me-1"></i>${String(id).slice(0, 10)}</span>` : ""}
+            </div>
+
+            <div class="mt-3 d-flex gap-2">
+              <a class="btn btn-success btn-sm flex-grow-1" href="${detailsUrl}">
+                <i class="bi bi-eye me-1"></i>View property
+              </a>
+              <button class="btn btn-outline-danger btn-sm" type="button" data-action="cancel" title="Cancel viewing">
+                <i class="bi bi-x-circle"></i>
+              </button>
+            </div>
+
+            <div class="small-muted mt-2" style="font-size:.85rem">
+              <i class="bi bi-info-circle me-1"></i>
+              If cancel doesn’t work, it means your backend handler is not implemented yet.
+            </div>
+          </div>
+        </div>
+      `;
+      return li;
+    }
+
+    function renderViewingsFallback(items) {
+      const list = $("#viewingsList");
+      list.innerHTML = "";
+      items.forEach(item => list.appendChild(buildViewingCard(item)));
+    }
+
+    function showState({ loading = false, error = "", empty = false } = {}) {
+      $("#viewingsLoading").classList.toggle("d-none", !loading);
+
+      const errBox = $("#viewingsError");
+      if (error) {
+        $("#viewingsErrorMsg").textContent = error;
+        errBox.classList.remove("d-none");
+      } else {
+        errBox.classList.add("d-none");
+      }
+
+      $("#viewingsEmpty").classList.toggle("d-none", !empty);
+    }
+
+    function applyFilters() {
+      const q = normalizeText($("#viewSearch").value);
+      const status = normalizeText($("#statusFilter").value);
+      const list = $("#viewingsList");
+      const cards = Array.from(list.children);
+
+      let shown = 0;
+      cards.forEach(li => {
+        const text = normalizeText(li.textContent);
+        const statusOk = !status || (li.dataset.status || "").includes(status);
+        const qOk = !q || text.includes(q);
+        const ok = statusOk && qOk;
+        li.classList.toggle("d-none", !ok);
+        if (ok) shown++;
+      });
+
+      // If filter hides all, show empty state feel (but only if there are items overall)
+      const emptyBox = $("#viewingsEmpty");
+      if (cards.length > 0 && shown === 0) emptyBox.classList.remove("d-none");
+      else if (cards.length > 0) emptyBox.classList.add("d-none");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      $("#year").textContent = String(new Date().getFullYear());
+      const listEl = $("#viewingsList");
+
+      showState({ loading: true, error: "", empty: false });
+
+      // 1) Try your project loader first
+      try {
+        if (window.Customer && typeof window.Customer.loadViewings === "function") {
+          window.Customer.loadViewings(listEl);
+
+          // Fallback check: if still empty after a moment, render from localStorage
+          setTimeout(() => {
+            const hasItems = listEl.children.length > 0;
+            if (hasItems) {
+              showState({ loading: false, error: "", empty: false });
+            } else {
+              const { items } = readViewingsFromLocalStorage();
+              if (items.length) {
+                renderViewingsFallback(items);
+                showState({ loading: false, error: "", empty: false });
+              } else {
+                showState({ loading: false, error: "", empty: true });
+              }
+            }
+          }, 700);
+        } else {
+          // 2) Fallback: localStorage
+          const { items } = readViewingsFromLocalStorage();
+          if (items.length) {
+            renderViewingsFallback(items);
+            showState({ loading: false, error: "", empty: false });
+          } else {
+            showState({ loading: false, error: "", empty: true });
+          }
+        }
+      } catch (e) {
+        const { items } = readViewingsFromLocalStorage();
+        if (items.length) {
+          renderViewingsFallback(items);
+          showState({ loading: false, error: "", empty: false });
+        } else {
+          showState({ loading: false, error: "Viewings loader crashed. Using fallback storage.", empty: true });
+        }
+      }
+
+      // Filters
+      $("#viewSearch").addEventListener("input", applyFilters);
+      $("#statusFilter").addEventListener("change", applyFilters);
+
+      // Cancel button (best-effort; won’t break if backend isn’t ready)
+      listEl.addEventListener("click", async (e) => {
+        const btn = e.target.closest("[data-action='cancel']");
+        if (!btn) return;
+
+        const li = e.target.closest("li");
+        if (!li) return;
+
+        if (!confirm("Cancel this viewing request?")) return;
+
+        // If your customer.js provides a cancel API, try it. Otherwise just remove from UI.
+        try {
+          if (window.Customer && typeof window.Customer.cancelViewing === "function") {
+            await window.Customer.cancelViewing(li);
+          }
+        } catch (_) {
+          // ignore and fallback to UI removal
+        }
+
+        li.remove();
+        if (listEl.children.length === 0) showState({ loading: false, error: "", empty: true });
+        applyFilters();
+      });
+    });
+  </script>
 </body>
 </html>
