@@ -22,14 +22,28 @@
 
   function badge(status) {
     const st = String(status || "").toLowerCase();
-    if (st === "active") return `<span class="badge b-active"><span class="dot"></span>active</span>`;
-    if (st === "pending") return `<span class="badge b-pending"><span class="dot"></span>pending</span>`;
-    if (st === "suspended") return `<span class="badge b-suspended"><span class="dot"></span>suspended</span>`;
-    return `<span class="badge" style="background:#f1f5f9;color:#334155"><span class="dot" style="background:#94a3b8"></span>${escapeHtml(st || "unknown")}</span>`;
+    if (st === "active") return `<span class="badge badge-active"><span class="badge-dot"></span>active</span>`;
+    if (st === "pending") return `<span class="badge badge-pending"><span class="badge-dot"></span>pending</span>`;
+    if (st === "suspended") return `<span class="badge badge-suspended"><span class="badge-dot"></span>suspended</span>`;
+    if (st === "rejected") return `<span class="badge badge-rejected"><span class="badge-dot"></span>rejected</span>`;
+    return `<span class="badge badge-rejected"><span class="badge-dot"></span>${escapeHtml(st || "unknown")}</span>`;
+  }
+
+  function getErrMessage(err) {
+    // Your backend errors are { error: { message } } :contentReference[oaicite:2]{index=2}
+    const msg =
+      err?.payload?.error?.message ||
+      err?.payload?.message ||
+      err?.message;
+    return String(msg || "Request failed");
   }
 
   function ensureAuthOrExplain(tbodyId) {
-    const token = window.http?.getToken?.() || window.APP_CONFIG?.utils?.getAccessToken?.();
+    const token =
+      window.http?.getToken?.() ||
+      window.APP_CONFIG?.utils?.getAccessToken?.() ||
+      localStorage.getItem("jh_access_token");
+
     if (token) return true;
 
     const tb = el(tbodyId);
@@ -47,11 +61,16 @@
     return false;
   }
 
+  function apiUrl(path) {
+    // ✅ Adds /api/v1 automatically using config.js :contentReference[oaicite:3]{index=3}
+    return window.APP_CONFIG?.utils?.apiUrl?.(path) || path;
+  }
+
   async function apiGet(path) {
-    return await window.http.get(path);
+    return await window.http.get(apiUrl(path));
   }
   async function apiPatch(path, body) {
-    return await window.http.patch(path, body || {});
+    return await window.http.patch(apiUrl(path), body || {});
   }
 
   function renderUsers(users) {
@@ -93,12 +112,8 @@
             <td class="px-6 py-4 text-xs text-slate-500">${created}</td>
 
             <td class="px-6 py-4 text-right whitespace-nowrap">
-              <button class="btn btn-blue" data-action="approve-user" data-id="${u.id}">
-                Approve
-              </button>
-              <button class="btn btn-ghost" data-action="reject-user" data-id="${u.id}">
-                Reject
-              </button>
+              <button class="btn btn-blue" data-action="approve-user" data-id="${u.id}">Approve</button>
+              <button class="btn btn-ghost" data-action="reject-user" data-id="${u.id}">Reject</button>
             </td>
           </tr>
         `;
@@ -106,40 +121,43 @@
       .join("");
   }
 
-  async function loadPendingApprovals() {
-    // needs token
+  async function loadUsers(opts = {}) {
     if (!ensureAuthOrExplain("usersTbody")) return;
 
-    const status = (el("userFilterStatus")?.value || "pending").trim();
-    const role = (el("userFilterRole")?.value || "").trim();
+    const status = String(opts.status ?? el("userFilterStatus")?.value ?? "pending").trim() || "pending";
+    const role = String(opts.role ?? el("userFilterRole")?.value ?? "").trim();
 
-    // pending broker/owner/photographer are what you want
-    // if role filter is empty, we fetch pending and filter those roles client-side
     const qs = new URLSearchParams();
-    qs.set("status", status || "pending");
+    qs.set("status", status);
     if (role) qs.set("role", role);
 
     try {
+      // ✅ Correct endpoint: /api/v1/admin/users :contentReference[oaicite:4]{index=4}
       const res = await apiGet(`/admin/users?${qs.toString()}`);
-      const users = res?.users || [];
 
+      // ✅ Correct response shape: { data: { users } } :contentReference[oaicite:5]{index=5}
+      const users = res?.data?.users || [];
+
+      // if no role filter, show only approvals-needed roles
       const filtered = role
         ? users
         : users.filter((u) => ["broker", "owner", "photographer"].includes(String(u.role).toLowerCase()));
 
       renderUsers(filtered);
 
-      // update a KPI if exists
-      if (el("kpiPendingUsers")) el("kpiPendingUsers").textContent = String(filtered.length);
+      if (el("kpiPendingUsers") && status.toLowerCase() === "pending") {
+        el("kpiPendingUsers").textContent = String(filtered.length);
+      }
+      if (el("usersMeta")) el("usersMeta").textContent = `${filtered.length} shown`;
     } catch (err) {
       const tbody = el("usersTbody") || el("usersTableBody");
       if (tbody) {
         tbody.innerHTML = `
           <tr>
             <td class="px-6 py-4 text-red-600 font-bold" colspan="5">
-              Failed to load pending users: ${escapeHtml(err.message || "Unknown error")}
+              Failed to load pending users: ${escapeHtml(getErrMessage(err))}
               <div class="text-xs text-slate-500 mt-1">
-                Make sure you are logged in as an <b>admin</b>.
+                Make sure you are logged in as an <b>admin</b> (otherwise backend returns "Forbidden: insufficient role"). 
               </div>
             </td>
           </tr>`;
@@ -148,8 +166,9 @@
   }
 
   async function approveUser(id) {
+    // ✅ PATCH /api/v1/admin/users/:id/approve :contentReference[oaicite:6]{index=6}
     await apiPatch(`/admin/users/${id}/approve`);
-    await loadPendingApprovals();
+    await loadUsers({ status: el("userFilterStatus")?.value || "pending", role: el("userFilterRole")?.value || "" });
   }
 
   async function rejectUser(id) {
@@ -158,8 +177,9 @@
       alert("Rejection reason must be at least 3 characters.");
       return;
     }
+    // ✅ PATCH /api/v1/admin/users/:id/reject with {reason} :contentReference[oaicite:7]{index=7}
     await apiPatch(`/admin/users/${id}/reject`, { reason: reason.trim() });
-    await loadPendingApprovals();
+    await loadUsers({ status: el("userFilterStatus")?.value || "pending", role: el("userFilterRole")?.value || "" });
   }
 
   function wireUserActions() {
@@ -179,18 +199,17 @@
         if (action === "approve-user") await approveUser(id);
         if (action === "reject-user") await rejectUser(id);
       } catch (err) {
-        alert(err.message || "Action failed");
+        alert(getErrMessage(err));
       } finally {
         btn.disabled = false;
       }
     });
   }
 
-  // Public API used by your HTML
+  // Expose API used by your HTML
   window.Admin = window.Admin || {};
-  window.Admin.loadPendingApprovals = loadPendingApprovals;
-
-  // Backwards-safe methods your HTML calls (so it won't crash)
+  window.Admin.loadUsers = loadUsers;                 // ✅ HTML expects this
+  window.Admin.loadPendingApprovals = loadUsers;      // ✅ keep your old name too
   window.Admin.wireComingSoon = window.Admin.wireComingSoon || function () {};
   window.Admin.loadBadges = window.Admin.loadBadges || function () {};
   window.Admin.loadPendingCounts = window.Admin.loadPendingCounts || function () {};
@@ -198,10 +217,13 @@
   document.addEventListener("DOMContentLoaded", () => {
     wireUserActions();
 
-    // If you have a "Load Users" button, connect it
-    el("btnLoadUsers")?.addEventListener("click", loadPendingApprovals);
+    el("btnLoadUsers")?.addEventListener("click", () => loadUsers({}));
 
-    // Auto-load pending approvals on open
-    loadPendingApprovals();
+    // Default to pending so approvals show immediately
+    const st = el("userFilterStatus");
+    if (st && !st.value) st.value = "pending";
+
+    // Auto load approvals
+    loadUsers({ status: "pending" });
   });
 })();
