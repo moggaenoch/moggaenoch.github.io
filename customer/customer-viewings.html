@@ -8,24 +8,22 @@
   <title>My Viewings | Juba Homez</title>
   <meta name="description" content="Manage your property viewing requests and upcoming viewing schedules on Juba Homez." />
 
-  
+  <link rel="icon" type="image/x-icon" href="../../assets/pictures logo/JUBA HOMEZ LOGO.png" />
 
   <!-- Bootstrap 5.3 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Bootstrap Icons (optional) -->
+  <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
 
   <style>
-    :root {
-      --jh-bg: #f8fafc;
-      --jh-card: #ffffff;
-    }
+    :root { --jh-bg:#f8fafc; --jh-card:#fff; }
     body { background: var(--jh-bg); }
-    .page-header {
+
+    .page-header{
       background: linear-gradient(180deg, rgba(25,135,84,.10), rgba(25,135,84,0));
       border-bottom: 1px solid rgba(0,0,0,.06);
     }
-    .view-card {
+    .view-card{
       background: var(--jh-card);
       border: 1px solid rgba(0,0,0,.08);
       border-radius: 16px;
@@ -33,50 +31,55 @@
       box-shadow: 0 8px 20px rgba(0,0,0,.04);
       height: 100%;
     }
-    .view-img {
-      width: 100%;
-      height: 170px;
-      object-fit: cover;
-      background: #e9ecef;
+    .view-img{ width:100%; height:170px; object-fit:cover; background:#e9ecef; }
+    .small-muted{ color:#6c757d; }
+    .mono{ font-variant-numeric: tabular-nums; }
+    .pill{
+      background: rgba(13,110,253,.10);
+      color: #0d6efd;
+      border: 1px solid rgba(13,110,253,.20);
+      border-radius: 999px;
+      padding: .2rem .55rem;
+      font-size: .8rem;
+      display: inline-flex;
+      gap: .35rem;
+      align-items: center;
+      white-space: nowrap;
     }
-    .mono { font-variant-numeric: tabular-nums; }
-    .small-muted { color: #6c757d; }
-    .badge-soft {
-      background: rgba(25,135,84,.10);
-      color: #198754;
-      border: 1px solid rgba(25,135,84,.20);
-    }
+    .actions .btn { white-space: nowrap; }
   </style>
 </head>
 
 <body>
-  <!-- Top nav (adjust links as needed) -->
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
     <div class="container">
-      <a class="navbar-brand fw-semibold" href="../index.html">
+      <a class="navbar-brand fw-semibold" href="../../index.html">
         <i class="bi bi-house-door me-2"></i>Juba Homez
       </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav" aria-controls="topNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav"
+              aria-controls="topNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="topNav">
         <ul class="navbar-nav ms-auto gap-1">
-          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="./customerDashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="../../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="./customer-dashboard.html">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link active" aria-current="page" href="./customer-viewings.html">Viewings</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
+  <!-- Header -->
   <header class="page-header py-4">
     <div class="container">
       <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
         <div>
           <h1 class="h3 mb-1">My Viewings</h1>
-          <p class="mb-0 small-muted">Track upcoming viewings, requests, and past visits.</p>
+          <p class="mb-0 small-muted">Reschedule or cancel upcoming viewings. Get reminders before deadlines.</p>
         </div>
 
         <div class="d-flex gap-2 align-items-center flex-wrap">
@@ -92,6 +95,12 @@
             <option value="cancelled">Cancelled</option>
             <option value="completed">Completed</option>
           </select>
+
+          <select id="timeFilter" class="form-select" style="max-width: 220px;">
+            <option value="upcoming">Upcoming</option>
+            <option value="all">All</option>
+            <option value="past">Past</option>
+          </select>
         </div>
       </div>
     </div>
@@ -99,6 +108,24 @@
 
   <main class="py-4">
     <div class="container">
+      <!-- Reminder banner -->
+      <div id="reminderBanner" class="alert alert-warning d-none" role="alert">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+          <div>
+            <div class="fw-semibold mb-1"><i class="bi bi-alarm me-1"></i>Viewing deadline approaching</div>
+            <div id="reminderText" class="small mb-0">You have an upcoming viewing.</div>
+          </div>
+          <div class="d-flex gap-2 align-items-start align-items-md-center">
+            <button id="btnNotifyOwner" class="btn btn-outline-dark btn-sm" type="button">
+              <i class="bi bi-bell me-1"></i>Notify owner
+            </button>
+            <button id="btnDismissReminder" class="btn btn-warning btn-sm" type="button">
+              <i class="bi bi-x-lg me-1"></i>Dismiss
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- States -->
       <div id="viewingsLoading" class="alert alert-info d-flex align-items-center gap-2" role="alert">
         <div class="spinner-border spinner-border-sm" aria-hidden="true"></div>
@@ -114,251 +141,667 @@
         <div class="d-flex align-items-start gap-3">
           <div class="fs-3 text-success"><i class="bi bi-calendar-check"></i></div>
           <div>
-            <div class="fw-semibold mb-1">No viewings yet</div>
-            <div class="small-muted mb-3">
-              When you request a property viewing, it will appear here.
-            </div>
-            <a class="btn btn-success" href="../index.html">
+            <div class="fw-semibold mb-1">No viewings found</div>
+            <div class="small-muted mb-3">When you request a viewing, it will appear here.</div>
+            <a class="btn btn-success" href="../../index.html">
               <i class="bi bi-search me-1"></i>Browse properties
             </a>
           </div>
         </div>
       </div>
 
-      <!-- IMPORTANT: keep UL because your loader uses (#viewingsList || ul) -->
+      <!-- List -->
       <ul id="viewingsList" class="row g-3 list-unstyled m-0"></ul>
     </div>
   </main>
 
-  <footer class="py-4 border-top bg-white">
-    <div class="container d-flex flex-column flex-md-row justify-content-between gap-2 small-muted">
-      <div>© <span id="year"></span> Juba Homez</div>
-      <div class="d-flex gap-3">
-        <a class="text-decoration-none" href="../index.html">Home</a>
-        <a class="text-decoration-none" href="./customerDashboard.html">Dashboard</a>
+  <!-- Reschedule Modal -->
+  <div class="modal fade" id="rescheduleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content" id="rescheduleForm">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-calendar2-week me-2"></i>Reschedule Viewing</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="hidden" id="rescheduleViewingId" />
+
+          <div class="mb-2 small-muted" id="rescheduleMeta"></div>
+
+          <label class="form-label">New date & time</label>
+          <input id="newDateTime" type="datetime-local" class="form-control" required />
+
+          <label class="form-label mt-3">Reason (optional)</label>
+          <textarea id="rescheduleReason" class="form-control" rows="3" placeholder="e.g., I have a meeting at that time."></textarea>
+
+          <div class="form-text mt-2">
+            The owner will be notified and can accept or reject the new time (depending on your backend rules).
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">
+            <span class="spinner-border spinner-border-sm d-none" id="rescheduleSpinner" aria-hidden="true"></span>
+            <span id="rescheduleBtnText"><i class="bi bi-check2 me-1"></i>Submit</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Cancel Modal -->
+  <div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content" id="cancelForm">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-x-circle me-2"></i>Cancel Viewing</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="hidden" id="cancelViewingId" />
+          <div class="mb-2 small-muted" id="cancelMeta"></div>
+
+          <label class="form-label">Reason (optional)</label>
+          <textarea id="cancelReason" class="form-control" rows="3" placeholder="e.g., I’m no longer interested."></textarea>
+
+          <div class="alert alert-warning mt-3 mb-0">
+            The owner will be notified about the cancellation.
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">
+            <span class="spinner-border spinner-border-sm d-none" id="cancelSpinner" aria-hidden="true"></span>
+            <span id="cancelBtnText"><i class="bi bi-trash3 me-1"></i>Cancel viewing</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080">
+    <div id="toast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastMsg">Done.</div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
     </div>
-  </footer>
+  </div>
 
-  <!-- Project scripts (paths assume this file is: pages/customer/customer-viewings.html) -->
-  <script src="../assets/js/config.js"></script>
-  <script src="../assets/js/http.js"></script>
-  <script src="../assets/js/nav-areas.js"></script>
-  <script src="../assets/js/customer.js"></script>
+  <!-- Project scripts -->
+  <script src="../../assets/js/config.js"></script>
+  <script src="../../assets/js/http.js"></script>
+  <script src="../../assets/js/nav-areas.js"></script>
+  <script src="../../assets/js/customer.js"></script>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // ---- Helpers + fallback renderer (in case Customer.loadViewings isn't implemented or renders nothing) ----
+    // =========================
+    // Config knobs (edit as you want)
+    // =========================
+    const DEADLINE_HOURS = 24;       // "deadline approaching" window
+    const REMINDER_POLL_MS = 60_000; // every 1 minute check
+    const NOTIFY_COOLDOWN_MS = 6 * 60 * 60 * 1000; // don't re-notify too often (6 hours)
+
+    // =========================
+    // Utilities
+    // =========================
     const $ = (sel, root = document) => root.querySelector(sel);
 
-    function normalizeText(s) {
-      return String(s || "").trim().toLowerCase();
+    function normalize(s){ return String(s || "").trim().toLowerCase(); }
+
+    function toDate(v){
+      if (!v) return null;
+      const d = new Date(v);
+      return Number.isNaN(d.getTime()) ? null : d;
     }
 
-    function formatDateTime(value) {
-      if (!value) return "";
-      const d = new Date(value);
-      if (Number.isNaN(d.getTime())) return String(value);
-      return d.toLocaleString();
+    function formatDateTime(v){
+      const d = toDate(v);
+      return d ? d.toLocaleString() : String(v || "");
     }
 
-    // LocalStorage fallback keys (best-effort; won't break your backend loader)
-    const LS_KEYS = [
-      "jubahomez:viewings",
-      "juba_homez_viewings",
-      "jubaHomezViewings",
-      "viewings",
-      "customerViewings"
-    ];
-
-    function readViewingsFromLocalStorage() {
-      for (const k of LS_KEYS) {
-        try {
-          const raw = localStorage.getItem(k);
-          if (!raw) continue;
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) return { key: k, items: parsed };
-          if (parsed && Array.isArray(parsed.items)) return { key: k, items: parsed.items };
-        } catch (_) {}
-      }
-      return { key: LS_KEYS[0], items: [] };
+    function hoursUntil(v){
+      const d = toDate(v);
+      if (!d) return null;
+      return (d.getTime() - Date.now()) / 36e5;
     }
 
-    function statusBadge(statusRaw) {
-      const s = normalizeText(statusRaw);
-      if (s.includes("confirm")) return `<span class="badge text-bg-success">Confirmed</span>`;
-      if (s.includes("cancel")) return `<span class="badge text-bg-danger">Cancelled</span>`;
-      if (s.includes("complete") || s.includes("done")) return `<span class="badge text-bg-secondary">Completed</span>`;
-      if (s.includes("pend")) return `<span class="badge text-bg-warning text-dark">Pending</span>`;
-      return `<span class="badge badge-soft">Scheduled</span>`;
-    }
-
-    function buildViewingCard(item) {
-      const id = item.id ?? item.viewingId ?? item._id ?? "";
-      const title = item.propertyTitle ?? item.title ?? item.name ?? "Property viewing";
-      const location = item.location ?? item.area ?? item.city ?? item.address ?? "";
-      const when = item.dateTime ?? item.date ?? item.scheduledAt ?? item.viewingDate ?? "";
-      const status = item.status ?? item.state ?? "Pending";
-      const img = item.image ?? item.coverImage ?? item.photo ?? item.thumbnail ?? "";
-      const detailsUrl =
-        item.url ?? item.link ?? (item.propertyId ? `../properties/property-details.html?id=${encodeURIComponent(item.propertyId)}` : "#");
-
-      const li = document.createElement("li");
-      li.className = "col-12 col-md-6 col-lg-4";
-      li.dataset.status = normalizeText(status);
-
-      li.innerHTML = `
-        <div class="view-card">
-          ${img ? `<img class="view-img" src="${img}" alt="${title}">` : `<div class="view-img d-flex align-items-center justify-content-center text-muted"><i class="bi bi-image fs-1"></i></div>`}
-          <div class="p-3">
-            <div class="d-flex align-items-start justify-content-between gap-2">
-              <div>
-                <div class="fw-semibold">${title}</div>
-                ${location ? `<div class="small-muted"><i class="bi bi-geo-alt me-1"></i>${location}</div>` : `<div class="small-muted">&nbsp;</div>`}
-              </div>
-              ${statusBadge(status)}
-            </div>
-
-            <div class="mt-3 d-flex flex-wrap gap-2">
-              ${when ? `<span class="badge text-bg-light border mono"><i class="bi bi-clock me-1"></i>${formatDateTime(when)}</span>` : ""}
-              ${id ? `<span class="badge text-bg-light border mono"><i class="bi bi-hash me-1"></i>${String(id).slice(0, 10)}</span>` : ""}
-            </div>
-
-            <div class="mt-3 d-flex gap-2">
-              <a class="btn btn-success btn-sm flex-grow-1" href="${detailsUrl}">
-                <i class="bi bi-eye me-1"></i>View property
-              </a>
-              <button class="btn btn-outline-danger btn-sm" type="button" data-action="cancel" title="Cancel viewing">
-                <i class="bi bi-x-circle"></i>
-              </button>
-            </div>
-
-            <div class="small-muted mt-2" style="font-size:.85rem">
-              <i class="bi bi-info-circle me-1"></i>
-              If cancel doesn’t work, it means your backend handler is not implemented yet.
-            </div>
-          </div>
-        </div>
-      `;
-      return li;
-    }
-
-    function renderViewingsFallback(items) {
-      const list = $("#viewingsList");
-      list.innerHTML = "";
-      items.forEach(item => list.appendChild(buildViewingCard(item)));
-    }
-
-    function showState({ loading = false, error = "", empty = false } = {}) {
+    function showState({loading=false, error="", empty=false} = {}){
       $("#viewingsLoading").classList.toggle("d-none", !loading);
 
       const errBox = $("#viewingsError");
-      if (error) {
+      if (error){
         $("#viewingsErrorMsg").textContent = error;
         errBox.classList.remove("d-none");
-      } else {
-        errBox.classList.add("d-none");
-      }
+      } else errBox.classList.add("d-none");
 
       $("#viewingsEmpty").classList.toggle("d-none", !empty);
     }
 
-    function applyFilters() {
-      const q = normalizeText($("#viewSearch").value);
-      const status = normalizeText($("#statusFilter").value);
-      const list = $("#viewingsList");
-      const cards = Array.from(list.children);
-
-      let shown = 0;
-      cards.forEach(li => {
-        const text = normalizeText(li.textContent);
-        const statusOk = !status || (li.dataset.status || "").includes(status);
-        const qOk = !q || text.includes(q);
-        const ok = statusOk && qOk;
-        li.classList.toggle("d-none", !ok);
-        if (ok) shown++;
-      });
-
-      // If filter hides all, show empty state feel (but only if there are items overall)
-      const emptyBox = $("#viewingsEmpty");
-      if (cards.length > 0 && shown === 0) emptyBox.classList.remove("d-none");
-      else if (cards.length > 0) emptyBox.classList.add("d-none");
+    function toast(msg){
+      $("#toastMsg").textContent = msg;
+      const t = new bootstrap.Toast($("#toast"), { delay: 3500 });
+      t.show();
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      $("#year").textContent = String(new Date().getFullYear());
-      const listEl = $("#viewingsList");
+    function getApiBase(){
+      // Try common config names (safe, won't crash)
+      return (
+        window.API_BASE_URL ||
+        window.CONFIG?.API_BASE_URL ||
+        window.CONFIG?.apiBaseUrl ||
+        window.AppConfig?.apiBaseUrl ||
+        window.APP_CONFIG?.apiBaseUrl ||
+        ""
+      );
+    }
 
-      showState({ loading: true, error: "", empty: false });
+    async function fetchJson(url, opts = {}){
+      const res = await fetch(url, {
+        headers: { "Content-Type": "application/json", ...(opts.headers || {}) },
+        credentials: "include",
+        ...opts
+      });
+      if (!res.ok){
+        let msg = `HTTP ${res.status}`;
+        try {
+          const data = await res.json();
+          msg = data?.message || data?.error || msg;
+        } catch (_) {}
+        throw new Error(msg);
+      }
+      const ct = res.headers.get("content-type") || "";
+      return ct.includes("application/json") ? res.json() : res.text();
+    }
 
-      // 1) Try your project loader first
+    async function tryGetFirst(urls){
+      let lastErr = null;
+      for (const u of urls){
+        try { return await fetchJson(u); }
+        catch (e){ lastErr = e; }
+      }
+      throw lastErr || new Error("No endpoint matched");
+    }
+
+    // =========================
+    // API Layer (best effort)
+    // =========================
+    const API = {
+      async getViewings(){
+        // Prefer your existing Customer implementation if available:
+        if (window.Customer && typeof Customer.getViewings === "function"){
+          return await Customer.getViewings();
+        }
+
+        const base = getApiBase();
+        // Try common endpoints
+        const urls = [
+          `${base}/api/viewings/me`,
+          `${base}/api/viewings/my`,
+          `${base}/api/customers/me/viewings`,
+          `${base}/api/viewings`
+        ];
+        const data = await tryGetFirst(urls);
+        // Accept either {items:[...]} or [...]
+        return Array.isArray(data) ? data : (data.items || data.viewings || []);
+      },
+
+      async rescheduleViewing(viewingId, payload){
+        if (window.Customer && typeof Customer.rescheduleViewing === "function"){
+          return await Customer.rescheduleViewing(viewingId, payload);
+        }
+
+        const base = getApiBase();
+        const urls = [
+          `${base}/api/viewings/${encodeURIComponent(viewingId)}/reschedule`,
+          `${base}/api/viewings/${encodeURIComponent(viewingId)}`
+        ];
+
+        // Try POST reschedule, else PATCH generic
+        try {
+          return await fetchJson(urls[0], { method: "POST", body: JSON.stringify(payload) });
+        } catch (_) {
+          return await fetchJson(urls[1], { method: "PATCH", body: JSON.stringify({ ...payload, action: "reschedule" }) });
+        }
+      },
+
+      async cancelViewing(viewingId, payload){
+        if (window.Customer && typeof Customer.cancelViewing === "function"){
+          return await Customer.cancelViewing(viewingId, payload);
+        }
+
+        const base = getApiBase();
+        const urls = [
+          `${base}/api/viewings/${encodeURIComponent(viewingId)}/cancel`,
+          `${base}/api/viewings/${encodeURIComponent(viewingId)}`
+        ];
+
+        try {
+          return await fetchJson(urls[0], { method: "POST", body: JSON.stringify(payload) });
+        } catch (_) {
+          return await fetchJson(urls[1], { method: "PATCH", body: JSON.stringify({ ...payload, action: "cancel" }) });
+        }
+      },
+
+      async notifyViewingDeadline(viewingId, withinHours){
+        // This is the "notify customer + owner about deadline approaching" action.
+        if (window.Customer && typeof Customer.notifyViewingDeadline === "function"){
+          return await Customer.notifyViewingDeadline(viewingId, withinHours);
+        }
+
+        const base = getApiBase();
+        const url = `${base}/api/viewings/${encodeURIComponent(viewingId)}/notify-deadline`;
+        return await fetchJson(url, { method: "POST", body: JSON.stringify({ withinHours }) });
+      }
+    };
+
+    // =========================
+    // Rendering
+    // =========================
+    const state = {
+      viewings: [],
+      filtered: []
+    };
+
+    function statusBadge(statusRaw){
+      const s = normalize(statusRaw);
+      if (s.includes("confirm")) return `<span class="badge text-bg-success">Confirmed</span>`;
+      if (s.includes("cancel")) return `<span class="badge text-bg-danger">Cancelled</span>`;
+      if (s.includes("complete") || s.includes("done")) return `<span class="badge text-bg-secondary">Completed</span>`;
+      if (s.includes("pend")) return `<span class="badge text-bg-warning text-dark">Pending</span>`;
+      return `<span class="badge text-bg-primary">Scheduled</span>`;
+    }
+
+    function getViewingId(v){
+      return v.id ?? v.viewingId ?? v._id ?? v.uuid ?? "";
+    }
+
+    function getViewingDateTime(v){
+      return v.dateTime ?? v.scheduledAt ?? v.viewingDate ?? v.date ?? v.startTime ?? "";
+    }
+
+    function getViewingStatus(v){
+      return v.status ?? v.state ?? v.viewingStatus ?? "Pending";
+    }
+
+    function getPropertyTitle(v){
+      return v.propertyTitle ?? v.property?.title ?? v.title ?? v.propertyName ?? "Property viewing";
+    }
+
+    function getLocation(v){
+      return v.location ?? v.property?.location ?? v.area ?? v.city ?? v.address ?? "";
+    }
+
+    function getImg(v){
+      return v.image ?? v.property?.coverImage ?? v.coverImage ?? v.photo ?? v.thumbnail ?? "";
+    }
+
+    function propertyDetailsUrl(v){
+      const pid = v.propertyId ?? v.property?.id ?? v.property?._id ?? "";
+      const url = v.url ?? v.link ?? "";
+      if (url) return url;
+      if (pid) return `../properties/property-details.html?id=${encodeURIComponent(pid)}`;
+      return "#";
+    }
+
+    function isPast(v){
+      const h = hoursUntil(getViewingDateTime(v));
+      return h !== null && h < 0;
+    }
+
+    function isActionable(v){
+      const s = normalize(getViewingStatus(v));
+      if (s.includes("cancel") || s.includes("complete")) return false;
+      if (isPast(v)) return false;
+      return true;
+    }
+
+    function viewingCard(v){
+      const id = getViewingId(v);
+      const title = getPropertyTitle(v);
+      const loc = getLocation(v);
+      const when = getViewingDateTime(v);
+      const status = getViewingStatus(v);
+      const img = getImg(v);
+      const url = propertyDetailsUrl(v);
+
+      const h = hoursUntil(when);
+      const soon = (h !== null && h >= 0 && h <= DEADLINE_HOURS);
+
+      return `
+        <li class="col-12 col-md-6 col-lg-4" data-id="${String(id)}" data-status="${normalize(status)}" data-when="${String(when)}">
+          <div class="view-card">
+            ${img ? `<img class="view-img" src="${img}" alt="${title}">`
+                 : `<div class="view-img d-flex align-items-center justify-content-center text-muted"><i class="bi bi-image fs-1"></i></div>`}
+            <div class="p-3">
+              <div class="d-flex align-items-start justify-content-between gap-2">
+                <div>
+                  <div class="fw-semibold">${title}</div>
+                  ${loc ? `<div class="small-muted"><i class="bi bi-geo-alt me-1"></i>${loc}</div>` : `<div class="small-muted">&nbsp;</div>`}
+                </div>
+                <div class="text-end">
+                  ${statusBadge(status)}
+                  ${soon ? `<div class="mt-2 pill"><i class="bi bi-alarm"></i><span>Due soon</span></div>` : ``}
+                </div>
+              </div>
+
+              <div class="mt-3 d-flex flex-wrap gap-2">
+                ${when ? `<span class="badge text-bg-light border mono"><i class="bi bi-clock me-1"></i>${formatDateTime(when)}</span>` : ``}
+                ${id ? `<span class="badge text-bg-light border mono"><i class="bi bi-hash me-1"></i>${String(id).slice(0, 10)}</span>` : ``}
+              </div>
+
+              <div class="mt-3 d-flex gap-2 actions">
+                <a class="btn btn-success btn-sm flex-grow-1" href="${url}">
+                  <i class="bi bi-eye me-1"></i>View property
+                </a>
+
+                <button class="btn btn-outline-primary btn-sm" type="button"
+                        data-action="reschedule" ${isActionable(v) ? "" : "disabled"}>
+                  <i class="bi bi-calendar2-week"></i>
+                </button>
+
+                <button class="btn btn-outline-danger btn-sm" type="button"
+                        data-action="cancel" ${isActionable(v) ? "" : "disabled"}>
+                  <i class="bi bi-x-circle"></i>
+                </button>
+              </div>
+
+              <div class="small-muted mt-2" style="font-size:.85rem">
+                ${isActionable(v)
+                  ? `<i class="bi bi-info-circle me-1"></i>You can reschedule or cancel anytime before the deadline.`
+                  : `<i class="bi bi-info-circle me-1"></i>This viewing is not editable (past, cancelled, or completed).`}
+              </div>
+            </div>
+          </div>
+        </li>
+      `;
+    }
+
+    function render(){
+      const list = $("#viewingsList");
+      list.innerHTML = state.filtered.map(viewingCard).join("");
+      showState({ loading: false, error: "", empty: state.filtered.length === 0 });
+    }
+
+    function applyFilters(){
+      const q = normalize($("#viewSearch").value);
+      const status = normalize($("#statusFilter").value);
+      const timeMode = normalize($("#timeFilter").value);
+
+      state.filtered = state.viewings.filter(v => {
+        const text = normalize(`${getPropertyTitle(v)} ${getLocation(v)} ${getViewingStatus(v)} ${getViewingDateTime(v)}`);
+        const statusOk = !status || normalize(getViewingStatus(v)).includes(status);
+
+        const past = isPast(v);
+        const timeOk = (timeMode === "all") || (timeMode === "upcoming" && !past) || (timeMode === "past" && past);
+
+        const qOk = !q || text.includes(q);
+        return statusOk && timeOk && qOk;
+      });
+
+      render();
+      refreshReminderBanner();
+    }
+
+    // =========================
+    // Reminder + Notifications
+    // =========================
+    function getSoonViewings(){
+      return state.viewings
+        .filter(v => isActionable(v))
+        .map(v => ({ v, h: hoursUntil(getViewingDateTime(v)) }))
+        .filter(x => x.h !== null && x.h >= 0 && x.h <= DEADLINE_HOURS)
+        .sort((a,b) => a.h - b.h)
+        .map(x => x.v);
+    }
+
+    function refreshReminderBanner(){
+      const soon = getSoonViewings();
+      const banner = $("#reminderBanner");
+      if (!soon.length){
+        banner.classList.add("d-none");
+        return;
+      }
+
+      const next = soon[0];
+      const when = getViewingDateTime(next);
+      const h = hoursUntil(when);
+      const title = getPropertyTitle(next);
+
+      $("#reminderText").textContent =
+        `Upcoming viewing: ${title} (${formatDateTime(when)}). ` +
+        (h !== null ? `About ${Math.max(0, Math.round(h))} hour(s) left.` : "");
+
+      banner.classList.remove("d-none");
+      banner.dataset.primaryViewingId = getViewingId(next);
+    }
+
+    function canNotifyNow(viewingId){
+      const key = `jubahomez:notify:${viewingId}`;
+      const last = Number(localStorage.getItem(key) || "0");
+      return (Date.now() - last) > NOTIFY_COOLDOWN_MS;
+    }
+
+    function markNotified(viewingId){
+      const key = `jubahomez:notify:${viewingId}`;
+      localStorage.setItem(key, String(Date.now()));
+    }
+
+    async function notifyOwnerForSoonViewings(){
+      const soon = getSoonViewings();
+      if (!soon.length) return;
+
+      let success = 0;
+      for (const v of soon){
+        const id = getViewingId(v);
+        if (!id) continue;
+        if (!canNotifyNow(id)) continue;
+
+        try {
+          await API.notifyViewingDeadline(id, DEADLINE_HOURS);
+          markNotified(id);
+          success++;
+        } catch (e) {
+          // If backend endpoint not implemented, we just skip (page still meets reminder requirement)
+        }
+      }
+
+      if (success > 0) toast(`Notified about ${success} upcoming viewing(s).`);
+      else toast("Reminder shown. Owner notification endpoint may not be enabled yet.");
+    }
+
+    // =========================
+    // Actions: Reschedule / Cancel
+    // =========================
+    const modals = {
+      reschedule: null,
+      cancel: null
+    };
+
+    function openRescheduleModal(v){
+      const id = getViewingId(v);
+      $("#rescheduleViewingId").value = id;
+
+      const meta = `${getPropertyTitle(v)} — ${getLocation(v) || "Location not set"} — Current: ${formatDateTime(getViewingDateTime(v))}`;
+      $("#rescheduleMeta").textContent = meta;
+
+      // Set min datetime = now + 30 minutes (best practice)
+      const min = new Date(Date.now() + 30 * 60 * 1000);
+      const pad = (n) => String(n).padStart(2, "0");
+      const toLocalInput = (d) => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+      const input = $("#newDateTime");
+      input.min = toLocalInput(min);
+
+      // Prefill with current if valid, else now + 1 day
+      const cur = toDate(getViewingDateTime(v)) || new Date(Date.now() + 24*60*60*1000);
+      input.value = toLocalInput(cur);
+
+      $("#rescheduleReason").value = "";
+      modals.reschedule.show();
+    }
+
+    function openCancelModal(v){
+      const id = getViewingId(v);
+      $("#cancelViewingId").value = id;
+
+      const meta = `${getPropertyTitle(v)} — ${getLocation(v) || "Location not set"} — Scheduled: ${formatDateTime(getViewingDateTime(v))}`;
+      $("#cancelMeta").textContent = meta;
+
+      $("#cancelReason").value = "";
+      modals.cancel.show();
+    }
+
+    function setBusy(kind, busy){
+      if (kind === "reschedule"){
+        $("#rescheduleSpinner").classList.toggle("d-none", !busy);
+        $("#rescheduleBtnText").innerHTML = busy ? "Submitting…" : `<i class="bi bi-check2 me-1"></i>Submit`;
+      }
+      if (kind === "cancel"){
+        $("#cancelSpinner").classList.toggle("d-none", !busy);
+        $("#cancelBtnText").innerHTML = busy ? "Cancelling…" : `<i class="bi bi-trash3 me-1"></i>Cancel viewing`;
+      }
+    }
+
+    function updateViewingInState(updated){
+      const id = getViewingId(updated);
+      const idx = state.viewings.findIndex(v => String(getViewingId(v)) === String(id));
+      if (idx >= 0) state.viewings[idx] = { ...state.viewings[idx], ...updated };
+    }
+
+    // =========================
+    // Init
+    // =========================
+    document.addEventListener("DOMContentLoaded", async () => {
+      modals.reschedule = new bootstrap.Modal($("#rescheduleModal"));
+      modals.cancel = new bootstrap.Modal($("#cancelModal"));
+
+      showState({ loading: true });
+
       try {
-        if (window.Customer && typeof window.Customer.loadViewings === "function") {
-          window.Customer.loadViewings(listEl);
-
-          // Fallback check: if still empty after a moment, render from localStorage
-          setTimeout(() => {
-            const hasItems = listEl.children.length > 0;
-            if (hasItems) {
-              showState({ loading: false, error: "", empty: false });
-            } else {
-              const { items } = readViewingsFromLocalStorage();
-              if (items.length) {
-                renderViewingsFallback(items);
-                showState({ loading: false, error: "", empty: false });
-              } else {
-                showState({ loading: false, error: "", empty: true });
-              }
-            }
-          }, 700);
-        } else {
-          // 2) Fallback: localStorage
-          const { items } = readViewingsFromLocalStorage();
-          if (items.length) {
-            renderViewingsFallback(items);
-            showState({ loading: false, error: "", empty: false });
-          } else {
-            showState({ loading: false, error: "", empty: true });
-          }
-        }
+        state.viewings = await API.getViewings();
+        if (!Array.isArray(state.viewings)) state.viewings = [];
+        showState({ loading: false, empty: state.viewings.length === 0 });
+        applyFilters();
       } catch (e) {
-        const { items } = readViewingsFromLocalStorage();
-        if (items.length) {
-          renderViewingsFallback(items);
-          showState({ loading: false, error: "", empty: false });
-        } else {
-          showState({ loading: false, error: "Viewings loader crashed. Using fallback storage.", empty: true });
-        }
+        showState({ loading: false, error: e.message || "Failed to load viewings." });
       }
 
       // Filters
       $("#viewSearch").addEventListener("input", applyFilters);
       $("#statusFilter").addEventListener("change", applyFilters);
+      $("#timeFilter").addEventListener("change", applyFilters);
 
-      // Cancel button (best-effort; won’t break if backend isn’t ready)
-      listEl.addEventListener("click", async (e) => {
-        const btn = e.target.closest("[data-action='cancel']");
+      // Card button actions
+      $("#viewingsList").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-action]");
         if (!btn) return;
 
-        const li = e.target.closest("li");
+        const li = e.target.closest("li[data-id]");
         if (!li) return;
 
-        if (!confirm("Cancel this viewing request?")) return;
+        const id = li.dataset.id;
+        const v = state.viewings.find(x => String(getViewingId(x)) === String(id));
+        if (!v) return;
 
-        // If your customer.js provides a cancel API, try it. Otherwise just remove from UI.
+        const action = btn.dataset.action;
+        if (action === "reschedule") openRescheduleModal(v);
+        if (action === "cancel") openCancelModal(v);
+      });
+
+      // Reminder controls
+      $("#btnDismissReminder").addEventListener("click", () => {
+        $("#reminderBanner").classList.add("d-none");
+      });
+
+      $("#btnNotifyOwner").addEventListener("click", notifyOwnerForSoonViewings);
+
+      // Auto refresh reminders periodically
+      setInterval(() => {
+        refreshReminderBanner();
+        // optional: try to notify silently when soon viewings appear
+        // notifyOwnerForSoonViewings();
+      }, REMINDER_POLL_MS);
+
+      // Initial reminder + optional notify once on load
+      refreshReminderBanner();
+      // Best-effort notify on load (won’t crash if endpoint missing)
+      notifyOwnerForSoonViewings();
+
+      // Reschedule submit
+      $("#rescheduleForm").addEventListener("submit", async (ev) => {
+        ev.preventDefault();
+        const id = $("#rescheduleViewingId").value;
+        const newDateTime = $("#newDateTime").value;
+        const reason = $("#rescheduleReason").value.trim();
+
+        if (!id || !newDateTime) return;
+
+        setBusy("reschedule", true);
         try {
-          if (window.Customer && typeof window.Customer.cancelViewing === "function") {
-            await window.Customer.cancelViewing(li);
-          }
-        } catch (_) {
-          // ignore and fallback to UI removal
-        }
+          const payload = { newDateTime, reason };
+          const updated = await API.rescheduleViewing(id, payload);
 
-        li.remove();
-        if (listEl.children.length === 0) showState({ loading: false, error: "", empty: true });
-        applyFilters();
+          // If backend returns updated viewing, merge; else we update locally:
+          if (updated && typeof updated === "object") updateViewingInState(updated);
+          else {
+            const v = state.viewings.find(x => String(getViewingId(x)) === String(id));
+            if (v) {
+              v.dateTime = v.dateTime ?? v.scheduledAt ?? v.viewingDate ?? v.date ?? v.startTime;
+              // best effort update to new date on common fields:
+              v.dateTime = newDateTime;
+              v.scheduledAt = newDateTime;
+              v.viewingDate = newDateTime;
+              v.date = newDateTime;
+              v.status = v.status || "Pending";
+            }
+          }
+
+          modals.reschedule.hide();
+          toast("Viewing reschedule submitted.");
+          applyFilters();
+        } catch (e) {
+          toast(`Reschedule failed: ${e.message || "Unknown error"}`);
+        } finally {
+          setBusy("reschedule", false);
+        }
+      });
+
+      // Cancel submit
+      $("#cancelForm").addEventListener("submit", async (ev) => {
+        ev.preventDefault();
+        const id = $("#cancelViewingId").value;
+        const reason = $("#cancelReason").value.trim();
+
+        if (!id) return;
+
+        setBusy("cancel", true);
+        try {
+          const payload = { reason };
+          const updated = await API.cancelViewing(id, payload);
+
+          if (updated && typeof updated === "object") updateViewingInState(updated);
+          else {
+            const v = state.viewings.find(x => String(getViewingId(x)) === String(id));
+            if (v) v.status = "Cancelled";
+          }
+
+          modals.cancel.hide();
+          toast("Viewing cancelled.");
+          applyFilters();
+        } catch (e) {
+          toast(`Cancel failed: ${e.message || "Unknown error"}`);
+        } finally {
+          setBusy("cancel", false);
+        }
       });
     });
   </script>
