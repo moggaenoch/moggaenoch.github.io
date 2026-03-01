@@ -1,19 +1,342 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Placeholder</title>
-</head>
-<body>
-<h1>Placeholder</h1>
-<p>Auto-generated placeholder for missing page: pages/customer/customer-saved-searches.html</p>
-<p>Referenced 2 times.</p>
-<p><a href="index.html">Home</a></p>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/http.js"></script>
-  <script src="assets/js/nav-areas.js"></script>
-  <script src="assets/js/customer.js"></script>
-  <script>Customer.loadSavedSearches(document.querySelector("#savedSearchesList") || document.querySelector("ul"));</script>
+  <meta name="description" content="Search approved properties and save your favorites on Juba Homez." />
+  <meta name="author" content="MOGGA ENOCH" />
+
+  <title>JUBA HOMEZ | Property Search</title>
+
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind (optional, matches your admin look) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root { --brand: #0f172a; }
+    body { font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:#f8fafc; color:#0f172a; }
+    .chip { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; padding: 4px 10px; border-radius: 999px; background:#f1f5f9; color:#334155; }
+    .btnx { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius: 12px; font-weight: 900; font-size: 12px; letter-spacing: .02em; transition: .15s; border:1px solid #e2e8f0; background:#fff; }
+    .btnx:hover { background:#f8fafc; }
+    .btnx-primary { background: var(--brand); color:#fff; border-color: var(--brand); }
+    .btnx-primary:hover { background:#111827; }
+    .btnx-save { border-color:#cbd5e1; }
+    .btnx-save.is-saved { background:#ecfdf5; border-color:#10b981; color:#047857; }
+    .cardx { background:#fff; border:1px solid #e2e8f0; border-radius: 22px; box-shadow: 0 10px 20px rgba(15,23,42,.05); }
+    .muted { color:#64748b; }
+    .kpi { border-left: 4px solid #2563eb; }
+    .inputx { border:1px solid #e2e8f0; border-radius: 14px; padding:10px 12px; font-weight: 700; font-size: 13px; background:#fff; }
+    .inputx:focus { outline:none; border-color:#94a3b8; box-shadow: 0 0 0 3px rgba(148,163,184,.25); }
+    .gridx { display:grid; gap: 14px; }
+    @media (min-width: 768px) { .gridx { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  </style>
+</head>
+
+<body>
+  <!-- Top Bar -->
+  <header class="container py-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="chip">Juba Homez</div>
+          <div class="chip">Customer</div>
+        </div>
+        <h1 class="mt-2 fw-black" style="font-weight:900;">Find Properties</h1>
+        <p class="muted mb-0">Search approved listings and save your favorites.</p>
+      </div>
+
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <a class="btnx" href="/index.html">Home</a>
+        <a class="btnx" href="/public/pages/public/Login.html">Login</a>
+        <a class="btnx btnx-primary" href="/public/pages/public/Signup.html">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search Panel -->
+  <main class="container pb-5">
+    <section class="cardx p-4 p-md-5 mb-4">
+      <div class="d-flex flex-wrap align-items-end gap-3">
+        <div style="flex: 1; min-width: 240px;">
+          <label class="muted small fw-bold mb-2 d-block">Keyword</label>
+          <input id="searchQ" class="inputx w-100" placeholder="e.g. Gudele, 2 bedroom, apartment..." />
+        </div>
+
+        <div style="min-width: 180px;">
+          <label class="muted small fw-bold mb-2 d-block">Area</label>
+          <select id="searchArea" class="inputx w-100">
+            <option value="">Any</option>
+            <option value="Gudele">Gudele</option>
+            <option value="Munuki">Munuki</option>
+            <option value="Gurei">Gurei</option>
+            <option value="Jebel">Jebel</option>
+            <option value="Hai Malakal">Hai Malakal</option>
+          </select>
+        </div>
+
+        <div style="min-width: 150px;">
+          <label class="muted small fw-bold mb-2 d-block">Type</label>
+          <select id="searchType" class="inputx w-100">
+            <option value="">Any</option>
+            <option value="rent">Rent</option>
+            <option value="sale">Sale</option>
+          </select>
+        </div>
+
+        <div style="min-width: 140px;">
+          <label class="muted small fw-bold mb-2 d-block">Min Price</label>
+          <input id="minPrice" type="number" class="inputx w-100" placeholder="0" />
+        </div>
+
+        <div style="min-width: 140px;">
+          <label class="muted small fw-bold mb-2 d-block">Max Price</label>
+          <input id="maxPrice" type="number" class="inputx w-100" placeholder="Any" />
+        </div>
+
+        <div style="min-width: 120px;">
+          <label class="muted small fw-bold mb-2 d-block">Beds</label>
+          <input id="minRooms" type="number" class="inputx w-100" placeholder="0" />
+        </div>
+
+        <div style="min-width: 120px;">
+          <label class="muted small fw-bold mb-2 d-block">Baths</label>
+          <input id="minBaths" type="number" class="inputx w-100" placeholder="0" />
+        </div>
+
+        <button id="btnSearch" class="btnx btnx-primary">
+          Search
+        </button>
+      </div>
+
+      <div class="mt-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <div class="muted small fw-bold" id="resultsMeta">Ready.</div>
+        <div class="muted small">
+          Tip: You must be logged in to save properties.
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="cardx p-4 p-md-5">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <h2 class="m-0" style="font-weight:900;">Results</h2>
+        <a class="btnx" href="#" id="btnViewSaved">View Saved</a>
+      </div>
+
+      <div id="propertiesGrid" class="gridx">
+        <!-- JS renders cards -->
+        <div class="muted fw-bold">Loading...</div>
+      </div>
+    </section>
+
+    <!-- Saved Modal (simple) -->
+    <div class="modal fade" id="savedModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content" style="border-radius:18px;">
+          <div class="modal-header">
+            <h5 class="modal-title fw-black" style="font-weight:900;">Saved Properties</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="savedList" class="d-grid gap-2">
+              <div class="muted fw-bold">Loading...</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Your app scripts (absolute paths so it works from any folder) -->
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/http.js"></script>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const el = (id) => document.getElementById(id);
+      const api = (path) => APP_CONFIG.utils.apiUrl(path);
+
+      const state = {
+        savedIds: new Set(),
+        savedRows: [],
+        page: 1,
+        limit: 24
+      };
+
+      const money = (n) => (n == null ? "—" : Number(n).toLocaleString());
+
+      function card(p) {
+        const saved = state.savedIds.has(p.id);
+        return `
+          <div class="cardx p-4">
+            <div class="d-flex align-items-start justify-content-between gap-3">
+              <div>
+                <div class="fw-black" style="font-weight:900;">${p.title || "Untitled"}</div>
+                <div class="muted small">${p.area || ""} • ${p.location || ""}</div>
+              </div>
+              <button class="btnx btnx-save ${saved ? "is-saved" : ""}" data-action="toggle-save" data-id="${p.id}">
+                ${saved ? "Saved" : "Save"}
+              </button>
+            </div>
+
+            <div class="mt-3 d-flex align-items-center justify-content-between">
+              <div class="fw-black" style="font-weight:900;">SSP ${money(p.price)}</div>
+              <div class="muted small">${p.rooms || 0} beds • ${p.bathrooms || 0} baths</div>
+            </div>
+
+            <div class="mt-2 muted small">
+              Type: <b>${p.type || "—"}</b> • Size: <b>${p.size || "—"}</b>
+            </div>
+          </div>
+        `;
+      }
+
+      function readFilters() {
+        return {
+          q: el("searchQ")?.value?.trim() || "",
+          area: el("searchArea")?.value || "",
+          type: el("searchType")?.value || "",
+          min_price: el("minPrice")?.value || "",
+          max_price: el("maxPrice")?.value || "",
+          rooms: el("minRooms")?.value || "",
+          bathrooms: el("minBaths")?.value || "",
+        };
+      }
+
+      async function loadSaved() {
+        try {
+          const res = await http.get(api("/saved"));
+          state.savedRows = res?.data?.saved || [];
+          state.savedIds = new Set(state.savedRows.map((x) => x.id));
+        } catch {
+          state.savedRows = [];
+          state.savedIds = new Set();
+        }
+      }
+
+      async function loadProperties() {
+        const filters = readFilters();
+        const qs = new URLSearchParams();
+        Object.entries(filters).forEach(([k, v]) => v && qs.set(k, v));
+        qs.set("page", String(state.page));
+        qs.set("limit", String(state.limit));
+
+        const r = await fetch(api("/properties?" + qs.toString()));
+        const j = await r.json().catch(() => ({}));
+
+        if (!r.ok) {
+          console.error(j);
+          el("propertiesGrid").innerHTML = `<div class="muted fw-bold">Failed to load properties: ${j?.error?.message || "Error"}</div>`;
+          return;
+        }
+
+        const props = j?.data?.properties || [];
+        el("resultsMeta").textContent = `${props.length} results shown`;
+
+        el("propertiesGrid").innerHTML = props.length
+          ? props.map(card).join("")
+          : `<div class="muted fw-bold">No results found.</div>`;
+      }
+
+      async function toggleSave(propertyId) {
+        try {
+          if (state.savedIds.has(propertyId)) {
+            await http.del(api(`/saved/${propertyId}`));
+            state.savedIds.delete(propertyId);
+          } else {
+            await http.post(api(`/saved/${propertyId}`), {});
+            state.savedIds.add(propertyId);
+          }
+          await loadProperties();
+        } catch (e) {
+          alert(e?.message || "Save failed. Please login first.");
+        }
+      }
+
+      function openSavedModal() {
+        const list = el("savedList");
+        if (!state.savedRows.length) {
+          list.innerHTML = `<div class="muted fw-bold">No saved properties yet.</div>`;
+        } else {
+          list.innerHTML = state.savedRows.map((p) => `
+            <div class="cardx p-3">
+              <div class="d-flex justify-content-between gap-3">
+                <div>
+                  <div class="fw-black" style="font-weight:900;">${p.title || "Untitled"}</div>
+                  <div class="muted small">${p.area || ""} • ${p.location || ""}</div>
+                  <div class="muted small">SSP ${money(p.price)} • ${p.rooms || 0} beds • ${p.bathrooms || 0} baths</div>
+                </div>
+                <button class="btn btn-outline-danger btn-sm" data-action="unsave" data-id="${p.id}">Remove</button>
+              </div>
+            </div>
+          `).join("");
+        }
+
+        const modal = new bootstrap.Modal(el("savedModal"));
+        modal.show();
+      }
+
+      function wire() {
+        el("btnSearch")?.addEventListener("click", async () => {
+          state.page = 1;
+          await loadSaved();
+          await loadProperties();
+        });
+
+        el("propertiesGrid")?.addEventListener("click", async (e) => {
+          const btn = e.target.closest("button[data-action='toggle-save']");
+          if (!btn) return;
+          const id = Number(btn.dataset.id);
+          if (!id) return;
+          await toggleSave(id);
+        });
+
+        el("btnViewSaved")?.addEventListener("click", async (e) => {
+          e.preventDefault();
+          await loadSaved();
+          openSavedModal();
+        });
+
+        el("savedList")?.addEventListener("click", async (e) => {
+          const btn = e.target.closest("button[data-action='unsave']");
+          if (!btn) return;
+          const id = Number(btn.dataset.id);
+          if (!id) return;
+
+          try {
+            await http.del(api(`/saved/${id}`));
+            await loadSaved();
+            openSavedModal();
+            await loadProperties();
+          } catch (err) {
+            alert(err?.message || "Failed to remove saved property.");
+          }
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        wire();
+        await loadSaved();
+        await loadProperties();
+      });
+    })();
+  </script>
 </body>
 </html>
