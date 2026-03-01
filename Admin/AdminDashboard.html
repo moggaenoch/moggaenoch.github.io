@@ -1,237 +1,670 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Suite | Juba Homez Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; scroll-behavior: smooth; }
-        .sidebar-link.active { background-color: #1e293b; color: #3b82f6; border-right: 4px solid #3b82f6; }
-        #map { height: 380px; border-radius: 1.5rem; z-index: 1; }
-        .chart-container { position: relative; height: 300px; width: 100%; }
-        /* Professional Toggle Switch Logic */
-        .switch { position: relative; display: inline-block; width: 44px; height: 22px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #2563eb; }
-        input:checked + .slider:before { transform: translateX(22px); }
-        /* Custom Scrollbar for Pro UI */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enterprise Suite | Juba Homez Admin</title>
+
+  <!-- UI libs -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; scroll-behavior: smooth; }
+    .sidebar-link.active { background-color: #1e293b; color: #3b82f6; border-right: 4px solid #3b82f6; }
+    #map { height: 380px; border-radius: 1.5rem; z-index: 1; }
+    .chart-container { position: relative; height: 300px; width: 100%; }
+
+    /* Toggle switch */
+    .switch { position: relative; display: inline-block; width: 44px; height: 22px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px; }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: #fff; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: #2563eb; }
+    input:checked + .slider:before { transform: translateX(22px); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+    /* Small badges */
+    .badge { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; padding: 3px 8px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; }
+    .badge-dot { width: 6px; height: 6px; border-radius: 999px; display: inline-block; }
+    .badge-active { background: #ecfdf5; color: #047857; }
+    .badge-active .badge-dot { background:#10b981; }
+    .badge-pending { background: #fff7ed; color: #9a3412; }
+    .badge-pending .badge-dot { background:#fb923c; }
+    .badge-suspended { background: #fef2f2; color: #b91c1c; }
+    .badge-suspended .badge-dot { background:#ef4444; }
+    .badge-approved { background: #eff6ff; color: #1d4ed8; }
+    .badge-approved .badge-dot { background:#2563eb; }
+    .badge-rejected { background: #f1f5f9; color: #334155; }
+    .badge-rejected .badge-dot { background:#94a3b8; }
+
+    /* Buttons */
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius: 12px; font-weight: 800; font-size: 12px; letter-spacing: .02em; transition: .15s; }
+    .btn:active { transform: scale(.98); }
+    .btn-ghost { background:#fff; border:1px solid #e2e8f0; color:#0f172a; }
+    .btn-ghost:hover { background:#f8fafc; }
+    .btn-primary { background:#0f172a; color:#fff; box-shadow: 0 10px 20px rgba(15,23,42,.08); }
+    .btn-primary:hover { background:#111827; }
+    .btn-blue { background:#2563eb; color:#fff; }
+    .btn-blue:hover { background:#1d4ed8; }
+    .btn-red { background:#ef4444; color:#fff; }
+    .btn-red:hover { background:#dc2626; }
+    .btn-amber { background:#f59e0b; color:#111827; }
+    .btn-amber:hover { background:#d97706; color:#fff; }
+
+    /* Tables */
+    table th { white-space: nowrap; }
+    .table-wrap { overflow-x:auto; }
+  </style>
 </head>
+
 <body>
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 text-white hidden lg:flex flex-col sticky top-0 h-screen shadow-2xl">
+      <div class="p-6 border-b border-slate-800">
+        <h1 class="text-xl font-black tracking-tighter text-blue-400 italic">JUBA HOMEZ</h1>
+        <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-1 font-bold">Admin Control Center</p>
+      </div>
 
-    <div class="flex min-h-screen">
-        <aside class="w-64 bg-slate-900 text-white hidden lg:flex flex-col sticky top-0 h-screen shadow-2xl">
-            <div class="p-6 border-b border-slate-800">
-                <h1 class="text-xl font-black tracking-tighter text-blue-400 italic">JUBA HOMEZ</h1>
-                <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-1 font-bold">Platform Governance</p>
+      <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto text-sm">
+        <a href="#dashboard-overview" class="sidebar-link active flex items-center space-x-3 p-3 rounded-xl transition">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span class="font-bold">Dashboard</span>
+        </a>
+
+        <a href="#users" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+          <i data-lucide="users" class="w-5 h-5"></i>
+          <span class="font-medium">User Management</span>
+        </a>
+
+        <a href="#properties" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+          <i data-lucide="home" class="w-5 h-5"></i>
+          <span class="font-medium">Property Management</span>
+        </a>
+
+        <a href="#content" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+          <i data-lucide="file-text" class="w-5 h-5"></i>
+          <span class="font-medium">Content Management</span>
+        </a>
+
+        <a href="#settings" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span class="font-medium">System Settings</span>
+        </a>
+
+        <a href="#audit" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+          <i data-lucide="shield-alert" class="w-5 h-5"></i>
+          <span class="font-medium">Audit Log</span>
+        </a>
+
+        <a href="#analytics" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
+          <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+          <span class="font-medium">Analytics</span>
+        </a>
+      </nav>
+
+      <div class="p-4 bg-slate-950/40">
+        <div class="flex items-center gap-3 p-2 rounded-xl border border-slate-800">
+          <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-[10px] text-white">AD</div>
+          <div class="overflow-hidden">
+            <p class="text-xs font-bold truncate" id="adminName">System Admin</p>
+            <p class="text-[9px] text-blue-400 font-bold uppercase tracking-tighter italic">Root Access</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-6 lg:p-10">
+      <!-- Header -->
+      <header class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h1 class="text-3xl font-black text-slate-900 tracking-tight">Admin Dashboard</h1>
+          <p class="text-slate-500 text-sm italic">
+            Manage users, listings, content, and settings — with full audit logging.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl border border-emerald-100 shadow-sm shadow-emerald-50">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span class="text-[10px] font-black uppercase tracking-wider" id="serverStatus">Server: Online</span>
+          </div>
+
+          <button id="btnRefreshAll" class="btn btn-ghost">
+            <i data-lucide="refresh-ccw" class="w-4 h-4 text-slate-400"></i> Refresh
+          </button>
+
+          <button class="btn btn-ghost">
+            <i data-lucide="bell" class="w-4 h-4 text-slate-400"></i> Alerts
+          </button>
+
+          <button class="btn btn-primary">
+            <i data-lucide="user" class="w-4 h-4"></i> Admin Profile
+          </button>
+        </div>
+      </header>
+
+      <!-- Overview -->
+      <section id="dashboard-overview" class="mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+            <h2 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Total Users</h2>
+            <p class="text-3xl font-black text-slate-900" id="kpiTotalUsers">—</p>
+            <p class="text-[10px] text-slate-400 font-bold mt-1">All roles</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm border-l-4 border-l-orange-400">
+            <h2 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1 text-orange-600">Pending Users</h2>
+            <p class="text-3xl font-black text-slate-900" id="kpiPendingUsers">—</p>
+            <p class="text-[10px] text-slate-400 font-bold mt-1 italic">Approval required</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+            <h2 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Active Listings</h2>
+            <p class="text-3xl font-black text-slate-900" id="kpiActiveListings">—</p>
+            <p class="text-[10px] text-slate-400 font-bold mt-1">Live on platform</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm border-l-4 border-l-blue-500">
+            <h2 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1 text-blue-600">Pending Listings</h2>
+            <p class="text-3xl font-black text-slate-900" id="kpiPendingListings">—</p>
+            <p class="text-[10px] text-slate-400 font-bold mt-1 italic">Review required</p>
+          </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+          <div class="flex items-center justify-between gap-4 flex-wrap mb-6">
+            <h3 class="font-black text-slate-800 flex items-center gap-2 text-lg">
+              <i data-lucide="activity" class="text-blue-600 w-5 h-5"></i> Admin Activity (Recent)
+            </h3>
+            <a href="#audit" class="text-blue-600 text-[10px] font-black uppercase tracking-widest hover:underline">
+              View full audit log →
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="recentAdminActivity">
+            <!-- JS fills -->
+            <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <div class="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center">
+                <i data-lucide="clock" class="w-4 h-4"></i>
+              </div>
+              <span class="text-xs font-bold text-slate-700">No recent actions loaded.</span>
             </div>
-            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto text-sm">
-                <a href="#dashboard-overview" class="sidebar-link active flex items-center space-x-3 p-3 rounded-xl transition">
-                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                    <span class="font-bold">Master Dashboard</span>
-                </a>
-                <a href="#users" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
-                    <i data-lucide="users" class="w-5 h-5"></i>
-                    <span class="font-medium">Users & Roles</span>
-                </a>
-                <a href="#analytics" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
-                    <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
-                    <span class="font-medium">Market Analytics</span>
-                </a>
-                <a href="#settings" class="flex items-center space-x-3 p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-xl transition">
-                    <i data-lucide="settings" class="w-5 h-5"></i>
-                    <span class="font-medium">System Settings</span>
-                </a>
-            </nav>
-            <div class="p-4 bg-slate-950/40">
-                <div class="flex items-center gap-3 p-2 rounded-xl border border-slate-800">
-                    <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-[10px] text-white">AD</div>
-                    <div class="overflow-hidden">
-                        <p class="text-xs font-bold truncate">System Admin</p>
-                        <p class="text-[9px] text-blue-400 font-bold uppercase tracking-tighter italic">Root Access</p>
-                    </div>
-                </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Users -->
+      <section id="users" class="mb-12">
+        <div class="flex items-center justify-between mb-6 gap-3 flex-wrap">
+          <h2 class="text-xl font-black text-slate-800 flex items-center gap-2">
+            <i data-lucide="users" class="text-blue-600"></i> User Management
+          </h2>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            <select id="userFilterStatus" class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="active">Active</option>
+              <option value="suspended">Suspended</option>
+            </select>
+
+            <select id="userFilterRole" class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold">
+              <option value="">All Roles</option>
+              <option value="customer">Customer</option>
+              <option value="broker">Broker</option>
+              <option value="owner">Owner</option>
+              <option value="photographer">Photographer</option>
+              <option value="admin">Admin</option>
+            </select>
+
+            <input id="userSearch" placeholder="Search name/email/phone..."
+                   class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold w-64 max-w-full" />
+
+            <button id="btnLoadUsers" class="btn btn-blue">
+              <i data-lucide="download" class="w-4 h-4"></i> Load Users
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+          <div class="table-wrap">
+            <table class="w-full text-left">
+              <thead class="bg-slate-50 text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                <tr>
+                  <th class="px-6 py-4">User</th>
+                  <th class="px-6 py-4">Role</th>
+                  <th class="px-6 py-4">Status</th>
+                  <th class="px-6 py-4">Created</th>
+                  <th class="px-6 py-4 text-right">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody class="divide-y divide-slate-50 text-sm" id="usersTbody">
+                <!-- JS renders users -->
+                <tr>
+                  <td class="px-6 py-4 text-slate-400" colspan="5">Click <b>Load Users</b> to fetch users.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-between flex-wrap gap-3">
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+              Admin actions: approve/reject • suspend/reactivate • delete
+            </p>
+            <p class="text-[10px] text-slate-400 font-bold" id="usersMeta">—</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Properties -->
+      <section id="properties" class="mb-12">
+        <div class="flex items-center justify-between mb-6 gap-3 flex-wrap">
+          <h2 class="text-xl font-black text-slate-800 flex items-center gap-2">
+            <i data-lucide="home" class="text-blue-600"></i> Property Management
+          </h2>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            <select id="propFilterStatus" class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="active">Active</option>
+              <option value="suspended">Suspended</option>
+              <option value="rejected">Rejected</option>
+            </select>
+
+            <input id="propSearch" placeholder="Search title/location/owner..."
+                   class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold w-64 max-w-full" />
+
+            <button id="btnLoadProperties" class="btn btn-blue">
+              <i data-lucide="download" class="w-4 h-4"></i> Load Listings
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+          <div class="table-wrap">
+            <table class="w-full text-left">
+              <thead class="bg-slate-50 text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                <tr>
+                  <th class="px-6 py-4">Listing</th>
+                  <th class="px-6 py-4">Owner</th>
+                  <th class="px-6 py-4">Status</th>
+                  <th class="px-6 py-4">Price</th>
+                  <th class="px-6 py-4 text-right">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody class="divide-y divide-slate-50 text-sm" id="propertiesTbody">
+                <tr>
+                  <td class="px-6 py-4 text-slate-400" colspan="5">Click <b>Load Listings</b> to fetch property listings.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-between flex-wrap gap-3">
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+              Listing actions: approve/reject • suspend/reactivate • delete
+            </p>
+            <p class="text-[10px] text-slate-400 font-bold" id="propertiesMeta">—</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Content -->
+      <section id="content" class="mb-12">
+        <div class="flex items-center justify-between mb-6 gap-3 flex-wrap">
+          <h2 class="text-xl font-black text-slate-800 flex items-center gap-2">
+            <i data-lucide="file-text" class="text-blue-600"></i> Content Management
+          </h2>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            <select id="contentType" class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold">
+              <option value="announcements">Announcements</option>
+              <option value="banners">Homepage Banners</option>
+              <option value="faqs">FAQs</option>
+              <option value="pages">Static Pages</option>
+            </select>
+
+            <button id="btnNewContent" class="btn btn-ghost">
+              <i data-lucide="plus" class="w-4 h-4 text-slate-400"></i> New Content
+            </button>
+
+            <button id="btnLoadContent" class="btn btn-blue">
+              <i data-lucide="download" class="w-4 h-4"></i> Load Content
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+          <div class="table-wrap">
+            <table class="w-full text-left">
+              <thead class="bg-slate-50 text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                <tr>
+                  <th class="px-6 py-4">Title</th>
+                  <th class="px-6 py-4">Status</th>
+                  <th class="px-6 py-4">Last Updated</th>
+                  <th class="px-6 py-4 text-right">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody class="divide-y divide-slate-50 text-sm" id="contentTbody">
+                <tr>
+                  <td class="px-6 py-4 text-slate-400" colspan="4">Click <b>Load Content</b> to fetch platform content.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-between flex-wrap gap-3">
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+              Content actions: publish/unpublish • edit • delete
+            </p>
+            <p class="text-[10px] text-slate-400 font-bold" id="contentMeta">—</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section id="settings" class="mb-12">
+        <div class="flex items-center justify-between mb-6 gap-3 flex-wrap">
+          <h2 class="text-xl font-black text-slate-800 flex items-center gap-2">
+            <i data-lucide="settings" class="text-blue-600"></i> System Settings
+          </h2>
+
+          <button id="btnSaveSettings" class="btn btn-primary">
+            <i data-lucide="save" class="w-4 h-4"></i> Save Settings
+          </button>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Fees -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2">
+              <i data-lucide="banknote" class="w-4 h-4 text-blue-600"></i> Fees
+            </h3>
+
+            <label class="block mb-3">
+              <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Listing Fee (SSP)</span>
+              <input id="settingListingFee" type="number" min="0" class="mt-2 w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm font-bold" placeholder="e.g. 5000" />
+            </label>
+
+            <label class="block">
+              <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Commission (%)</span>
+              <input id="settingCommission" type="number" min="0" max="100" step="0.1" class="mt-2 w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm font-bold" placeholder="e.g. 2.5" />
+            </label>
+          </div>
+
+          <!-- Roles & Permissions -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2">
+              <i data-lucide="key-round" class="w-4 h-4 text-blue-600"></i> Roles & Permissions
+            </h3>
+
+            <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200 mb-3">
+              <div>
+                <p class="font-bold text-sm">Require Admin Approval</p>
+                <p class="text-[10px] text-slate-400 font-medium italic">Broker/Owner/Photographer must be approved.</p>
+              </div>
+              <label class="switch">
+                <input id="settingRequireApproval" type="checkbox" checked />
+                <span class="slider"></span>
+              </label>
             </div>
-        </aside>
 
-        <main class="flex-1 p-6 lg:p-10">
-            <header class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div>
-                    <h1 class="text-3xl font-black text-slate-900 tracking-tight">System Infrastructure</h1>
-                    <p class="text-slate-500 text-sm italic">Managing core verification rules, user roles, and regional performance.</p>
-                </div>
-                <div class="flex flex-wrap items-center gap-4">
-                    <div class="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl border border-emerald-100 shadow-sm shadow-emerald-50">
-                        <span class="relative flex h-2 w-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                        </span>
-                        <span class="text-[10px] font-black uppercase tracking-wider">Server: Online</span>
-                    </div>
-                    
-                    <button class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-sm font-bold shadow-sm hover:bg-slate-50 flex items-center gap-2 transition">
-                        <i data-lucide="bell" class="w-4 h-4 text-slate-400"></i> Alerts
-                    </button>
-                    <button class="bg-slate-900 text-white px-5 py-2 rounded-xl text-sm font-bold shadow-lg shadow-slate-200 hover:bg-slate-800 active:scale-95 transition">
-                        Admin Profile
-                    </button>
-                </div>
-            </header>
+            <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200">
+              <div>
+                <p class="font-bold text-sm">Allow Role Changes</p>
+                <p class="text-[10px] text-slate-400 font-medium italic">Admin can change roles from dashboard.</p>
+              </div>
+              <label class="switch">
+                <input id="settingAllowRoleChange" type="checkbox" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
 
-            <section id="dashboard-overview" class="mb-12">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                        <h2 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Total Users</h2>
-                        <p class="text-3xl font-black text-slate-900">1500</p>
-                        <p class="text-[10px] text-blue-600 font-bold mt-1">+5% MTD</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                        <h2 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Active Users</h2>
-                        <p class="text-3xl font-black text-slate-900">1200</p>
-                        <p class="text-[10px] text-emerald-600 font-bold mt-1">Live Status</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm border-l-4 border-l-orange-400">
-                        <h2 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1 text-orange-600">Pending Requests</h2>
-                        <p class="text-3xl font-black text-slate-900">50</p>
-                        <p class="text-[10px] text-slate-400 font-bold mt-1 italic">Action Required</p>
-                    </div>
-                </div>
+          <!-- Verification / Security -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-blue-600"></i> Verification & Security
+            </h3>
 
-                <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm mb-12">
-                    <h3 class="font-black text-slate-800 mb-6 flex items-center gap-2 text-lg">
-                        <i data-lucide="activity" class="text-blue-600 w-5 h-5"></i> Recent Activity Feed
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 transition">
-                            <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center"><i data-lucide="user-plus" class="w-4 h-4"></i></div>
-                            <span class="text-xs font-bold text-slate-700">JohnDoe registered.</span>
-                        </div>
-                        <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 transition">
-                            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center"><i data-lucide="user-cog" class="w-4 h-4"></i></div>
-                            <span class="text-xs font-bold text-slate-700">JaneSmith updated profile.</span>
-                        </div>
-                        <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 transition">
-                            <div class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center"><i data-lucide="key" class="w-4 h-4"></i></div>
-                            <span class="text-xs font-bold text-slate-700">MikeBrown requested reset.</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200 mb-3">
+              <div>
+                <p class="font-bold text-sm">Mandatory ID Verification</p>
+                <p class="text-[10px] text-slate-400 font-medium italic">Require passport/ID for listings.</p>
+              </div>
+              <label class="switch">
+                <input id="settingIdVerification" type="checkbox" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
 
-            <section id="users" class="mb-12">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                        <i data-lucide="shield-check" class="text-blue-600"></i> Users & Role Control
-                    </h2>
-                    <button class="text-blue-600 text-[10px] font-black uppercase tracking-widest hover:underline">+ New Staff Member</button>
-                </div>
-                <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-                    <table class="w-full text-left">
-                        <thead class="bg-slate-50 text-[10px] text-slate-500 font-bold uppercase tracking-wider">
-                            <tr>
-                                <th class="px-6 py-4">Identity</th>
-                                <th class="px-6 py-4">Assigned Role</th>
-                                <th class="px-6 py-4 text-right">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-50 text-sm">
-                            <tr class="hover:bg-slate-50 transition">
-                                <td class="px-6 py-4 font-bold">Mogga Enoch</td>
-                                <td class="px-6 py-4"><span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-[9px] font-black uppercase">System Root</span></td>
-                                <td class="px-6 py-4 text-right"><button class="text-slate-400 hover:text-slate-600"><i data-lucide="more-horizontal"></i></button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200">
+              <div>
+                <p class="font-bold text-sm">Property Deed Validation</p>
+                <p class="text-[10px] text-slate-400 font-medium italic">Require deed evidence for approval.</p>
+              </div>
+              <label class="switch">
+                <input id="settingDeedValidation" type="checkbox" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
 
-            <section id="settings" class="mb-12">
-                <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                    <i data-lucide="sliders" class="text-blue-600"></i> Verification Logic
-                </h2>
-                <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
-                        <div>
-                            <p class="font-bold text-sm">Mandatory ID Verification</p>
-                            <p class="text-[10px] text-slate-400 font-medium italic">Require passport/ID for listings.</p>
-                        </div>
-                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
-                    </div>
-                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
-                        <div>
-                            <p class="font-bold text-sm">Property Deed Validation</p>
-                            <p class="text-[10px] text-slate-400 font-medium italic">Verify land titles in Gudele sector.</p>
-                        </div>
-                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
-                    </div>
-                </div>
-            </section>
+        <p class="mt-4 text-[10px] text-slate-400 font-bold">
+          All settings changes must be recorded in the audit log.
+        </p>
+      </section>
 
-            <section id="analytics" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                    <h3 class="font-black text-slate-800 text-lg mb-6 flex items-center gap-2">
-                        <i data-lucide="map" class="text-blue-600"></i> Juba Density Map
-                    </h3>
-                    <div id="map"></div>
-                </div>
-                <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex flex-col">
-                    <h3 class="font-black text-slate-800 text-lg mb-6 uppercase tracking-tight">Market Breakdown</h3>
-                    <div class="chart-container">
-                        <canvas id="performanceChart"></canvas>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+      <!-- Audit Log -->
+      <section id="audit" class="mb-12">
+        <div class="flex items-center justify-between mb-6 gap-3 flex-wrap">
+          <h2 class="text-xl font-black text-slate-800 flex items-center gap-2">
+            <i data-lucide="shield-alert" class="text-blue-600"></i> Audit Log
+          </h2>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        lucide.createIcons();
+          <div class="flex items-center gap-2 flex-wrap">
+            <input id="auditSearch" placeholder="Search action/user/listing..."
+                   class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold w-72 max-w-full" />
 
-        // Platform Map Initialization
-        const map = L.map('map', { scrollWheelZoom: false }).setView([4.85, 31.57], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-        
-        // Neighborhood Heatmap Data
-        L.circle([4.85, 31.545], { color: '#2563eb', fillOpacity: 0.3, radius: 800 }).addTo(map).bindPopup('<b>Gudele</b>: 420 Active Properties');
-        L.circle([4.87, 31.56], { color: '#8b5cf6', fillOpacity: 0.3, radius: 600 }).addTo(map).bindPopup('<b>Munuki</b>: 285 Active Properties');
+            <button id="btnLoadAudit" class="btn btn-blue">
+              <i data-lucide="download" class="w-4 h-4"></i> Load Log
+            </button>
 
-        // Neighborhood Performance Chart
-        const ctx = document.getElementById('performanceChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Gudele', 'Gurei', 'Other'],
-                datasets: [{
-                    data: [42, 31, 27],
-                    backgroundColor: ['#2563eb', '#10b981', '#f1f5f9'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10, weight: '700' } } } },
-                cutout: '75%'
-            }
-        });
-    </script>
+            <button id="btnExportAudit" class="btn btn-ghost">
+              <i data-lucide="file-down" class="w-4 h-4 text-slate-400"></i> Export
+            </button>
+          </div>
+        </div>
 
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+          <div class="table-wrap">
+            <table class="w-full text-left">
+              <thead class="bg-slate-50 text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                <tr>
+                  <th class="px-6 py-4">Timestamp</th>
+                  <th class="px-6 py-4">Admin</th>
+                  <th class="px-6 py-4">Action</th>
+                  <th class="px-6 py-4">Target</th>
+                  <th class="px-6 py-4">Result</th>
+                </tr>
+              </thead>
+
+              <tbody class="divide-y divide-slate-50 text-sm" id="auditTbody">
+                <tr>
+                  <td class="px-6 py-4 text-slate-400" colspan="5">Click <b>Load Log</b> to fetch audit entries.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-between flex-wrap gap-3">
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+              Every approve/reject/suspend/delete/settings change must be logged.
+            </p>
+            <p class="text-[10px] text-slate-400 font-bold" id="auditMeta">—</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Analytics (optional, keep your map + chart) -->
+      <section id="analytics" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+          <h3 class="font-black text-slate-800 text-lg mb-6 flex items-center gap-2">
+            <i data-lucide="map" class="text-blue-600"></i> Juba Density Map
+          </h3>
+          <div id="map"></div>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex flex-col">
+          <h3 class="font-black text-slate-800 text-lg mb-6 uppercase tracking-tight">Market Breakdown</h3>
+          <div class="chart-container">
+            <canvas id="performanceChart"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    // Icons
+    lucide.createIcons();
+
+    // Map (optional analytics)
+    const map = L.map('map', { scrollWheelZoom: false }).setView([4.85, 31.57], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    L.circle([4.85, 31.545], { color: '#2563eb', fillOpacity: 0.3, radius: 800 })
+      .addTo(map).bindPopup('<b>Gudele</b>: Active Properties');
+    L.circle([4.87, 31.56], { color: '#8b5cf6', fillOpacity: 0.3, radius: 600 })
+      .addTo(map).bindPopup('<b>Munuki</b>: Active Properties');
+
+    // Doughnut chart
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Gudele', 'Gurei', 'Other'],
+        datasets: [{ data: [42, 31, 27], backgroundColor: ['#2563eb', '#10b981', '#f1f5f9'], borderWidth: 0 }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10, weight: '700' } } } },
+        cutout: '75%'
+      }
+    });
+
+    // Safe Admin fallback (prevents "Admin is not defined" errors)
+    window.Admin = window.Admin || {};
+    const noop = () => {};
+    window.Admin.wireComingSoon = window.Admin.wireComingSoon || noop;
+    window.Admin.loadBadges = window.Admin.loadBadges || noop;
+    window.Admin.loadPendingCounts = window.Admin.loadPendingCounts || noop;
+
+    // New dashboard hooks your admin.js can implement
+    window.Admin.initDashboard = window.Admin.initDashboard || noop;
+    window.Admin.loadUsers = window.Admin.loadUsers || noop;
+    window.Admin.loadProperties = window.Admin.loadProperties || noop;
+    window.Admin.loadContent = window.Admin.loadContent || noop;
+    window.Admin.loadAudit = window.Admin.loadAudit || noop;
+    window.Admin.saveSettings = window.Admin.saveSettings || noop;
+  </script>
+
+  <!-- Bootstrap (kept because you already had it) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Your app scripts -->
   <script src="assets/js/config.js"></script>
   <script src="assets/js/http.js"></script>
   <script src="assets/js/admin.js"></script>
-  <script>Admin.wireComingSoon(); Admin.loadBadges(); Admin.loadPendingCounts();</script>
+
+  <script>
+    // Wire UI buttons to your Admin.* functions (no crashes if not implemented yet)
+    document.addEventListener("DOMContentLoaded", () => {
+      // Keep your old calls
+      Admin.wireComingSoon?.();
+      Admin.loadBadges?.();
+      Admin.loadPendingCounts?.();
+
+      // New init (optional)
+      Admin.initDashboard?.({
+        ids: {
+          usersTbody: "usersTbody",
+          propertiesTbody: "propertiesTbody",
+          contentTbody: "contentTbody",
+          auditTbody: "auditTbody"
+        }
+      });
+
+      const byId = (id) => document.getElementById(id);
+
+      byId("btnLoadUsers")?.addEventListener("click", () => {
+        Admin.loadUsers?.({
+          status: byId("userFilterStatus")?.value || "",
+          role: byId("userFilterRole")?.value || "",
+          q: byId("userSearch")?.value || ""
+        });
+      });
+
+      byId("btnLoadProperties")?.addEventListener("click", () => {
+        Admin.loadProperties?.({
+          status: byId("propFilterStatus")?.value || "",
+          q: byId("propSearch")?.value || ""
+        });
+      });
+
+      byId("btnLoadContent")?.addEventListener("click", () => {
+        Admin.loadContent?.({ type: byId("contentType")?.value || "announcements" });
+      });
+
+      byId("btnLoadAudit")?.addEventListener("click", () => {
+        Admin.loadAudit?.({ q: byId("auditSearch")?.value || "" });
+      });
+
+      byId("btnSaveSettings")?.addEventListener("click", () => {
+        const settings = {
+          listingFee: Number(byId("settingListingFee")?.value || 0),
+          commission: Number(byId("settingCommission")?.value || 0),
+          requireApproval: !!byId("settingRequireApproval")?.checked,
+          allowRoleChange: !!byId("settingAllowRoleChange")?.checked,
+          idVerification: !!byId("settingIdVerification")?.checked,
+          deedValidation: !!byId("settingDeedValidation")?.checked
+        };
+        Admin.saveSettings?.(settings);
+      });
+
+      byId("btnRefreshAll")?.addEventListener("click", () => {
+        Admin.loadBadges?.();
+        Admin.loadPendingCounts?.();
+        Admin.loadUsers?.({});
+        Admin.loadProperties?.({});
+        Admin.loadContent?.({ type: byId("contentType")?.value || "announcements" });
+        Admin.loadAudit?.({});
+      });
+    });
+  </script>
 </body>
 </html>
